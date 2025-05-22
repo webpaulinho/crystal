@@ -42,7 +42,7 @@ SCOPES = [
     "https://www.googleapis.com/auth/admin.directory.user.readonly",
     "https://www.googleapis.com/auth/gmail.settings.basic"
 ]
-REDIRECT_URI = os.environ.get("REDIRECT_URI", "https://5000-cs-380383006363-default.cs-us-east1-rtep.cloudshell.dev/callback")
+REDIRECT_URI = os.environ.get("REDIRECT_URI", "https://msgferias.onrender.com/callback")
 
 def is_domain_user(email):
     """Checa se é do domínio tecafrio.com.br (fallback simples)."""
