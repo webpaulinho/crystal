@@ -23,7 +23,22 @@ else:
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-key")
 
-CLIENT_SECRETS_FILE = "client_secret.json"
+import tempfile
+
+# ... (restante dos imports e código)
+
+# ====== INÍCIO: Configuração dinâmica do client_secret.json ======
+if "GOOGLE_CLIENT_SECRET_JSON" in os.environ:
+    client_secret_json = os.environ["GOOGLE_CLIENT_SECRET_JSON"]
+    with tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".json") as f:
+        f.write(client_secret_json)
+        client_secrets_path = f.name
+else:
+    client_secrets_path = "client_secret.json"  # fallback para desenvolvimento local
+
+# ====== FIM: Configuração dinâmica do client_secret.json ======
+
+CLIENT_SECRETS_FILE = client_secrets_path
 SERVICE_ACCOUNT_FILE = service_account_path
 SCOPES = [
     "openid",
