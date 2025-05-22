@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: painel-ferias
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python main.py"
+    envVars:
+      - key: FLASK_SECRET_KEY
+        value: sua-chave-secreta
+      - key: GOOGLE_APPLICATION_CREDENTIALS_JSON
+        value: |
+          {
+            "type": "service_account",
+            "project_id": "seu_projeto",
+            ...
+          }
+      - key: REDIRECT_URI
+        value: https://painel-ferias.onrender.com/callback
