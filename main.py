@@ -22,6 +22,9 @@ else:
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-key")
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # ====== INÍCIO: Configuração dinâmica do client_secret.json ======
 if "GOOGLE_CLIENT_SECRET_JSON" in os.environ:
