@@ -23,10 +23,6 @@ else:
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-key")
 
-import tempfile
-
-# ... (restante dos imports e código)
-
 # ====== INÍCIO: Configuração dinâmica do client_secret.json ======
 if "GOOGLE_CLIENT_SECRET_JSON" in os.environ:
     client_secret_json = os.environ["GOOGLE_CLIENT_SECRET_JSON"]
