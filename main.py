@@ -1,22 +1,37 @@
 import os
+import json
+import tempfile
 from flask import Flask, redirect, url_for, session, request, render_template, jsonify
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
 
+# ====== INÍCIO: Configuração dinâmica da conta de serviço ======
+# Salva o JSON da conta de serviço vindo da variável de ambiente em um arquivo temporário
+if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in os.environ:
+    creds_json = os.environ["GOOGLE_APPLICATION_CREDENTIALS_JSON"]
+    with tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".json") as f:
+        f.write(creds_json)
+        service_account_path = f.name
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account_path
+else:
+    service_account_path = "service-account.json"  # fallback para desenvolvimento local
+
+# ====== FIM: Configuração dinâmica da conta de serviço ======
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-key")
 
 CLIENT_SECRETS_FILE = "client_secret.json"
-SERVICE_ACCOUNT_FILE = "service-account.json"
+SERVICE_ACCOUNT_FILE = service_account_path
 SCOPES = [
     "openid",
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/admin.directory.user.readonly",
     "https://www.googleapis.com/auth/gmail.settings.basic"
 ]
-REDIRECT_URI = "https://5000-cs-380383006363-default.cs-us-east1-rtep.cloudshell.dev/callback"
+REDIRECT_URI = os.environ.get("REDIRECT_URI", "https://5000-cs-380383006363-default.cs-us-east1-rtep.cloudshell.dev/callback")
 
 def is_domain_user(email):
     """Checa se é do domínio tecafrio.com.br (fallback simples)."""
