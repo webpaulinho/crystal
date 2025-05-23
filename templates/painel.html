@@ -284,8 +284,15 @@
         const mensagem = quill.getText();
         const primeiroDia = document.getElementById('primeiro-dia').value;
         const ultimoDia = document.getElementById('ultimo-dia').value;
-        const startTime = primeiroDia ? new Date(primeiroDia).getTime() : 0;
-        const endTime = ultimoDia ? new Date(ultimoDia).getTime() : 0;
+        // Conversão correta para UTC 00:00:00
+        function toUTCtimestamp(dateStr) {
+            if (!dateStr) return 0;
+            const [ano, mes, dia] = dateStr.split('-').map(Number);
+            // UTC: ano, mes-1, dia, 0h, 0m, 0s
+            return Date.UTC(ano, mes - 1, dia, 0, 0, 0);
+        }
+        const startTime = toUTCtimestamp(primeiroDia);
+        const endTime = toUTCtimestamp(ultimoDia);
         const restrictToContacts = document.getElementById('so-contatos').checked;
         const restrictToDomain = document.getElementById('so-teca').checked;
         fetch('/api/vacation/' + encodeURIComponent(email), {
