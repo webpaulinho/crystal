@@ -172,7 +172,11 @@
             </div>
             <div class="painel-form-row">
                 <label for="assunto">Assunto:</label>
-                <input type="text" id="assunto" class="assunto-input" name="assunto" value="Férias">
+                <select id="assunto" class="assunto-input" name="assunto" required>
+                  <option value="" selected>Selecione...</option>
+                  <option value="ferias">Férias</option>
+                  <option value="saida">[NOME] não faz mais parte da empresa</option>
+                </select>
             </div>
             <div class="painel-form-row" style="flex-direction:column; align-items:stretch;">
                 <label for="mensagem">Mensagem:</label>
@@ -216,11 +220,36 @@
         }
     });
 
-    // Carrega usuários
+    // Função para pegar a data atual (yyyy-mm-dd)
+    function hojeStr() {
+        const hoje = new Date();
+        const yyyy = hoje.getFullYear();
+        const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+        const dd = String(hoje.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+    }
+
+    // Função para atualizar a opção do nome do funcionário
+    function atualizarAssuntoNome() {
+        const usuarioSelect = document.getElementById('usuario');
+        const usuarioSel = usuarioSelect.options[usuarioSelect.selectedIndex];
+        let nome = "Funcionário";
+        if (usuarioSel && usuarioSel.textContent) {
+            const idx1 = usuarioSel.textContent.indexOf('(');
+            nome = idx1 > 0 ? usuarioSel.textContent.slice(0, idx1).trim() : usuarioSel.textContent.trim();
+        }
+        // Atualiza o texto da terceira opção
+        const assuntoSelect = document.getElementById('assunto');
+        if (assuntoSelect.options.length > 2) {
+            assuntoSelect.options[2].textContent = `${nome} não faz mais parte da empresa`;
+        }
+    }
+
     let usuariosCache = [];
     let usuarioSelect = document.getElementById('usuario');
     let carregandoVacation = false;
 
+    // Carrega usuários
     fetch('/api/users')
         .then(r => r.json())
         .then(usuarios => {
@@ -241,7 +270,16 @@
                 // Carrega dados do primeiro usuário automaticamente
                 carregarVacation(usuarioSelect.value);
             }
-            usuarioSelect.onchange = () => carregarVacation(usuarioSelect.value);
+            usuarioSelect.onchange = () => {
+                carregarVacation(usuarioSelect.value);
+                // Resetar campos ao padrão
+                document.getElementById('primeiro-dia').value = hojeStr();
+                document.getElementById('ultimo-dia').value = hojeStr();
+                document.getElementById('assunto').selectedIndex = 0;
+                quill.setText('');
+                atualizarAssuntoNome();
+            };
+            atualizarAssuntoNome();
         });
 
     function carregarVacation(email) {
@@ -255,19 +293,33 @@
                     carregandoVacation = false;
                     return;
                 }
-                document.getElementById('assunto').value = data.responseSubject || "Férias";
+                const assuntoSelect = document.getElementById('assunto');
+                // Seleciona o assunto correto ou padrão
+                if (data.responseSubject) {
+                    if (data.responseSubject === "Férias") {
+                        assuntoSelect.selectedIndex = 1;
+                    } else if (data.responseSubject.includes("não faz mais parte da empresa")) {
+                        assuntoSelect.selectedIndex = 2;
+                    } else {
+                        assuntoSelect.selectedIndex = 0;
+                    }
+                } else {
+                    assuntoSelect.selectedIndex = 0;
+                }
+                atualizarAssuntoNome();
+
                 quill.setText(data.responseBodyPlainText || "");
                 if (data.startTime) {
                     const dt = new Date(Number(data.startTime));
                     document.getElementById('primeiro-dia').value = dt.toISOString().split('T')[0];
                 } else {
-                    document.getElementById('primeiro-dia').value = "";
+                    document.getElementById('primeiro-dia').value = hojeStr();
                 }
                 if (data.endTime) {
                     const dt = new Date(Number(data.endTime));
                     document.getElementById('ultimo-dia').value = dt.toISOString().split('T')[0];
                 } else {
-                    document.getElementById('ultimo-dia').value = "";
+                    document.getElementById('ultimo-dia').value = hojeStr();
                 }
                 document.getElementById('so-contatos').checked = !!data.restrictToContacts;
                 document.getElementById('so-teca').checked = !!data.restrictToDomain;
@@ -276,28 +328,34 @@
             });
     }
 
+    // Função para converter data para UTC, ajustando horário para Brasil (UTC-3)
+    function toUTCtimestamp(dateStr, isEnd) {
+        if (!dateStr) return 0;
+        const [ano, mes, dia] = dateStr.split('-').map(Number);
+        if (isEnd) {
+            // final do dia
+            return Date.UTC(ano, mes - 1, dia, 23, 59, 59);
+        } else {
+            return Date.UTC(ano, mes - 1, dia, 3, 0, 0); // 03:00 UTC = 00:00 Brasil
+        }
+    }
+
     document.getElementById('vacationForm').onsubmit = function(e) {
         e.preventDefault();
         if (carregandoVacation) return;
         const email = document.getElementById('usuario').value;
-        const assunto = document.getElementById('assunto').value;
+        const assuntoSelect = document.getElementById('assunto');
+        let assunto = assuntoSelect.options[assuntoSelect.selectedIndex].textContent;
+        // Validação: exija seleção de assunto diferente da opção em branco
+        if (assuntoSelect.value === "") {
+            document.getElementById('msg').textContent = "Selecione um assunto para continuar.";
+            return;
+        }
         const mensagem = quill.getText();
         const primeiroDia = document.getElementById('primeiro-dia').value;
         const ultimoDia = document.getElementById('ultimo-dia').value;
-        // Conversão correta para UTC 00:00:00
-        function toUTCtimestamp(dateStr, isEnd) {
-            if (!dateStr) return 0;
-            const [ano, mes, dia] = dateStr.split('-').map(Number);
-            if (isEnd) {
-            // 26:59:59 no fuso local equivale a 02:59:59 UTC do dia seguinte, então use 26:59:59 local
-            return Date.UTC(ano, mes - 1, dia, 23, 59, 59);
-            } else {
-                // início do dia para o startTime
-                return Date.UTC(ano, mes - 1, dia, 3, 0, 0);
-            }
-        }
-        const startTime = toUTCtimestamp(primeiroDia);
-        const endTime = toUTCtimestamp(ultimoDia);
+        const startTime = toUTCtimestamp(primeiroDia, false);
+        const endTime = toUTCtimestamp(ultimoDia, true);
         const restrictToContacts = document.getElementById('so-contatos').checked;
         const restrictToDomain = document.getElementById('so-teca').checked;
         fetch('/api/vacation/' + encodeURIComponent(email), {
@@ -327,10 +385,16 @@
         if (!usuariosCache.length) return;
         usuarioSelect.selectedIndex = 0;
         carregarVacation(usuarioSelect.value);
+        document.getElementById('primeiro-dia').value = hojeStr();
+        document.getElementById('ultimo-dia').value = hojeStr();
+        document.getElementById('assunto').selectedIndex = 0;
+        quill.setText('');
+        atualizarAssuntoNome();
         document.getElementById('msg').textContent = "";
     }
 
     document.getElementById('btn-limpar').onclick = limparFormulario;
+    document.getElementById('assunto').onchange = atualizarAssuntoNome;
     </script>
 </body>
 </html>
