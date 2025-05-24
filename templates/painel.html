@@ -214,8 +214,8 @@ Atenciosamente,<br>
 Teca Frio`;
 
     const TEXTO_FERIAS = `Prezado(a),<br><br>
-Agradecemos seu contato. Informamos que o(a) colaborador(a) <b>[Nome do Funcionário]</b> estará em período de férias entre <b>[primeiro dia]</b> e <b>[último dia]</b>, retornando às atividades em <b>[primeiro dia útil após o último dia]</b>.<br><br>
-Durante esse período, para assuntos urgentes ou que demandem atenção imediata, por gentileza, entre em contato com <b>[Nome do substituto]</b>, pelo e-mail <b>[email@exemplo.com]</b> ou telefone <b>[(XX) XXXX-XXXX]</b>.<br><br>
+Agradecemos seu contato. Informamos que o(a) colaborador(a) <b>[Nome do Funcionário]</b> estará em período de férias entre <b>[primeiro dia]</b> e <b>[último dia]</b>, retornando às atividades no <b>[primeiro dia útil após o último dia]</b>.<br><br>
+Durante esse período, para assuntos urgentes ou que demandem atenção imediata, por gentileza, entre em contato com <b>[Nome do substituto]</b>, pelo e-mail <b>[email@exemplo.com]</b> ou telefone <b>[telefone]</b>.<br><br>
 Agradecemos pela compreensão.<br><br>
 Atenciosamente,<br>
 Teca Frio`;
@@ -315,6 +315,13 @@ Teca Frio`;
             atualizarAssuntoNome();
         });
 
+    // Função auxiliar: checa se hoje está dentro do range de férias
+    function hojeDentroDoRange(startTime, endTime) {
+        const hoje = new Date();
+        const hojeUTC = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+        return startTime && endTime && hojeUTC >= Number(startTime) && hojeUTC <= Number(endTime);
+    }
+
     function carregarVacation(email) {
         if (!email) return;
         carregandoVacation = true;
@@ -341,22 +348,28 @@ Teca Frio`;
                 }
                 atualizarAssuntoNome();
 
-                vacationAtivado = !!data.responseBodyPlainText; // se tem mensagem, está ativado
-                quill.setText(data.responseBodyPlainText || "");
-                if (data.startTime) {
-                    const dt = new Date(Number(data.startTime));
-                    document.getElementById('primeiro-dia').value = dt.toISOString().split('T')[0];
+                // Checa se hoje está dentro do range salvo
+                const hojeNoRange = hojeDentroDoRange(data.startTime, data.endTime);
+                vacationAtivado = !!data.responseBodyPlainText && hojeNoRange;
+
+                if (vacationAtivado) {
+                    quill.setText(data.responseBodyPlainText || "");
+                    if (data.startTime) {
+                        document.getElementById('primeiro-dia').value = new Date(Number(data.startTime)).toISOString().split('T')[0];
+                    }
+                    if (data.endTime) {
+                        document.getElementById('ultimo-dia').value = new Date(Number(data.endTime)).toISOString().split('T')[0];
+                    }
+                    document.getElementById('so-contatos').checked = !!data.restrictToContacts;
+                    document.getElementById('so-teca').checked = !!data.restrictToDomain;
                 } else {
                     document.getElementById('primeiro-dia').value = hojeStr();
-                }
-                if (data.endTime) {
-                    const dt = new Date(Number(data.endTime));
-                    document.getElementById('ultimo-dia').value = dt.toISOString().split('T')[0];
-                } else {
                     document.getElementById('ultimo-dia').value = hojeStr();
+                    document.getElementById('assunto').selectedIndex = 0;
+                    quill.setText('');
+                    document.getElementById('so-contatos').checked = false;
+                    document.getElementById('so-teca').checked = false;
                 }
-                document.getElementById('so-contatos').checked = !!data.restrictToContacts;
-                document.getElementById('so-teca').checked = !!data.restrictToDomain;
                 document.getElementById('msg').textContent = "";
                 carregandoVacation = false;
             });
