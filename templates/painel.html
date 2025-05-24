@@ -348,9 +348,11 @@ Teca Frio`;
                 }
                 atualizarAssuntoNome();
 
-                // Checa se hoje está dentro do range salvo
+                // Checa se mensagem automática está ativada e hoje está dentro do range
+                // Troque 'enabled' para o campo de ativação correto do seu backend, se for diferente!
+                const ativado = !!(data.responseBodyPlainText && (data.enabled === undefined || data.enabled));
                 const hojeNoRange = hojeDentroDoRange(data.startTime, data.endTime);
-                vacationAtivado = !!data.responseBodyPlainText && hojeNoRange;
+                vacationAtivado = ativado && hojeNoRange;
 
                 if (vacationAtivado) {
                     quill.setText(data.responseBodyPlainText || "");
