@@ -214,7 +214,7 @@ Atenciosamente,
 Teca Frio`;
 
     const TEXTO_FERIAS = `Prezado(a),<br>
-Agradecemos seu contato. Informamos que o(a) colaborador(a) <b>[Nome do Funcionário]</b> estará em período de férias entre <b>[primeiro dia]</b> e <b>[último dia]</b>, retornando às atividades no <b>[primeiro dia útil após o último dia]</b>.<br><br>
+Agradecemos seu contato. Informamos que o(a) colaborador(a) <b>[Nome do Funcionário]</b> estará em período de férias entre <b>[primeiro dia]</b> e <b>[último dia]</b>, retornando às atividades em <b>[primeiro dia útil após o último dia]</b>.<br>
 Durante esse período, para assuntos urgentes ou que demandem atenção imediata, por gentileza, entre em contato com <b>[Nome do substituto]</b>, pelo e-mail <b>[email@exemplo.com]</b> ou telefone <b>[telefone]</b>.<br>
 Agradecemos pela compreensão.<br>
 Atenciosamente,
@@ -317,9 +317,19 @@ Teca Frio`;
 
     // Função auxiliar: checa se hoje está dentro do range de férias
     function hojeDentroDoRange(startTime, endTime) {
+        // Considera o início às 00:00 UTC e o fim às 23:59:59 UTC do dia
         const hoje = new Date();
         const hojeUTC = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
         return startTime && endTime && hojeUTC >= Number(startTime) && hojeUTC <= Number(endTime);
+    }
+
+    function limparCamposFormulario() {
+        document.getElementById('primeiro-dia').value = hojeStr();
+        document.getElementById('ultimo-dia').value = hojeStr();
+        document.getElementById('assunto').selectedIndex = 0;
+        quill.setText('');
+        document.getElementById('so-contatos').checked = false;
+        document.getElementById('so-teca').checked = false;
     }
 
     function carregarVacation(email) {
@@ -328,11 +338,11 @@ Teca Frio`;
         fetch('/api/vacation/' + encodeURIComponent(email))
             .then(r => r.json())
             .then(data => {
-                if (data.error) {
-                    document.getElementById('msg').textContent = data.error;
-                    carregandoVacation = false;
-                    return;
-                }
+                // Adiciona logs para debug
+                const hoje = new Date();
+                const hojeUTC = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+                console.log('startTime:', data.startTime, 'endTime:', data.endTime, 'hojeUTC:', hojeUTC, 'enabled:', data.enabled);
+
                 const assuntoSelect = document.getElementById('assunto');
                 // Seleciona o assunto correto ou padrão
                 if (data.responseSubject) {
@@ -354,6 +364,7 @@ Teca Frio`;
                 const hojeNoRange = hojeDentroDoRange(data.startTime, data.endTime);
                 vacationAtivado = ativado && hojeNoRange;
 
+                // Novo comportamento: só preenche o formulário se vacationAtivado for true
                 if (vacationAtivado) {
                     quill.setText(data.responseBodyPlainText || "");
                     if (data.startTime) {
@@ -365,12 +376,8 @@ Teca Frio`;
                     document.getElementById('so-contatos').checked = !!data.restrictToContacts;
                     document.getElementById('so-teca').checked = !!data.restrictToDomain;
                 } else {
-                    document.getElementById('primeiro-dia').value = hojeStr();
-                    document.getElementById('ultimo-dia').value = hojeStr();
-                    document.getElementById('assunto').selectedIndex = 0;
-                    quill.setText('');
-                    document.getElementById('so-contatos').checked = false;
-                    document.getElementById('so-teca').checked = false;
+                    // Limpa tudo e garante que nenhum campo salvo fique visível
+                    limparCamposFormulario();
                 }
                 document.getElementById('msg').textContent = "";
                 carregandoVacation = false;
