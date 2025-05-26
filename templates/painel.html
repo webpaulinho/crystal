@@ -333,18 +333,19 @@ Teca Frio`;
     function carregarVacation(email) {
         if (!email) return;
         carregandoVacation = true;
-        // Limpa os campos ANTES de qualquer coisa
         limparCamposFormulario();
         fetch('/api/vacation/' + encodeURIComponent(email))
             .then(r => r.json())
             .then(data => {
-                // Adiciona logs para debug
                 const hoje = new Date();
                 const hojeUTC = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
-                console.log('startTime:', data.startTime, 'endTime:', data.endTime, 'hojeUTC:', hojeUTC, 'enabled:', data.enabled);
+                // Use o campo correto do backend: enableAutoReply
+                const ativado = !!(data.responseBodyPlainText && (data.enableAutoReply === undefined || data.enableAutoReply));
+                const hojeNoRange = hojeDentroDoRange(data.startTime, data.endTime);
+                vacationAtivado = ativado && hojeNoRange;
 
-                const assuntoSelect = document.getElementById('assunto');
                 // Seleciona o assunto correto ou padrão
+                const assuntoSelect = document.getElementById('assunto');
                 if (data.responseSubject) {
                     if (data.responseSubject === "Férias") {
                         assuntoSelect.selectedIndex = 1;
@@ -357,11 +358,6 @@ Teca Frio`;
                     assuntoSelect.selectedIndex = 0;
                 }
                 atualizarAssuntoNome();
-
-                // Checa se mensagem automática está ativada e hoje está dentro do range
-                const ativado = !!(data.responseBodyPlainText && (data.enabled === undefined || data.enabled));
-                const hojeNoRange = hojeDentroDoRange(data.startTime, data.endTime);
-                vacationAtivado = ativado && hojeNoRange;
 
                 // Só preenche o formulário se vacationAtivado for true
                 if (vacationAtivado) {
@@ -417,7 +413,6 @@ Teca Frio`;
     document.getElementById('primeiro-dia').onchange = atualizarMensagemSePadrao;
     document.getElementById('ultimo-dia').onchange = atualizarMensagemSePadrao;
 
-    // Função para converter data para UTC, ajustando horário para Brasil (UTC-3)
     function toUTCtimestamp(dateStr, isEnd) {
         if (!dateStr) return 0;
         const [ano, mes, dia] = dateStr.split('-').map(Number);
