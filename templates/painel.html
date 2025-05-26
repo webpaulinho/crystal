@@ -339,28 +339,26 @@ Teca Frio`;
             .then(data => {
                 const hoje = new Date();
                 const hojeUTC = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
-                // Use o campo correto do backend: enableAutoReply
                 const ativado = !!(data.responseBodyPlainText && (data.enableAutoReply === undefined || data.enableAutoReply));
                 const hojeNoRange = hojeDentroDoRange(data.startTime, data.endTime);
                 vacationAtivado = ativado && hojeNoRange;
 
-                // Seleciona o assunto correto ou padrão
+                // Só preenche o assunto e os outros campos se vacationAtivado for true
                 const assuntoSelect = document.getElementById('assunto');
-                if (data.responseSubject) {
-                    if (data.responseSubject === "Férias") {
-                        assuntoSelect.selectedIndex = 1;
-                    } else if (data.responseSubject.includes("não faz mais parte da empresa")) {
-                        assuntoSelect.selectedIndex = 2;
+                if (vacationAtivado) {
+                    if (data.responseSubject) {
+                        if (data.responseSubject === "Férias") {
+                            assuntoSelect.selectedIndex = 1;
+                        } else if (data.responseSubject.includes("não faz mais parte da empresa")) {
+                            assuntoSelect.selectedIndex = 2;
+                        } else {
+                            assuntoSelect.selectedIndex = 0;
+                        }
                     } else {
                         assuntoSelect.selectedIndex = 0;
                     }
-                } else {
-                    assuntoSelect.selectedIndex = 0;
-                }
-                atualizarAssuntoNome();
+                    atualizarAssuntoNome();
 
-                // Só preenche o formulário se vacationAtivado for true
-                if (vacationAtivado) {
                     quill.setText(data.responseBodyPlainText || "");
                     if (data.startTime) {
                         document.getElementById('primeiro-dia').value = new Date(Number(data.startTime)).toISOString().split('T')[0];
@@ -370,7 +368,11 @@ Teca Frio`;
                     }
                     document.getElementById('so-contatos').checked = !!data.restrictToContacts;
                     document.getElementById('so-teca').checked = !!data.restrictToDomain;
-                } // Se não está ativo, permanece limpo
+                } else {
+                    // Sempre mostra "Selecione..." se não estiver ativo
+                    assuntoSelect.selectedIndex = 0;
+                    atualizarAssuntoNome();
+                }
                 document.getElementById('msg').textContent = "";
                 carregandoVacation = false;
             });
