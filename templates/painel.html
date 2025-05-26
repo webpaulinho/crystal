@@ -204,7 +204,6 @@
     </div>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-    // Função para gerar a mensagem "saída" via Delta Quill, com "Teca Frio" final em negrito
     function mensagemSaidaDelta(nome) {
         return [
             { insert: 'Olá,\n\n' },
@@ -218,9 +217,11 @@
         ];
     }
 
+    // DELTA DE FÉRIAS COM ESPAÇOS E NEGRITO IGUAIS AO PRINT
     function mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil) {
         return [
             { insert: 'Prezado(a),\n\n' },
+
             { insert: 'Agradecemos seu contato. Informamos que o(a) colaborador(a) ' },
             { insert: nome, attributes: { bold: true } },
             { insert: ' estará em período de férias entre ' },
@@ -229,13 +230,19 @@
             { insert: ultimoDia, attributes: { bold: true } },
             { insert: ', retornando às atividades em ' },
             { insert: proximoUtil, attributes: { bold: true } },
-            { insert: '.\nDurante esse período, para assuntos urgentes ou que demandem atenção imediata, por gentileza, entre em contato com ' },
+            { insert: '.\n\n' },
+
+            { insert: 'Durante esse período, para assuntos urgentes ou que demandem atenção imediata, por gentileza, entre em contato com ' },
             { insert: '[Nome do substituto]', attributes: { bold: true } },
             { insert: ', pelo e-mail ' },
             { insert: '[email@exemplo.com]', attributes: { bold: true } },
             { insert: ' ou telefone ' },
             { insert: '[telefone]', attributes: { bold: true } },
-            { insert: '.\nAgradecemos pela compreensão.\n\nAtenciosamente,\n' },
+            { insert: '.\n\n' },
+
+            { insert: 'Agradecemos pela compreensão.\n\n' },
+
+            { insert: 'Atenciosamente,\n' },
             { insert: 'Teca Frio', attributes: { bold: true } }
         ];
     }
