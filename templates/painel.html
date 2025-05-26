@@ -141,6 +141,14 @@
             min-height: 120px;
             margin-bottom: 1rem;
         }
+        .painel-form-row.selects-row {
+            flex-direction: row;
+            gap: 20px;
+            margin-bottom: 1.7rem;
+        }
+        .painel-form-row.selects-row label {
+            margin-bottom: 0;
+        }
         @media (max-width: 600px) {
             .painel-container {
                 padding: 1rem 0.3rem;
@@ -148,6 +156,10 @@
             .painel-form-row, .usuarios-lista {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+            .painel-form-row.selects-row {
+                flex-direction: column;
+                gap: 8px;
             }
         }
     </style>
@@ -162,6 +174,16 @@
             <div class="usuarios-lista">
                 <label for="usuario">Selecione o usuário:</label>
                 <select name="usuario" id="usuario" required></select>
+            </div>
+            <div class="painel-form-row selects-row">
+                <label for="responsavel">Selecione Responsável:</label>
+                <select name="responsavel" id="responsavel">
+                    <option value="" selected>Selecione Responsável...</option>
+                </select>
+                <label for="grupo-responsavel">Selecione Grupo Responsável:</label>
+                <select name="grupo-responsavel" id="grupo-responsavel">
+                    <option value="" selected>Selecione Grupo Responsável...</option>
+                </select>
             </div>
             <div class="painel-form-row">
                 <label for="primeiro-dia">Primeiro dia:</label>
@@ -204,24 +226,49 @@
     </div>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-    function mensagemSaidaDelta(nome) {
+    // Dados de exemplo para grupos do workspace (pode ser substituído por fetch em produção)
+    let gruposCache = [];
+
+    // Função para gerar a mensagem "saída" conforme seleção de responsável ou grupo
+    function mensagemSaidaDelta(nome, responsavelDetalhes, grupoDetalhes) {
+        // Decide qual texto inserir no campo do responsável
+        let responsavelTexto = '[Nome, e-mail e contato do novo responsável]';
+        if(responsavelDetalhes) {
+            responsavelTexto = responsavelDetalhes.nome;
+            if(responsavelDetalhes.email) responsavelTexto += ' ('+responsavelDetalhes.email+')';
+            if(responsavelDetalhes.telefone) responsavelTexto += ' - ' + responsavelDetalhes.telefone;
+        } else if(grupoDetalhes) {
+            responsavelTexto = grupoDetalhes.nome;
+            if(grupoDetalhes.email) responsavelTexto += ' ('+grupoDetalhes.email+')';
+        }
+
         return [
             { insert: 'Olá,\n\n' },
             { insert: 'Agradecemos seu contato. Informamos que ' },
             { insert: nome, attributes: { bold: true } },
             { insert: ' não faz mais parte da equipe da Teca Frio.\n\n' },
             { insert: 'Para continuar seu atendimento ou tratar de assuntos relacionados, por favor, entre em contato com ' },
-            { insert: '[Nome, e-mail e contato do novo responsável]', attributes: { bold: true } },
+            { insert: responsavelTexto, attributes: { bold: true } },
             { insert: '.\n\nContinuamos à disposição.\n\nAtenciosamente,\n' },
             { insert: 'Teca Frio', attributes: { bold: true } }
         ];
     }
 
-    // DELTA DE FÉRIAS COM ESPAÇOS E NEGRITO IGUAIS AO PRINT
-    function mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil) {
+    function mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil, responsavelDetalhes, grupoDetalhes) {
+        let responsavelNome = '[Nome do substituto]';
+        let responsavelEmail = '[email@exemplo.com]';
+        let responsavelFone = '[telefone]';
+        if(responsavelDetalhes) {
+            responsavelNome = responsavelDetalhes.nome;
+            responsavelEmail = responsavelDetalhes.email || responsavelEmail;
+            responsavelFone = responsavelDetalhes.telefone || responsavelFone;
+        } else if(grupoDetalhes) {
+            responsavelNome = grupoDetalhes.nome;
+            responsavelEmail = grupoDetalhes.email || responsavelEmail;
+            responsavelFone = grupoDetalhes.telefone || responsavelFone;
+        }
         return [
             { insert: 'Prezado(a),\n\n' },
-
             { insert: 'Agradecemos seu contato. Informamos que o(a) colaborador(a) ' },
             { insert: nome, attributes: { bold: true } },
             { insert: ' estará em período de férias entre ' },
@@ -231,17 +278,14 @@
             { insert: ', retornando às atividades em ' },
             { insert: proximoUtil, attributes: { bold: true } },
             { insert: '.\n\n' },
-
             { insert: 'Durante esse período, para assuntos urgentes ou que demandem atenção imediata, por gentileza, entre em contato com ' },
-            { insert: '[Nome do substituto]', attributes: { bold: true } },
+            { insert: responsavelNome, attributes: { bold: true } },
             { insert: ', pelo e-mail ' },
-            { insert: '[email@exemplo.com]', attributes: { bold: true } },
+            { insert: responsavelEmail, attributes: { bold: true } },
             { insert: ' ou telefone ' },
-            { insert: '[telefone]', attributes: { bold: true } },
+            { insert: responsavelFone, attributes: { bold: true } },
             { insert: '.\n\n' },
-
             { insert: 'Agradecemos pela compreensão.\n\n' },
-
             { insert: 'Atenciosamente,\n' },
             { insert: 'Teca Frio', attributes: { bold: true } }
         ];
@@ -277,16 +321,13 @@
         return `${dd}/${mm}/${yyyy}`;
     }
 
-    // Calcula o próximo dia útil após uma data no formato yyyy-mm-dd
     function proximoDiaUtil(dataISO) {
         if (!dataISO) return "";
         let d = new Date(dataISO);
         d.setDate(d.getDate() + 1); // dia seguinte
-        // 0 = domingo, 6 = sábado
         while (d.getDay() === 0 || d.getDay() === 6) {
             d.setDate(d.getDate() + 1);
         }
-        // Formato dd/mm/yyyy
         return formatarDataBR(d.toISOString().split('T')[0]);
     }
 
@@ -308,7 +349,7 @@
     let usuariosCache = [];
     let usuarioSelect = document.getElementById('usuario');
     let carregandoVacation = false;
-    let vacationAtivado = false; // se usuário está com mensagem ativada
+    let vacationAtivado = false;
 
     // Carrega usuários
     fetch('/api/users')
@@ -316,6 +357,7 @@
         .then(usuarios => {
             usuariosCache = usuarios;
             usuarioSelect.innerHTML = "";
+            document.getElementById('responsavel').innerHTML = '<option value="" selected>Selecione Responsável...</option>';
             if (!usuarios.length) {
                 const opt = document.createElement('option');
                 opt.value = "";
@@ -327,22 +369,39 @@
                     opt.value = u.email;
                     opt.textContent = `${u.nome} (${u.email})`;
                     usuarioSelect.appendChild(opt);
+
+                    const optResp = document.createElement('option');
+                    optResp.value = u.email;
+                    optResp.textContent = `${u.nome} (${u.email})`;
+                    document.getElementById('responsavel').appendChild(optResp);
                 });
-                // Carrega dados do primeiro usuário automaticamente
-                limparCamposFormulario(); // Limpa ao carregar o primeiro usuário
+                limparCamposFormulario();
                 carregarVacation(usuarioSelect.value);
             }
             usuarioSelect.onchange = () => {
-                limparCamposFormulario(); // Limpa antes de carregar
+                limparCamposFormulario();
                 carregarVacation(usuarioSelect.value);
                 atualizarAssuntoNome();
             };
             atualizarAssuntoNome();
         });
 
-    // Função auxiliar: checa se hoje está dentro do range de férias
+    // Carrega grupos do workspace
+    fetch('/api/groups')
+        .then(r => r.json())
+        .then(grupos => {
+            gruposCache = grupos;
+            const grupoSelect = document.getElementById('grupo-responsavel');
+            grupoSelect.innerHTML = '<option value="" selected>Selecione Grupo Responsável...</option>';
+            grupos.forEach(g => {
+                const opt = document.createElement('option');
+                opt.value = g.email;
+                opt.textContent = `${g.nome} (${g.email})`;
+                grupoSelect.appendChild(opt);
+            });
+        });
+
     function hojeDentroDoRange(startTime, endTime) {
-        // Considera o início às 00:00 UTC e o fim às 23:59:59 UTC do dia
         const hoje = new Date();
         const hojeUTC = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
         return startTime && endTime && hojeUTC >= Number(startTime) && hojeUTC <= Number(endTime);
@@ -352,9 +411,27 @@
         document.getElementById('primeiro-dia').value = hojeStr();
         document.getElementById('ultimo-dia').value = hojeStr();
         document.getElementById('assunto').selectedIndex = 0;
+        document.getElementById('responsavel').selectedIndex = 0;
+        document.getElementById('grupo-responsavel').selectedIndex = 0;
         quill.setText('');
         document.getElementById('so-contatos').checked = false;
         document.getElementById('so-teca').checked = false;
+    }
+
+    function getResponsavelSelecionado() {
+        const val = document.getElementById('responsavel').value;
+        if (!val) return null;
+        const u = usuariosCache.find(u => u.email === val);
+        if (!u) return null;
+        return { nome: u.nome, email: u.email, telefone: u.telefone || "" };
+    }
+
+    function getGrupoSelecionado() {
+        const val = document.getElementById('grupo-responsavel').value;
+        if (!val) return null;
+        const g = gruposCache.find(g => g.email === val);
+        if (!g) return null;
+        return { nome: g.nome, email: g.email, telefone: g.telefone || "" };
     }
 
     function carregarVacation(email) {
@@ -370,7 +447,6 @@
                 const hojeNoRange = hojeDentroDoRange(data.startTime, data.endTime);
                 vacationAtivado = ativado && hojeNoRange;
 
-                // Só preenche o assunto e os outros campos se vacationAtivado for true
                 const assuntoSelect = document.getElementById('assunto');
                 if (vacationAtivado) {
                     if (data.responseSubject) {
@@ -386,7 +462,6 @@
                     }
                     atualizarAssuntoNome();
 
-                    // Tenta carregar texto como Delta, se for possível
                     try {
                         const parsed = JSON.parse(data.responseBodyPlainText);
                         if (Array.isArray(parsed)) {
@@ -406,7 +481,6 @@
                     document.getElementById('so-contatos').checked = !!data.restrictToContacts;
                     document.getElementById('so-teca').checked = !!data.restrictToDomain;
                 } else {
-                    // Sempre mostra "Selecione..." se não estiver ativo
                     assuntoSelect.selectedIndex = 0;
                     atualizarAssuntoNome();
                 }
@@ -415,29 +489,29 @@
             });
     }
 
-    // Preencher mensagem padrão se não estiver ativado
     function preencherMensagemPadrao() {
-        if (vacationAtivado) return; // Não sobrescreve se estiver ativado
+        if (vacationAtivado) return;
         const assuntoSelect = document.getElementById('assunto');
         const assunto = assuntoSelect.value;
         const nome = atualizarAssuntoNome();
+        const responsavelDetalhes = getResponsavelSelecionado();
+        const grupoDetalhes = !responsavelDetalhes ? getGrupoSelecionado() : null;
 
         if (assunto === "ferias") {
             const primeiroDia = formatarDataBR(document.getElementById('primeiro-dia').value);
             const ultimoDia = formatarDataBR(document.getElementById('ultimo-dia').value);
             const proximoUtil = proximoDiaUtil(document.getElementById('ultimo-dia').value);
-            quill.setContents(mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil));
+            quill.setContents(mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil, responsavelDetalhes, grupoDetalhes));
         } else if (assunto === "saida") {
-            quill.setContents(mensagemSaidaDelta(nome));
+            quill.setContents(mensagemSaidaDelta(nome, responsavelDetalhes, grupoDetalhes));
         } else {
             quill.setText('');
         }
     }
 
-    // Atualiza datas na mensagem padrão se mudar data
     function atualizarMensagemSePadrao() {
         const assuntoSelect = document.getElementById('assunto');
-        if (assuntoSelect.value === "ferias" && !vacationAtivado) {
+        if ((assuntoSelect.value === "ferias" || assuntoSelect.value === "saida") && !vacationAtivado) {
             preencherMensagemPadrao();
         }
     }
@@ -445,6 +519,16 @@
     document.getElementById('assunto').onchange = preencherMensagemPadrao;
     document.getElementById('primeiro-dia').onchange = atualizarMensagemSePadrao;
     document.getElementById('ultimo-dia').onchange = atualizarMensagemSePadrao;
+    document.getElementById('responsavel').onchange = function() {
+        // Limpa grupo se selecionar responsável
+        if (this.value) document.getElementById('grupo-responsavel').selectedIndex = 0;
+        atualizarMensagemSePadrao();
+    };
+    document.getElementById('grupo-responsavel').onchange = function() {
+        // Limpa responsável se selecionar grupo
+        if (this.value) document.getElementById('responsavel').selectedIndex = 0;
+        atualizarMensagemSePadrao();
+    };
 
     function toUTCtimestamp(dateStr, isEnd) {
         if (!dateStr) return 0;
@@ -466,7 +550,12 @@
             document.getElementById('msg').textContent = "Selecione um assunto para continuar.";
             return;
         }
-        // Salva o conteúdo como Delta para garantir o formato
+        const responsavelDetalhes = getResponsavelSelecionado();
+        const grupoDetalhes = getGrupoSelecionado();
+        if (!responsavelDetalhes && !grupoDetalhes) {
+            document.getElementById('msg').textContent = "Selecione um Responsável ou Grupo Responsável.";
+            return;
+        }
         const mensagem = JSON.stringify(quill.getContents().ops);
         const primeiroDia = document.getElementById('primeiro-dia').value;
         const ultimoDia = document.getElementById('ultimo-dia').value;
