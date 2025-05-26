@@ -66,7 +66,8 @@ def get_service_account_creds(subject_email):
         SERVICE_ACCOUNT_FILE,
         scopes=[
             "https://www.googleapis.com/auth/admin.directory.user.readonly",
-            "https://www.googleapis.com/auth/gmail.settings.basic"
+            "https://www.googleapis.com/auth/gmail.settings.basic",
+            "https://www.googleapis.com/auth/admin.directory.group.readonly"
         ],
         subject=subject_email
     )
@@ -163,7 +164,8 @@ def list_users():
         for u in batch:
             users.append({
                 "email": u['primaryEmail'],
-                "nome": u.get("name", {}).get("fullName", u['primaryEmail'])
+                "nome": u.get("name", {}).get("fullName", u['primaryEmail']),
+                "telefone": u.get("phones", [{}])[0].get("value", "") if u.get("phones") else ""
             })
         page_token = results.get('nextPageToken')
         if not page_token:
@@ -172,6 +174,35 @@ def list_users():
     print("Usuários retornados:", users)
     print("Total de usuários:", len(users))
     return jsonify(users)
+
+@app.route("/api/groups")
+def list_groups():
+    if "credentials" not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+    admin_email = session.get("user_email")
+    creds = get_service_account_creds(admin_email)
+    service = build('admin', 'directory_v1', credentials=creds)
+    groups = []
+    page_token = None
+    while True:
+        results = service.groups().list(
+            customer='my_customer',
+            maxResults=200,
+            pageToken=page_token
+        ).execute()
+        batch = results.get('groups', [])
+        for g in batch:
+            groups.append({
+                "email": g['email'],
+                "nome": g.get("name", g['email']),
+                "telefone": g.get("description", "")  # description pode ser usado para telefone, caso queira customizar
+            })
+        page_token = results.get('nextPageToken')
+        if not page_token:
+            break
+    print("Grupos retornados:", groups)
+    print("Total de grupos:", len(groups))
+    return jsonify(groups)
 
 @app.route("/api/vacation/<email>", methods=["GET", "POST"])
 def vacation_settings(email):
