@@ -204,20 +204,19 @@
     </div>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-    // Textos padrões
-    const TEXTO_SAIDA = `Olá,
-<br>
-Agradecemos seu contato. Informamos que <b>[Nome do Funcionário]</b> não faz mais parte da equipe da Teca Frio.<br>
-Para continuar seu atendimento ou tratar de assuntos relacionados, por favor, entre em contato com <b>[Nome, e-mail e contato do novo responsável]</b>.<br>
-Continuamos à disposição.<br>
-Atenciosamente,
+    // TEXTO_SAIDA ajustado conforme o print do usuário:
+    const TEXTO_SAIDA = `Olá,<br><br>
+Agradecemos seu contato. Informamos que <b>[Nome do Funcionário]</b> não faz mais parte da equipe da Teca Frio.<br><br>
+Para continuar seu atendimento ou tratar de assuntos relacionados, por favor, entre em contato com <b>[Nome, e-mail e contato do novo responsável]</b>.<br><br>
+Continuamos à disposição.<br><br>
+Atenciosamente,<br>
 Teca Frio`;
 
     const TEXTO_FERIAS = `Prezado(a),<br>
 Agradecemos seu contato. Informamos que o(a) colaborador(a) <b>[Nome do Funcionário]</b> estará em período de férias entre <b>[primeiro dia]</b> e <b>[último dia]</b>, retornando às atividades em <b>[primeiro dia útil após o último dia]</b>.<br>
 Durante esse período, para assuntos urgentes ou que demandem atenção imediata, por gentileza, entre em contato com <b>[Nome do substituto]</b>, pelo e-mail <b>[email@exemplo.com]</b> ou telefone <b>[telefone]</b>.<br>
 Agradecemos pela compreensão.<br>
-Atenciosamente,
+Atenciosamente,<br>
 Teca Frio`;
 
     // Inicializa Quill
