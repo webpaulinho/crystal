@@ -302,6 +302,7 @@ Teca Frio`;
                     usuarioSelect.appendChild(opt);
                 });
                 // Carrega dados do primeiro usuário automaticamente
+                limparCamposFormulario(); // Limpa ao carregar o primeiro usuário
                 carregarVacation(usuarioSelect.value);
             }
             usuarioSelect.onchange = () => {
@@ -332,6 +333,8 @@ Teca Frio`;
     function carregarVacation(email) {
         if (!email) return;
         carregandoVacation = true;
+        // Limpa os campos ANTES de qualquer coisa
+        limparCamposFormulario();
         fetch('/api/vacation/' + encodeURIComponent(email))
             .then(r => r.json())
             .then(data => {
@@ -371,9 +374,7 @@ Teca Frio`;
                     }
                     document.getElementById('so-contatos').checked = !!data.restrictToContacts;
                     document.getElementById('so-teca').checked = !!data.restrictToDomain;
-                } else {
-                    limparCamposFormulario();
-                }
+                } // Se não está ativo, permanece limpo
                 document.getElementById('msg').textContent = "";
                 carregandoVacation = false;
             });
