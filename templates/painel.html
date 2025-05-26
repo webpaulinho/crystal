@@ -305,11 +305,8 @@ Teca Frio`;
                 carregarVacation(usuarioSelect.value);
             }
             usuarioSelect.onchange = () => {
+                limparCamposFormulario(); // Limpa antes de carregar
                 carregarVacation(usuarioSelect.value);
-                document.getElementById('primeiro-dia').value = hojeStr();
-                document.getElementById('ultimo-dia').value = hojeStr();
-                document.getElementById('assunto').selectedIndex = 0;
-                quill.setText('');
                 atualizarAssuntoNome();
             };
             atualizarAssuntoNome();
@@ -359,12 +356,11 @@ Teca Frio`;
                 atualizarAssuntoNome();
 
                 // Checa se mensagem automática está ativada e hoje está dentro do range
-                // Troque 'enabled' para o campo de ativação correto do seu backend, se for diferente!
                 const ativado = !!(data.responseBodyPlainText && (data.enabled === undefined || data.enabled));
                 const hojeNoRange = hojeDentroDoRange(data.startTime, data.endTime);
                 vacationAtivado = ativado && hojeNoRange;
 
-                // Novo comportamento: só preenche o formulário se vacationAtivado for true
+                // Só preenche o formulário se vacationAtivado for true
                 if (vacationAtivado) {
                     quill.setText(data.responseBodyPlainText || "");
                     if (data.startTime) {
@@ -376,7 +372,6 @@ Teca Frio`;
                     document.getElementById('so-contatos').checked = !!data.restrictToContacts;
                     document.getElementById('so-teca').checked = !!data.restrictToDomain;
                 } else {
-                    // Limpa tudo e garante que nenhum campo salvo fique visível
                     limparCamposFormulario();
                 }
                 document.getElementById('msg').textContent = "";
@@ -474,11 +469,8 @@ Teca Frio`;
     function limparFormulario() {
         if (!usuariosCache.length) return;
         usuarioSelect.selectedIndex = 0;
+        limparCamposFormulario();
         carregarVacation(usuarioSelect.value);
-        document.getElementById('primeiro-dia').value = hojeStr();
-        document.getElementById('ultimo-dia').value = hojeStr();
-        document.getElementById('assunto').selectedIndex = 0;
-        quill.setText('');
         atualizarAssuntoNome();
         document.getElementById('msg').textContent = "";
     }
