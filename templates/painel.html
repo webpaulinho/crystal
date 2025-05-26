@@ -204,7 +204,7 @@
     </div>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-    // Função para gerar a mensagem "saída" via Delta Quill
+    // Função para gerar a mensagem "saída" via Delta Quill, com "Teca Frio" final em negrito
     function mensagemSaidaDelta(nome) {
         return [
             { insert: 'Olá,\n\n' },
@@ -213,7 +213,8 @@
             { insert: ' não faz mais parte da equipe da Teca Frio.\n\n' },
             { insert: 'Para continuar seu atendimento ou tratar de assuntos relacionados, por favor, entre em contato com ' },
             { insert: '[Nome, e-mail e contato do novo responsável]', attributes: { bold: true } },
-            { insert: '.\n\nContinuamos à disposição.\n\nAtenciosamente,\nTeca Frio' }
+            { insert: '.\n\nContinuamos à disposição.\n\nAtenciosamente,\n' },
+            { insert: 'Teca Frio', attributes: { bold: true } }
         ];
     }
 
@@ -234,7 +235,8 @@
             { insert: '[email@exemplo.com]', attributes: { bold: true } },
             { insert: ' ou telefone ' },
             { insert: '[telefone]', attributes: { bold: true } },
-            { insert: '.\nAgradecemos pela compreensão.\n\nAtenciosamente,\nTeca Frio' }
+            { insert: '.\nAgradecemos pela compreensão.\n\nAtenciosamente,\n' },
+            { insert: 'Teca Frio', attributes: { bold: true } }
         ];
     }
 
