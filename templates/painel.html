@@ -204,20 +204,39 @@
     </div>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-    // TEXTO_SAIDA com negrito inline garantido usando <span style="font-weight:bold;">
-    const TEXTO_SAIDA = `Olá,<br><br>
-Agradecemos seu contato. Informamos que <span style="font-weight:bold;">[Nome do Funcionário]</span> não faz mais parte da equipe da Teca Frio.<br><br>
-Para continuar seu atendimento ou tratar de assuntos relacionados, por favor, entre em contato com <span style="font-weight:bold;">[Nome, e-mail e contato do novo responsável]</span>.<br><br>
-Continuamos à disposição.<br><br>
-Atenciosamente,<br>
-Teca Frio`;
+    // Função para gerar a mensagem "saída" via Delta Quill
+    function mensagemSaidaDelta(nome) {
+        return [
+            { insert: 'Olá,\n\n' },
+            { insert: 'Agradecemos seu contato. Informamos que ' },
+            { insert: nome, attributes: { bold: true } },
+            { insert: ' não faz mais parte da equipe da Teca Frio.\n\n' },
+            { insert: 'Para continuar seu atendimento ou tratar de assuntos relacionados, por favor, entre em contato com ' },
+            { insert: '[Nome, e-mail e contato do novo responsável]', attributes: { bold: true } },
+            { insert: '.\n\nContinuamos à disposição.\n\nAtenciosamente,\nTeca Frio' }
+        ];
+    }
 
-    const TEXTO_FERIAS = `Prezado(a),<br>
-Agradecemos seu contato. Informamos que o(a) colaborador(a) <span style="font-weight:bold;">[Nome do Funcionário]</span> estará em período de férias entre <span style="font-weight:bold;">[primeiro dia]</span> e <span style="font-weight:bold;">[último dia]</span>, retornando às atividades em <span style="font-weight:bold;">[primeiro dia útil após o último dia]</span>.<br>
-Durante esse período, para assuntos urgentes ou que demandem atenção imediata, por gentileza, entre em contato com <span style="font-weight:bold;">[Nome do substituto]</span>, pelo e-mail <span style="font-weight:bold;">[email@exemplo.com]</span> ou telefone <span style="font-weight:bold;">[telefone]</span>.<br>
-Agradecemos pela compreensão.<br>
-Atenciosamente,<br>
-Teca Frio`;
+    function mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil) {
+        return [
+            { insert: 'Prezado(a),\n\n' },
+            { insert: 'Agradecemos seu contato. Informamos que o(a) colaborador(a) ' },
+            { insert: nome, attributes: { bold: true } },
+            { insert: ' estará em período de férias entre ' },
+            { insert: primeiroDia, attributes: { bold: true } },
+            { insert: ' e ' },
+            { insert: ultimoDia, attributes: { bold: true } },
+            { insert: ', retornando às atividades em ' },
+            { insert: proximoUtil, attributes: { bold: true } },
+            { insert: '.\nDurante esse período, para assuntos urgentes ou que demandem atenção imediata, por gentileza, entre em contato com ' },
+            { insert: '[Nome do substituto]', attributes: { bold: true } },
+            { insert: ', pelo e-mail ' },
+            { insert: '[email@exemplo.com]', attributes: { bold: true } },
+            { insert: ' ou telefone ' },
+            { insert: '[telefone]', attributes: { bold: true } },
+            { insert: '.\nAgradecemos pela compreensão.\n\nAtenciosamente,\nTeca Frio' }
+        ];
+    }
 
     // Inicializa Quill
     const quill = new Quill('#editor', {
@@ -358,7 +377,17 @@ Teca Frio`;
                     }
                     atualizarAssuntoNome();
 
-                    quill.setText(data.responseBodyPlainText || "");
+                    // Tenta carregar texto como Delta, se for possível
+                    try {
+                        const parsed = JSON.parse(data.responseBodyPlainText);
+                        if (Array.isArray(parsed)) {
+                            quill.setContents(parsed);
+                        } else {
+                            quill.root.innerHTML = data.responseBodyPlainText || "";
+                        }
+                    } catch(e) {
+                        quill.root.innerHTML = data.responseBodyPlainText || "";
+                    }
                     if (data.startTime) {
                         document.getElementById('primeiro-dia').value = new Date(Number(data.startTime)).toISOString().split('T')[0];
                     }
@@ -383,24 +412,17 @@ Teca Frio`;
         const assuntoSelect = document.getElementById('assunto');
         const assunto = assuntoSelect.value;
         const nome = atualizarAssuntoNome();
-        let texto = "";
 
         if (assunto === "ferias") {
-            const primeiroDia = document.getElementById('primeiro-dia').value;
-            const ultimoDia = document.getElementById('ultimo-dia').value;
-            texto = TEXTO_FERIAS
-                .replace("[Nome do Funcionário]", nome)
-                .replace("[primeiro dia]", formatarDataBR(primeiroDia))
-                .replace("[último dia]", formatarDataBR(ultimoDia))
-                .replace("[primeiro dia útil após o último dia]", proximoDiaUtil(ultimoDia));
+            const primeiroDia = formatarDataBR(document.getElementById('primeiro-dia').value);
+            const ultimoDia = formatarDataBR(document.getElementById('ultimo-dia').value);
+            const proximoUtil = proximoDiaUtil(document.getElementById('ultimo-dia').value);
+            quill.setContents(mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil));
         } else if (assunto === "saida") {
-            texto = TEXTO_SAIDA.replace("[Nome do Funcionário]", nome);
+            quill.setContents(mensagemSaidaDelta(nome));
         } else {
-            texto = "";
+            quill.setText('');
         }
-
-        // Sempre use innerHTML para manter o HTML do template
-        quill.root.innerHTML = texto;
     }
 
     // Atualiza datas na mensagem padrão se mudar data
@@ -435,7 +457,8 @@ Teca Frio`;
             document.getElementById('msg').textContent = "Selecione um assunto para continuar.";
             return;
         }
-        const mensagem = quill.root.innerHTML;
+        // Salva o conteúdo como Delta para garantir o formato
+        const mensagem = JSON.stringify(quill.getContents().ops);
         const primeiroDia = document.getElementById('primeiro-dia').value;
         const ultimoDia = document.getElementById('ultimo-dia').value;
         const startTime = toUTCtimestamp(primeiroDia, false);
