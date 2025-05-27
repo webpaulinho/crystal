@@ -195,7 +195,8 @@ def list_groups():
             groups.append({
                 "email": g['email'],
                 "nome": g.get("name", g['email']),
-                "telefone": g.get("description", "")  # description pode ser usado para telefone, caso queira customizar
+                "descricao": g.get("description", ""),   # <-- este campo é usado no painel.js para buscar o telefone
+                "telefone": ""  # opcional, pode ser removido se não for usar diretamente
             })
         page_token = results.get('nextPageToken')
         if not page_token:
