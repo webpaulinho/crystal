@@ -1,7 +1,137 @@
-// Dados de exemplo para grupos do workspace (pode ser substituído por fetch em produção)
+// Variáveis globais de cache
 let gruposCache = [];
+let usuariosCache = [];
+let vacationAtivado = false;
+let carregandoVacation = false;
 
-// Função para gerar a mensagem "saída" conforme seleção de responsável ou grupo
+// Funções auxiliares de formatação
+function hojeStr() {
+    const hoje = new Date();
+    const yyyy = hoje.getFullYear();
+    const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoje.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
+
+function formatarDataBR(dataISO) {
+    if (!dataISO) return "";
+    const [yyyy, mm, dd] = dataISO.split('-');
+    return `${dd}/${mm}/${yyyy}`;
+}
+
+function proximoDiaUtil(dataISO) {
+    if (!dataISO) return "";
+    let d = new Date(dataISO);
+    d.setDate(d.getDate() + 1);
+    while (d.getDay() === 0 || d.getDay() === 6) {
+        d.setDate(d.getDate() + 1);
+    }
+    return formatarDataBR(d.toISOString().split('T')[0]);
+}
+
+// Inicialização do editor Quill
+const quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+        toolbar: [
+            [{ 'font': [] }, { 'size': [] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'align': [] }],
+            ['link', 'image'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['clean']
+        ]
+    }
+});
+
+// Carrega usuários e preenche selects
+fetch('/api/users')
+    .then(r => r.json())
+    .then(usuarios => {
+        usuariosCache = usuarios;
+        const usuarioSelect = document.getElementById('usuario');
+        usuarioSelect.innerHTML = "";
+        document.getElementById('responsavel').innerHTML = '<option value="" selected>Selecione Responsável...</option>';
+        if (!usuarios.length) {
+            const opt = document.createElement('option');
+            opt.value = "";
+            opt.textContent = "Nenhum usuário encontrado";
+            usuarioSelect.appendChild(opt);
+        } else {
+            usuarios.forEach(u => {
+                const opt = document.createElement('option');
+                opt.value = u.email;
+                opt.textContent = `${u.nome} (${u.email})`;
+                usuarioSelect.appendChild(opt);
+
+                const optResp = document.createElement('option');
+                optResp.value = u.email;
+                optResp.textContent = `${u.nome} (${u.email})`;
+                document.getElementById('responsavel').appendChild(optResp);
+            });
+            limparCamposFormulario();
+            carregarVacation(usuarioSelect.value);
+        }
+        usuarioSelect.onchange = () => {
+            limparCamposFormulario();
+            carregarVacation(usuarioSelect.value);
+            atualizarAssuntoNome();
+        };
+        atualizarAssuntoNome();
+    });
+
+// Carrega grupos do workspace e preenche select
+fetch('/api/groups')
+    .then(r => r.json())
+    .then(grupos => {
+        gruposCache = grupos;
+        const grupoSelect = document.getElementById('grupo-responsavel');
+        grupoSelect.innerHTML = '<option value="" selected>Selecione Grupo Responsável...</option>';
+        grupos.forEach(g => {
+            const opt = document.createElement('option');
+            opt.value = g.email;
+            opt.textContent = `${g.nome} (${g.email})`;
+            grupoSelect.appendChild(opt);
+        });
+    });
+
+function getResponsavelSelecionado() {
+    const val = document.getElementById('responsavel').value;
+    if (!val) return null;
+    const u = usuariosCache.find(u => u.email === val);
+    if (!u) return null;
+    return { nome: u.nome, email: u.email, telefone: u.telefone || "" };
+}
+
+function getGrupoSelecionado() {
+    const val = document.getElementById('grupo-responsavel').value;
+    if (!val) return null;
+    const g = gruposCache.find(g => g.email === val);
+    if (!g) return null;
+    let telefone = "";
+    if (g.descricao) {
+        const match = g.descricao.match(/(\(?\d{2}\)?\s?\d{4,5}-\d{4})/);
+        if (match) telefone = match[1];
+    }
+    return { nome: g.nome, email: g.email, telefone: telefone };
+}
+
+function atualizarAssuntoNome() {
+    const usuarioSelect = document.getElementById('usuario');
+    const usuarioSel = usuarioSelect.options[usuarioSelect.selectedIndex];
+    let nome = "Funcionário";
+    if (usuarioSel && usuarioSel.textContent) {
+        const idx1 = usuarioSel.textContent.indexOf('(');
+        nome = idx1 > 0 ? usuarioSel.textContent.slice(0, idx1).trim() : usuarioSel.textContent.trim();
+    }
+    const assuntoSelect = document.getElementById('assunto');
+    if (assuntoSelect.options.length > 2) {
+        assuntoSelect.options[2].textContent = `${nome} não faz mais parte da empresa`;
+    }
+    return nome;
+}
+
 function mensagemSaidaDelta(nome, responsavelDetalhes, grupoDetalhes) {
     let responsavelTexto = '[Nome, e-mail e contato do novo responsável]';
     if(responsavelDetalhes) {
@@ -63,122 +193,6 @@ function mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil, responsa
     ];
 }
 
-// Inicializa Quill
-const quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-        toolbar: [
-            [{ 'font': [] }, { 'size': [] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'align': [] }],
-            ['link', 'image'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            ['clean']
-        ]
-    }
-});
-
-function hojeStr() {
-    const hoje = new Date();
-    const yyyy = hoje.getFullYear();
-    const mm = String(hoje.getMonth() + 1).padStart(2, '0');
-    const dd = String(hoje.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-}
-
-function formatarDataBR(dataISO) {
-    if (!dataISO) return "";
-    const [yyyy, mm, dd] = dataISO.split('-');
-    return `${dd}/${mm}/${yyyy}`;
-}
-
-function proximoDiaUtil(dataISO) {
-    if (!dataISO) return "";
-    let d = new Date(dataISO);
-    d.setDate(d.getDate() + 1);
-    while (d.getDay() === 0 || d.getDay() === 6) {
-        d.setDate(d.getDate() + 1);
-    }
-    return formatarDataBR(d.toISOString().split('T')[0]);
-}
-
-function atualizarAssuntoNome() {
-    const usuarioSelect = document.getElementById('usuario');
-    const usuarioSel = usuarioSelect.options[usuarioSelect.selectedIndex];
-    let nome = "Funcionário";
-    if (usuarioSel && usuarioSel.textContent) {
-        const idx1 = usuarioSel.textContent.indexOf('(');
-        nome = idx1 > 0 ? usuarioSel.textContent.slice(0, idx1).trim() : usuarioSel.textContent.trim();
-    }
-    const assuntoSelect = document.getElementById('assunto');
-    if (assuntoSelect.options.length > 2) {
-        assuntoSelect.options[2].textContent = `${nome} não faz mais parte da empresa`;
-    }
-    return nome;
-}
-
-let usuariosCache = [];
-let usuarioSelect = document.getElementById('usuario');
-let carregandoVacation = false;
-let vacationAtivado = false;
-
-// Carrega usuários
-fetch('/api/users')
-    .then(r => r.json())
-    .then(usuarios => {
-        usuariosCache = usuarios;
-        usuarioSelect.innerHTML = "";
-        document.getElementById('responsavel').innerHTML = '<option value="" selected>Selecione Responsável...</option>';
-        if (!usuarios.length) {
-            const opt = document.createElement('option');
-            opt.value = "";
-            opt.textContent = "Nenhum usuário encontrado";
-            usuarioSelect.appendChild(opt);
-        } else {
-            usuarios.forEach(u => {
-                const opt = document.createElement('option');
-                opt.value = u.email;
-                opt.textContent = `${u.nome} (${u.email})`;
-                usuarioSelect.appendChild(opt);
-
-                const optResp = document.createElement('option');
-                optResp.value = u.email;
-                optResp.textContent = `${u.nome} (${u.email})`;
-                document.getElementById('responsavel').appendChild(optResp);
-            });
-            limparCamposFormulario();
-            carregarVacation(usuarioSelect.value);
-        }
-        usuarioSelect.onchange = () => {
-            limparCamposFormulario();
-            carregarVacation(usuarioSelect.value);
-            atualizarAssuntoNome();
-        };
-        atualizarAssuntoNome();
-    });
-
-// Carrega grupos do workspace
-fetch('/api/groups')
-    .then(r => r.json())
-    .then(grupos => {
-        gruposCache = grupos;
-        const grupoSelect = document.getElementById('grupo-responsavel');
-        grupoSelect.innerHTML = '<option value="" selected>Selecione Grupo Responsável...</option>';
-        grupos.forEach(g => {
-            const opt = document.createElement('option');
-            opt.value = g.email;
-            opt.textContent = `${g.nome} (${g.email})`;
-            grupoSelect.appendChild(opt);
-        });
-    });
-
-function hojeDentroDoRange(startTime, endTime) {
-    const hoje = new Date();
-    const hojeUTC = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
-    return startTime && endTime && hojeUTC >= Number(startTime) && hojeUTC <= Number(endTime);
-}
-
 function limparCamposFormulario() {
     document.getElementById('primeiro-dia').value = hojeStr();
     document.getElementById('ultimo-dia').value = hojeStr();
@@ -191,25 +205,10 @@ function limparCamposFormulario() {
     atualizarCampoAlterarSenha();
 }
 
-function getResponsavelSelecionado() {
-    const val = document.getElementById('responsavel').value;
-    if (!val) return null;
-    const u = usuariosCache.find(u => u.email === val);
-    if (!u) return null;
-    return { nome: u.nome, email: u.email, telefone: u.telefone || "" };
-}
-
-function getGrupoSelecionado() {
-    const val = document.getElementById('grupo-responsavel').value;
-    if (!val) return null;
-    const g = gruposCache.find(g => g.email === val);
-    if (!g) return null;
-    let telefone = "";
-    if (g.descricao) {
-        const match = g.descricao.match(/(\(?\d{2}\)?\s?\d{4,5}-\d{4})/);
-        if (match) telefone = match[1];
-    }
-    return { nome: g.nome, email: g.email, telefone: telefone };
+function hojeDentroDoRange(startTime, endTime) {
+    const hoje = new Date();
+    const hojeUTC = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+    return startTime && endTime && hojeUTC >= Number(startTime) && hojeUTC <= Number(endTime);
 }
 
 function carregarVacation(email) {
@@ -240,6 +239,7 @@ function carregarVacation(email) {
                 }
                 atualizarAssuntoNome();
 
+                // Se vier como Quill Delta, tenta converter para texto
                 try {
                     const parsed = JSON.parse(data.responseBodyPlainText);
                     if (Array.isArray(parsed)) {
@@ -268,6 +268,7 @@ function carregarVacation(email) {
         });
 }
 
+// Atualização das mensagens padrão conforme assunto
 function preencherMensagemPadrao() {
     if (vacationAtivado) return;
     const assuntoSelect = document.getElementById('assunto');
@@ -295,7 +296,7 @@ function atualizarMensagemSePadrao() {
     }
 }
 
-// NOVO: Campo de alteração de senha conforme o assunto selecionado
+// Campo de alteração de senha conforme o assunto selecionado
 function atualizarCampoAlterarSenha() {
     const assunto = document.getElementById('assunto').value;
     const wrapper = document.getElementById('alterar-senha-wrapper');
@@ -310,12 +311,13 @@ function atualizarCampoAlterarSenha() {
         wrapper.style.display = '';
         checkbox.checked = true;
         checkbox.disabled = true;
-        label.textContent = "Alterar a senha do usuário para padrão (sem solicitar alteração)";
+        label.textContent = "Alterar senha do usuário para padrão (sem solicitar alteração)";
     } else {
         wrapper.style.display = 'none';
     }
 }
 
+// Listeners para campos do formulário
 document.getElementById('assunto').onchange = function() {
     atualizarCampoAlterarSenha();
     preencherMensagemPadrao();
@@ -341,6 +343,7 @@ function toUTCtimestamp(dateStr, isEnd) {
     }
 }
 
+// Submissão do formulário
 document.getElementById('vacationForm').onsubmit = function(e) {
     e.preventDefault();
     if (carregandoVacation) return;
@@ -357,7 +360,10 @@ document.getElementById('vacationForm').onsubmit = function(e) {
         document.getElementById('msg').textContent = "Selecione um Responsável ou Grupo Responsável.";
         return;
     }
-    const mensagem = JSON.stringify(quill.getContents().ops);
+
+    // ENVIA TEXTO SIMPLES (getText) para o backend!
+    const mensagem = quill.getText().trim();
+
     const primeiroDia = document.getElementById('primeiro-dia').value;
     const ultimoDia = document.getElementById('ultimo-dia').value;
     const startTime = toUTCtimestamp(primeiroDia, false);
@@ -365,7 +371,7 @@ document.getElementById('vacationForm').onsubmit = function(e) {
     const restrictToContacts = document.getElementById('so-contatos').checked;
     const restrictToDomain = document.getElementById('so-teca').checked;
 
-    // NOVO: lógica do campo de senha
+    // Campo de senha
     const alterarSenhaWrapper = document.getElementById('alterar-senha-wrapper');
     let alterarSenha = false;
     let tipoAlteracaoSenha = "";
@@ -400,9 +406,9 @@ document.getElementById('vacationForm').onsubmit = function(e) {
 
 function limparFormulario() {
     if (!usuariosCache.length) return;
-    usuarioSelect.selectedIndex = 0;
+    document.getElementById('usuario').selectedIndex = 0;
     limparCamposFormulario();
-    carregarVacation(usuarioSelect.value);
+    carregarVacation(document.getElementById('usuario').value);
     atualizarAssuntoNome();
     document.getElementById('msg').textContent = "";
 }
