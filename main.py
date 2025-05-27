@@ -15,7 +15,7 @@ if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in os.environ:
         service_account_path = f.name
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account_path
 else:
-    service_account_path = "service-account.json"  # fallback para desenvolvimento local
+    service_account_path = "service-account.json"
 # ====== FIM: Configuração dinâmica da conta de serviço ======
 
 app = Flask(__name__)
@@ -30,7 +30,7 @@ if "GOOGLE_CLIENT_SECRET_JSON" in os.environ:
         f.write(client_secret_json)
         client_secrets_path = f.name
 else:
-    client_secrets_path = "client_secret.json"  # fallback para desenvolvimento local
+    client_secrets_path = "client_secret.json"
 # ====== FIM: Configuração dinâmica do client_secret.json ======
 
 CLIENT_SECRETS_FILE = client_secrets_path
@@ -38,12 +38,11 @@ SERVICE_ACCOUNT_FILE = service_account_path
 SCOPES = [
     "openid",
     "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/admin.directory.user",  # <-- para alterar senha
+    "https://www.googleapis.com/auth/admin.directory.user",
     "https://www.googleapis.com/auth/gmail.settings.basic",
     "https://www.googleapis.com/auth/admin.directory.group.readonly"
 ]
 REDIRECT_URI = os.environ.get("REDIRECT_URI", "https://msgferias.onrender.com/callback")
-
 
 def is_domain_user(email):
     return email.endswith('@tecafrio.com.br')
@@ -214,11 +213,11 @@ def vacation_settings(email):
             return jsonify({"error": str(e)}), 400
     else:
         data = request.get_json()
-        # Agora só aceita texto simples vindo do JS (quill.getText())
         vacation_settings = {
             "enableAutoReply": data.get("enableAutoReply", True),
             "responseSubject": data.get("responseSubject", ""),
-            "responseBodyPlainText": data.get("responseBodyPlainText", ""),
+            "responseBodyHtml": data.get("responseBodyHtml", ""),      # <-- HTML
+            "responseBodyPlainText": "",                               # <-- Opcional: pode deixar vazio
             "restrictToDomain": data.get("restrictToDomain", False),
             "restrictToContacts": data.get("restrictToContacts", False),
             "startTime": int(data.get("startTime", 0)),
