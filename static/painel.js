@@ -3,7 +3,6 @@ let gruposCache = [];
 
 // Função para gerar a mensagem "saída" conforme seleção de responsável ou grupo
 function mensagemSaidaDelta(nome, responsavelDetalhes, grupoDetalhes) {
-    // Decide qual texto inserir no campo do responsável
     let responsavelTexto = '[Nome, e-mail e contato do novo responsável]';
     if(responsavelDetalhes) {
         responsavelTexto = responsavelDetalhes.nome;
@@ -97,7 +96,7 @@ function formatarDataBR(dataISO) {
 function proximoDiaUtil(dataISO) {
     if (!dataISO) return "";
     let d = new Date(dataISO);
-    d.setDate(d.getDate() + 1); // dia seguinte
+    d.setDate(d.getDate() + 1);
     while (d.getDay() === 0 || d.getDay() === 6) {
         d.setDate(d.getDate() + 1);
     }
@@ -189,6 +188,7 @@ function limparCamposFormulario() {
     quill.setText('');
     document.getElementById('so-contatos').checked = false;
     document.getElementById('so-teca').checked = false;
+    atualizarCampoAlterarSenha();
 }
 
 function getResponsavelSelecionado() {
@@ -199,17 +199,13 @@ function getResponsavelSelecionado() {
     return { nome: u.nome, email: u.email, telefone: u.telefone || "" };
 }
 
-// NOVA FUNÇÃO: pega telefone da descrição do grupo, se existir ali
 function getGrupoSelecionado() {
     const val = document.getElementById('grupo-responsavel').value;
     if (!val) return null;
     const g = gruposCache.find(g => g.email === val);
     if (!g) return null;
-
-    // Pega telefone da descrição do grupo, se estiver lá (deve vir do backend)
     let telefone = "";
     if (g.descricao) {
-        // Procura padrão de telefone na descrição (ex: (11) 99999-8888)
         const match = g.descricao.match(/(\(?\d{2}\)?\s?\d{4,5}-\d{4})/);
         if (match) telefone = match[1];
     }
@@ -268,6 +264,7 @@ function carregarVacation(email) {
             }
             document.getElementById('msg').textContent = "";
             carregandoVacation = false;
+            atualizarCampoAlterarSenha();
         });
 }
 
@@ -298,16 +295,38 @@ function atualizarMensagemSePadrao() {
     }
 }
 
-document.getElementById('assunto').onchange = preencherMensagemPadrao;
+// NOVO: Campo de alteração de senha conforme o assunto selecionado
+function atualizarCampoAlterarSenha() {
+    const assunto = document.getElementById('assunto').value;
+    const wrapper = document.getElementById('alterar-senha-wrapper');
+    const checkbox = document.getElementById('alterar-senha');
+    const label = document.getElementById('alterar-senha-label');
+    if (assunto === "ferias") {
+        wrapper.style.display = '';
+        checkbox.checked = true;
+        checkbox.disabled = false;
+        label.textContent = "Alterar senha do usuário para padrão e solicitar nova senha no primeiro login";
+    } else if (assunto === "saida") {
+        wrapper.style.display = '';
+        checkbox.checked = true;
+        checkbox.disabled = true;
+        label.textContent = "Alterar a senha do usuário para padrão (sem solicitar alteração no primeiro login)";
+    } else {
+        wrapper.style.display = 'none';
+    }
+}
+
+document.getElementById('assunto').onchange = function() {
+    atualizarCampoAlterarSenha();
+    preencherMensagemPadrao();
+};
 document.getElementById('primeiro-dia').onchange = atualizarMensagemSePadrao;
 document.getElementById('ultimo-dia').onchange = atualizarMensagemSePadrao;
 document.getElementById('responsavel').onchange = function() {
-    // Limpa grupo se selecionar responsável
     if (this.value) document.getElementById('grupo-responsavel').selectedIndex = 0;
     atualizarMensagemSePadrao();
 };
 document.getElementById('grupo-responsavel').onchange = function() {
-    // Limpa responsável se selecionar grupo
     if (this.value) document.getElementById('responsavel').selectedIndex = 0;
     atualizarMensagemSePadrao();
 };
@@ -345,6 +364,16 @@ document.getElementById('vacationForm').onsubmit = function(e) {
     const endTime = toUTCtimestamp(ultimoDia, true);
     const restrictToContacts = document.getElementById('so-contatos').checked;
     const restrictToDomain = document.getElementById('so-teca').checked;
+
+    // NOVO: lógica do campo de senha
+    const alterarSenhaWrapper = document.getElementById('alterar-senha-wrapper');
+    let alterarSenha = false;
+    let tipoAlteracaoSenha = "";
+    if (alterarSenhaWrapper.style.display !== 'none') {
+        alterarSenha = document.getElementById('alterar-senha').checked;
+        tipoAlteracaoSenha = document.getElementById('assunto').value; // "ferias" ou "saida"
+    }
+
     fetch('/api/vacation/' + encodeURIComponent(email), {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -354,7 +383,9 @@ document.getElementById('vacationForm').onsubmit = function(e) {
             startTime,
             endTime,
             restrictToContacts,
-            restrictToDomain
+            restrictToDomain,
+            alterarSenha: alterarSenha,
+            tipoAlteracaoSenha: tipoAlteracaoSenha
         })
     })
     .then(r => r.json())
