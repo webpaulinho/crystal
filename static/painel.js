@@ -305,12 +305,12 @@ function atualizarCampoAlterarSenha() {
         wrapper.style.display = '';
         checkbox.checked = true;
         checkbox.disabled = false;
-        label.textContent = "Alterar senha do usuário para padrão e solicitar nova senha no primeiro login";
+        label.textContent = "Alterar senha do usuário para padrão e solicitar uma nova no primeiro login";
     } else if (assunto === "saida") {
         wrapper.style.display = '';
         checkbox.checked = true;
         checkbox.disabled = true;
-        label.textContent = "Alterar a senha do usuário para padrão (sem solicitar alteração no primeiro login)";
+        label.textContent = "Alterar a senha do usuário para padrão (sem solicitar alteração)";
     } else {
         wrapper.style.display = 'none';
     }
