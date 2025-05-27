@@ -38,10 +38,12 @@ SERVICE_ACCOUNT_FILE = service_account_path
 SCOPES = [
     "openid",
     "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/admin.directory.user.readonly",
-    "https://www.googleapis.com/auth/gmail.settings.basic"
+    "https://www.googleapis.com/auth/admin.directory.user",  # <-- para alterar senha
+    "https://www.googleapis.com/auth/gmail.settings.basic",
+    "https://www.googleapis.com/auth/admin.directory.group.readonly"
 ]
 REDIRECT_URI = os.environ.get("REDIRECT_URI", "https://msgferias.onrender.com/callback")
+
 
 def is_domain_user(email):
     return email.endswith('@tecafrio.com.br')
@@ -212,6 +214,7 @@ def vacation_settings(email):
             return jsonify({"error": str(e)}), 400
     else:
         data = request.get_json()
+        # Agora só aceita texto simples vindo do JS (quill.getText())
         vacation_settings = {
             "enableAutoReply": data.get("enableAutoReply", True),
             "responseSubject": data.get("responseSubject", ""),
@@ -225,16 +228,16 @@ def vacation_settings(email):
             print("Alterando vacation para:", email, vacation_settings)
             gmail_service.users().settings().updateVacation(userId=email, body=vacation_settings).execute()
 
-            # NOVO: lógica de alteração de senha se necessário
+            # Alteração de senha se necessário
             if data.get("alterarSenha"):
                 admin_email = session.get("user_email")
                 directory_service = build('admin', 'directory_v1', credentials=get_service_account_creds(admin_email))
                 tipo = data.get("tipoAlteracaoSenha")
                 if tipo == "ferias":
-                    nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "mudar@123")
+                    nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "SenhaPadraoFerias123")
                     change_at_next_login = True
                 elif tipo == "saida":
-                    nova_senha = os.environ.get("SAIDA_SENHA_PADRAO", "tft@desl25")
+                    nova_senha = os.environ.get("SAIDA_SENHA_PADRAO", "SenhaPadraoSaida456")
                     change_at_next_login = False
                 else:
                     nova_senha = None
