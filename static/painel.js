@@ -1,4 +1,4 @@
-// JavaScript Document// Dados de exemplo para grupos do workspace (pode ser substituído por fetch em produção)
+// Dados de exemplo para grupos do workspace (pode ser substituído por fetch em produção)
 let gruposCache = [];
 
 // Função para gerar a mensagem "saída" conforme seleção de responsável ou grupo
@@ -12,6 +12,7 @@ function mensagemSaidaDelta(nome, responsavelDetalhes, grupoDetalhes) {
     } else if(grupoDetalhes) {
         responsavelTexto = grupoDetalhes.nome;
         if(grupoDetalhes.email) responsavelTexto += ' ('+grupoDetalhes.email+')';
+        if(grupoDetalhes.telefone) responsavelTexto += ' - ' + grupoDetalhes.telefone;
     }
 
     return [
@@ -198,12 +199,21 @@ function getResponsavelSelecionado() {
     return { nome: u.nome, email: u.email, telefone: u.telefone || "" };
 }
 
+// NOVA FUNÇÃO: pega telefone da descrição do grupo, se existir ali
 function getGrupoSelecionado() {
     const val = document.getElementById('grupo-responsavel').value;
     if (!val) return null;
     const g = gruposCache.find(g => g.email === val);
     if (!g) return null;
-    return { nome: g.nome, email: g.email, telefone: g.telefone || "" };
+
+    // Pega telefone da descrição do grupo, se estiver lá (deve vir do backend)
+    let telefone = "";
+    if (g.descricao) {
+        // Procura padrão de telefone na descrição (ex: (11) 99999-8888)
+        const match = g.descricao.match(/(\(?\d{2}\)?\s?\d{4,5}-\d{4})/);
+        if (match) telefone = match[1];
+    }
+    return { nome: g.nome, email: g.email, telefone: telefone };
 }
 
 function carregarVacation(email) {
