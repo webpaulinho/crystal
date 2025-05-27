@@ -175,16 +175,6 @@
                 <label for="usuario">Selecione o usuário:</label>
                 <select name="usuario" id="usuario" required></select>
             </div>
-            <div class="painel-form-row selects-row">
-                <label for="responsavel">Selecione Responsável:</label>
-                <select name="responsavel" id="responsavel">
-                    <option value="" selected>Selecione Responsável...</option>
-                </select>
-                <label for="grupo-responsavel">Selecione Grupo Responsável:</label>
-                <select name="grupo-responsavel" id="grupo-responsavel">
-                    <option value="" selected>Selecione Grupo Responsável...</option>
-                </select>
-            </div>
             <div class="painel-form-row">
                 <label for="primeiro-dia">Primeiro dia:</label>
                 <input type="date" id="primeiro-dia" name="primeiro-dia">
@@ -195,11 +185,23 @@
             <div class="painel-form-row">
                 <label for="assunto">Assunto:</label>
                 <select id="assunto" class="assunto-input" name="assunto" required>
-                  <option value="" selected>Selecione...</option>
-                  <option value="ferias">Férias</option>
-                  <option value="saida">[NOME] não faz mais parte da empresa</option>
+                    <option value="" selected>Selecione...</option>
+                    <option value="ferias">Férias</option>
+                    <option value="saida">[NOME] não faz mais parte da empresa</option>
                 </select>
             </div>
+            <!-- NOVA POSIÇÃO DOS SELECTS -->
+            <div class="painel-form-row" style="flex-direction:column; align-items:flex-start; margin-bottom: 1.5rem;">
+                <label for="responsavel">Selecione Responsável:</label>
+                <select name="responsavel" id="responsavel" style="width:100%;">
+                    <option value="" selected>Selecione Responsável...</option>
+                </select>
+                <label for="grupo-responsavel" style="margin-top:10px;">Selecione Grupo Responsável:</label>
+                <select name="grupo-responsavel" id="grupo-responsavel" style="width:100%;">
+                    <option value="" selected>Selecione Grupo Responsável...</option>
+                </select>
+            </div>
+            <!-- FIM DOS SELECTS -->
             <div class="painel-form-row" style="flex-direction:column; align-items:stretch;">
                 <label for="mensagem">Mensagem:</label>
                 <div id="toolbar"></div>
