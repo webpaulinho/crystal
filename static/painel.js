@@ -19,12 +19,20 @@ function formatarDataBR(dataISO) {
     return `${dd}/${mm}/${yyyy}`;
 }
 
+// Corrigida: Retorna segunda-feira se último dia for sexta/sábado/domingo, senão retorna dia seguinte
 function proximoDiaUtil(dataISO) {
     if (!dataISO) return "";
     let d = new Date(dataISO);
-    d.setDate(d.getDate() + 1);
-    while (d.getDay() === 0 || d.getDay() === 6) {
-        d.setDate(d.getDate() + 1);
+    let diaSemana = d.getDay(); // 0: domingo, 5: sexta, 6: sábado
+
+    if (diaSemana === 5) { // sexta
+        d.setDate(d.getDate() + 3); // sexta + 3 = segunda
+    } else if (diaSemana === 6) { // sábado
+        d.setDate(d.getDate() + 2); // sábado + 2 = segunda
+    } else if (diaSemana === 0) { // domingo
+        d.setDate(d.getDate() + 1); // domingo + 1 = segunda
+    } else {
+        d.setDate(d.getDate() + 1); // dia seguinte
     }
     return formatarDataBR(d.toISOString().split('T')[0]);
 }
