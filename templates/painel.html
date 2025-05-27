@@ -198,7 +198,7 @@
                 </select>
                 <label for="grupo-responsavel" style="margin-top:10px;">Selecione Grupo Responsável:</label>
                 <select name="grupo-responsavel" id="grupo-responsavel" style="width:100%;">
-                    <option value="" selected>Selecione Grupo Responsável...</option>
+                    <option value="" selected>Ou selecione Grupo Responsável...</option>
                 </select>
             </div>
             <!-- FIM DOS SELECTS -->
@@ -394,7 +394,7 @@
         .then(grupos => {
             gruposCache = grupos;
             const grupoSelect = document.getElementById('grupo-responsavel');
-            grupoSelect.innerHTML = '<option value="" selected>Ou selecione Grupo Responsável...</option>';
+            grupoSelect.innerHTML = '<option value="" selected>Selecione Grupo Responsável...</option>';
             grupos.forEach(g => {
                 const opt = document.createElement('option');
                 opt.value = g.email;
