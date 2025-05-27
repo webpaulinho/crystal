@@ -394,7 +394,7 @@
         .then(grupos => {
             gruposCache = grupos;
             const grupoSelect = document.getElementById('grupo-responsavel');
-            grupoSelect.innerHTML = '<option value="" selected>Selecione Grupo Responsável...</option>';
+            grupoSelect.innerHTML = '<option value="" selected>Ou selecione Grupo Responsável...</option>';
             grupos.forEach(g => {
                 const opt = document.createElement('option');
                 opt.value = g.email;
