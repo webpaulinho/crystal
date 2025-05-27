@@ -8,7 +8,6 @@ from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
 
 # ====== INÍCIO: Configuração dinâmica da conta de serviço ======
-# Salva o JSON da conta de serviço vindo da variável de ambiente em um arquivo temporário
 if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in os.environ:
     creds_json = os.environ["GOOGLE_APPLICATION_CREDENTIALS_JSON"]
     with tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".json") as f:
@@ -17,13 +16,11 @@ if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in os.environ:
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account_path
 else:
     service_account_path = "service-account.json"  # fallback para desenvolvimento local
-
 # ====== FIM: Configuração dinâmica da conta de serviço ======
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-key")
 from werkzeug.middleware.proxy_fix import ProxyFix
-
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # ====== INÍCIO: Configuração dinâmica do client_secret.json ======
@@ -34,7 +31,6 @@ if "GOOGLE_CLIENT_SECRET_JSON" in os.environ:
         client_secrets_path = f.name
 else:
     client_secrets_path = "client_secret.json"  # fallback para desenvolvimento local
-
 # ====== FIM: Configuração dinâmica do client_secret.json ======
 
 CLIENT_SECRETS_FILE = client_secrets_path
@@ -48,11 +44,9 @@ SCOPES = [
 REDIRECT_URI = os.environ.get("REDIRECT_URI", "https://msgferias.onrender.com/callback")
 
 def is_domain_user(email):
-    """Checa se é do domínio tecafrio.com.br (fallback simples)."""
     return email.endswith('@tecafrio.com.br')
 
 def is_gsuite_admin(user_email, creds):
-    """Checa se o usuário é administrador real do Google Workspace."""
     try:
         service = build('admin', 'directory_v1', credentials=creds)
         user = service.users().get(userKey=user_email).execute()
@@ -85,7 +79,6 @@ def login():
         scopes=SCOPES,
         redirect_uri=REDIRECT_URI
     )
-    # hd força login apenas para contas do domínio
     auth_url, state = flow.authorization_url(
         access_type='offline',
         include_granted_scopes='true',
@@ -120,7 +113,6 @@ def callback():
         userinfo = oauth2_service.userinfo().get().execute()
         user_email = userinfo["email"]
 
-        # Checagem aprimorada: admin real OU fallback de domínio
         admin_creds = get_service_account_creds(user_email)
         if not (is_domain_user(user_email) and is_gsuite_admin(user_email, admin_creds)):
             session.clear()
@@ -170,7 +162,6 @@ def list_users():
         page_token = results.get('nextPageToken')
         if not page_token:
             break
-    # Prints para depuração
     print("Usuários retornados:", users)
     print("Total de usuários:", len(users))
     return jsonify(users)
@@ -195,8 +186,8 @@ def list_groups():
             groups.append({
                 "email": g['email'],
                 "nome": g.get("name", g['email']),
-                "descricao": g.get("description", ""),   # <-- este campo é usado no painel.js para buscar o telefone
-                "telefone": ""  # opcional, pode ser removido se não for usar diretamente
+                "descricao": g.get("description", ""),
+                "telefone": ""
             })
         page_token = results.get('nextPageToken')
         if not page_token:
@@ -233,9 +224,34 @@ def vacation_settings(email):
         try:
             print("Alterando vacation para:", email, vacation_settings)
             gmail_service.users().settings().updateVacation(userId=email, body=vacation_settings).execute()
+
+            # NOVO: lógica de alteração de senha se necessário
+            if data.get("alterarSenha"):
+                admin_email = session.get("user_email")
+                directory_service = build('admin', 'directory_v1', credentials=get_service_account_creds(admin_email))
+                tipo = data.get("tipoAlteracaoSenha")
+                if tipo == "ferias":
+                    nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "SenhaPadraoFerias123")
+                    change_at_next_login = True
+                elif tipo == "saida":
+                    nova_senha = os.environ.get("SAIDA_SENHA_PADRAO", "SenhaPadraoSaida456")
+                    change_at_next_login = False
+                else:
+                    nova_senha = None
+                    change_at_next_login = False
+
+                if nova_senha:
+                    print(f"Alterando senha para {tipo}: {email}")
+                    directory_service.users().update(
+                        userKey=email,
+                        body={
+                            "password": nova_senha,
+                            "changePasswordAtNextLogin": change_at_next_login
+                        }
+                    ).execute()
             return jsonify({"ok": True})
         except Exception as e:
-            print("Erro ao alterar vacation:", e)
+            print("Erro ao alterar vacation/senha:", e)
             return jsonify({"error": str(e)}), 400
 
 if __name__ == "__main__":
