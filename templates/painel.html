@@ -8,60 +8,71 @@
     <link href="/static/style.css" rel="stylesheet">
 </head>
 <body>
-    <h2>Painel de Mensagens Automáticas</h2>
-    <form id="vacationForm">
-        <div class="form-group">
-            <label for="usuario">Usuário:</label>
-            <select id="usuario" name="usuario"></select>
+    <div class="painel-container">
+        <div class="painel-title">
+            <input type="radio" checked style="accent-color:#174ea6;">
+            Resposta automática de férias ativada
         </div>
-        <div class="form-group">
-            <label for="primeiro-dia">Primeiro dia:</label>
-            <input type="date" id="primeiro-dia" name="primeiro-dia">
-        </div>
-        <div class="form-group">
-            <label for="ultimo-dia">Último dia:</label>
-            <input type="date" id="ultimo-dia" name="ultimo-dia">
-        </div>
-        <div class="form-group">
-            <label for="assunto">Assunto:</label>
-            <select id="assunto" name="assunto">
-                <option value="">Selecione...</option>
-                <option value="ferias">Férias</option>
-                <option value="saida">Funcionário não faz mais parte da empresa</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="responsavel">Responsável:</label>
-            <select id="responsavel" name="responsavel"></select>
-        </div>
-        <div class="form-group">
-            <label for="grupo-responsavel">Grupo Responsável:</label>
-            <select id="grupo-responsavel" name="grupo-responsavel"></select>
-        </div>
-        <div class="form-group">
-            <label>Mensagem:</label>
-            <div id="editor"></div>
-        </div>
-        <div id="alterar-senha-wrapper" style="display:none;">
+        <form class="painel-form" id="vacationForm">
+            <div class="usuarios-lista">
+                <label for="usuario">Selecione o usuário:</label>
+                <select name="usuario" id="usuario" required></select>
+            </div>
+            <div class="painel-form-row">
+                <label for="primeiro-dia">Primeiro dia:</label>
+                <input type="date" id="primeiro-dia" name="primeiro-dia">
+                <input type="checkbox" id="ultimo-dia-ativado" checked style="accent-color:#174ea6;">
+                <label for="ultimo-dia" class="checkbox-label">Último dia:</label>
+                <input type="date" id="ultimo-dia" name="ultimo-dia">
+            </div>
+            <div class="painel-form-row">
+                <label for="assunto">Assunto:</label>
+                <select id="assunto" class="assunto-input" name="assunto" required>
+                    <option value="" selected>Selecione...</option>
+                    <option value="ferias">Férias</option>
+                    <option value="saida">[NOME] não faz mais parte da empresa</option>
+                </select>
+            </div>
+            <div class="painel-form-row" style="flex-direction:column; align-items:flex-start; margin-bottom: 1.5rem;">
+                <label for="responsavel">Selecione Responsável:</label>
+                <select name="responsavel" id="responsavel" style="width:100%;">
+                    <option value="" selected>Selecione Responsável...</option>
+                </select>
+                <label for="grupo-responsavel" style="margin-top:10px;">Selecione Grupo Responsável:</label>
+                <select name="grupo-responsavel" id="grupo-responsavel" style="width:100%;">
+                    <option value="" selected>Selecione Grupo Responsável...</option>
+                </select>
+            </div>
+            <div class="painel-form-row" style="flex-direction:column; align-items:stretch;">
+                <label for="mensagem">Mensagem:</label>
+                <div id="toolbar"></div>
+                <div id="editor"></div>
+            </div>
+            <div id="alterar-senha-wrapper" style="display:none;">
             <input type="checkbox" id="alterar-senha" checked>
             <label id="alterar-senha-label" for="alterar-senha">
                 Alterar senha do usuário para padrão e solicitar nova senha no primeiro login
             </label>
-        </div>
-        <div class="form-group">
-            <input type="checkbox" id="so-contatos">
-            <label for="so-contatos">Somente contatos do usuário recebem resposta</label>
-        </div>
-        <div class="form-group">
-            <input type="checkbox" id="so-teca">
-            <label for="so-teca">Somente domínio Teca Frio recebe resposta</label>
-        </div>
-        <div class="form-group">
-            <button type="submit">Salvar</button>
-            <button type="button" id="btn-limpar">Limpar</button>
-        </div>
-        <div id="msg" style="color: green; font-weight: bold;"></div>
-    </form>
+            </div>
+            <div class="checkbox-group">
+                <label style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="so-contatos" name="so-contatos">
+                    Enviar resposta apenas às pessoas que estão nos meus Contatos
+                </label>
+            </div>
+            <div class="checkbox-group">
+                <label style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="so-teca" name="so-teca">
+                    Enviar uma resposta somente para as pessoas em Teca Frio Transportes
+                </label>
+            </div>
+            <div class="actions">
+                <button class="btn" type="submit">Salvar alterações</button>
+                <button class="btn limpar" type="button" id="btn-limpar">Limpar</button>
+            </div>
+        </form>
+        <div id="msg"></div>
+    </div>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="/static/painel.js"></script>
 </body>
