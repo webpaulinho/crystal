@@ -59,7 +59,7 @@ def get_service_account_creds(subject_email):
     return service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE,
         scopes=[
-            "https://www.googleapis.com/auth/admin.directory.user.readonly",
+            "https://www.googleapis.com/auth/admin.directory.user",
             "https://www.googleapis.com/auth/gmail.settings.basic",
             "https://www.googleapis.com/auth/admin.directory.group.readonly"
         ],
