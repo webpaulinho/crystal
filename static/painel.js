@@ -22,21 +22,30 @@ function formatarDataBR(dataISO) {
 // Corrigida: Retorna segunda-feira se último dia for sexta/sábado/domingo, senão retorna dia seguinte
 function proximoDiaUtil(dataISO) {
     if (!dataISO) return "";
-    let d = new Date(dataISO);
-    let diaSemana = d.getDay(); // 0: domingo, 5: sexta, 6: sábado
+    // Garantir parsing correto independentemente do timezone do browser
+    const partes = dataISO.split('-');
+    let ano = parseInt(partes[0], 10);
+    let mes = parseInt(partes[1], 10) - 1;
+    let dia = parseInt(partes[2], 10);
+    let d = new Date(ano, mes, dia);
+
+    let diaSemana = d.getDay(); // 0=Dom, 1=Seg ... 5=Sexta, 6=Sábado
 
     if (diaSemana === 5) { // sexta
-        d.setDate(d.getDate() + 3); // sexta + 3 = segunda
+        d.setDate(d.getDate() + 3); // segunda
     } else if (diaSemana === 6) { // sábado
-        d.setDate(d.getDate() + 2); // sábado + 2 = segunda
+        d.setDate(d.getDate() + 2); // segunda
     } else if (diaSemana === 0) { // domingo
-        d.setDate(d.getDate() + 1); // domingo + 1 = segunda
+        d.setDate(d.getDate() + 1); // segunda
     } else {
         d.setDate(d.getDate() + 1); // dia seguinte
     }
-    return formatarDataBR(d.toISOString().split('T')[0]);
+    // Garantir que formate sempre como dd/mm/yyyy
+    let dd = String(d.getDate()).padStart(2, '0');
+    let mm = String(d.getMonth() + 1).padStart(2, '0');
+    let yyyy = d.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
 }
-
 // Inicialização do editor Quill
 const quill = new Quill('#editor', {
     theme: 'snow',
