@@ -25,11 +25,11 @@ function proximoDiaUtil(dataISO) {
     let d = new Date(dataISO);
     let diaSemana = d.getDay(); // 0: domingo, 5: sexta, 6: sábado
 
-    if (diaSemana === 6) { // sexta
+    if (diaSemana === 5) { // sexta
         d.setDate(d.getDate() + 3); // sexta + 3 = segunda
-    } else if (diaSemana === 7) { // sábado
+    } else if (diaSemana === 6) { // sábado
         d.setDate(d.getDate() + 2); // sábado + 2 = segunda
-    } else if (diaSemana === 1) { // domingo
+    } else if (diaSemana === 0) { // domingo
         d.setDate(d.getDate() + 1); // domingo + 1 = segunda
     } else {
         d.setDate(d.getDate() + 1); // dia seguinte
