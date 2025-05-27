@@ -46,6 +46,7 @@ function proximoDiaUtil(dataISO) {
     let yyyy = d.getFullYear();
     return `${dd}/${mm}/${yyyy}`;
 }
+
 // Inicialização do editor Quill
 const quill = new Quill('#editor', {
     theme: 'snow',
@@ -258,14 +259,20 @@ function carregarVacation(email) {
 
                 // Se vier como Quill Delta, tenta converter para texto
                 try {
-                    const parsed = JSON.parse(data.responseBodyPlainText);
+                    const parsed = JSON.parse(data.responseBodyPlainText || "");
                     if (Array.isArray(parsed)) {
                         quill.setContents(parsed);
+                    } else if (data.responseBodyHtml) {
+                        quill.root.innerHTML = data.responseBodyHtml || "";
                     } else {
                         quill.root.innerHTML = data.responseBodyPlainText || "";
                     }
                 } catch(e) {
-                    quill.root.innerHTML = data.responseBodyPlainText || "";
+                    if (data.responseBodyHtml) {
+                        quill.root.innerHTML = data.responseBodyHtml || "";
+                    } else {
+                        quill.root.innerHTML = data.responseBodyPlainText || "";
+                    }
                 }
                 if (data.startTime) {
                     document.getElementById('primeiro-dia').value = new Date(Number(data.startTime)).toISOString().split('T')[0];
@@ -378,8 +385,8 @@ document.getElementById('vacationForm').onsubmit = function(e) {
         return;
     }
 
-    // ENVIA TEXTO SIMPLES (getText) para o backend!
-    const mensagem = quill.getText().trim();
+    // ENVIA HTML para o backend!
+    const mensagemHtml = quill.root.innerHTML.trim();
 
     const primeiroDia = document.getElementById('primeiro-dia').value;
     const ultimoDia = document.getElementById('ultimo-dia').value;
@@ -402,7 +409,7 @@ document.getElementById('vacationForm').onsubmit = function(e) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             responseSubject: assunto,
-            responseBodyPlainText: mensagem,
+            responseBodyHtml: mensagemHtml,  // <-- Aqui!
             startTime,
             endTime,
             restrictToContacts,
