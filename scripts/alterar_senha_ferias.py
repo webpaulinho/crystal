@@ -11,8 +11,8 @@ FERIAS_DIR = 'ferias'
 BACKEND_URL = os.environ['BACKEND_URL']
 AUTH_TOKEN = os.environ.get('AUTH_TOKEN', '')
 
-FERIAS_SENHA_PADRAO = os.environ.get("FERIAS_SENHA_PADRAO", "mudar@123")
-SAIDA_SENHA_PADRAO = os.environ.get("SAIDA_SENHA_PADRAO", "tftdem@2025")
+FERIAS_SENHA_PADRAO = os.environ["FERIAS_SENHA_PADRAO"]
+SAIDA_SENHA_PADRAO = os.environ["SAIDA_SENHA_PADRAO"]
 
 SERVICE_ACCOUNT_FILE = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS_JSON', 'service-account.json')
 GMAIL_SENDER = "administrador@tecafrio.com.br"
