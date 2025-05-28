@@ -8,12 +8,15 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 FERIAS_DIR = 'ferias'
-BACKEND_URL = os.environ['BACKEND_URL']  # Exemplo: https://msgferias.onrender.com/api/vacation/
-AUTH_TOKEN = os.environ.get('AUTH_TOKEN', '')  # Só se precisar
+BACKEND_URL = os.environ['BACKEND_URL']
+AUTH_TOKEN = os.environ.get('AUTH_TOKEN', '')
 
-# --- Configurar Gmail API ---
+FERIAS_SENHA_PADRAO = os.environ.get("FERIAS_SENHA_PADRAO", "mudar@123")
+SAIDA_SENHA_PADRAO = os.environ.get("SAIDA_SENHA_PADRAO", "tftdem@2025")
+
 SERVICE_ACCOUNT_FILE = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', 'service-account.json')
-GMAIL_SENDER = os.environ.get('GMAIL_SENDER', 'noreply@tecafrio.com.br')  # Precisa ser autorizado na delegação
+GMAIL_SENDER = "administrador@tecafrio.com.br"
+GMAIL_RECIPIENT = "paulo.quintino@tecafrio.com.br"
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 
 def get_gmail_service(user_email):
@@ -22,18 +25,16 @@ def get_gmail_service(user_email):
     )
     return build('gmail', 'v1', credentials=creds)
 
-def send_email_gmail_api(service, to, subject, body, cc=None):
+def send_email_gmail_api(service, to, subject, body):
     message = MIMEText(body, 'plain')
     message['to'] = to
     message['subject'] = subject
     message['from'] = GMAIL_SENDER
-    if cc:
-        message['cc'] = cc
     raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
     service.users().messages().send(userId="me", body={'raw': raw}).execute()
 
 def main():
-    hoje = datetime.utcnow().date().isoformat()  # 'YYYY-MM-DD'
+    hoje = datetime.utcnow().date().isoformat()
     for filename in os.listdir(FERIAS_DIR):
         if not filename.endswith('.json'):
             continue
@@ -49,9 +50,22 @@ def main():
 
         if data_inicio == hoje and not processado:
             print(f'Alterando senha para: {email}')
+            tipo_alteracao = "ferias"
+            if tipo_alteracao == "ferias":
+                nova_senha = FERIAs_SENHA_PADRAO
+                change_at_next_login = True
+            elif tipo_alteracao == "saida":
+                nova_senha = SAIDA_SENHA_PADRAO
+                change_at_next_login = False
+            else:
+                nova_senha = ""
+                change_at_next_login = False
+
             payload = {
                 "alterarSenha": True,
-                "tipoAlteracaoSenha": "ferias"
+                "tipoAlteracaoSenha": tipo_alteracao,
+                "novaSenha": nova_senha,
+                "changeAtNextLogin": change_at_next_login
             }
             headers = {'Content-Type': 'application/json'}
             if AUTH_TOKEN:
@@ -59,30 +73,41 @@ def main():
             try:
                 resp = requests.post(f"{BACKEND_URL}{email}", json=payload, headers=headers)
                 print(f"Resposta para {email}: {resp.status_code} {resp.text}")
+                service = get_gmail_service(GMAIL_SENDER)
                 if resp.status_code == 200:
-                    # Marca como processado
                     dados['processado'] = True
                     with open(filepath, "w") as f:
                         json.dump(dados, f, ensure_ascii=False, indent=2)
-                    # --- Envia notificação por e-mail ---
-                    try:
-                        service = get_gmail_service(GMAIL_SENDER)
-                        assunto = "Sua conta entrou em férias"
-                        corpo = (
-                            f"Olá {nome},\n\n"
-                            "Sua senha foi alterada para o período de férias.\n"
-                            "Caso você não reconheça esta ação, entre em contato com o TI imediatamente.\n\n"
-                            "Atenciosamente,\nEquipe T.I. Teca Frio"
-                        )
-                        send_email_gmail_api(service, to=email, subject=assunto, body=corpo)
-                        print(f"Notificação enviada para {email}")
-                        # Se quiser notificar o RH/admin, basta adicionar um send_email_gmail_api extra aqui
-                    except Exception as e:
-                        print(f"Erro ao enviar e-mail para {email}: {e}")
+                    assunto = f"Senha de {nome} alterada com sucesso"
+                    corpo = (
+                        f"Olá, a senha de {nome} foi alterada com sucesso conforme agendamento na data de hoje."
+                    )
                 else:
-                    print(f"Erro ao alterar senha de {email}: {resp.status_code} {resp.text}")
+                    assunto = f"[ERRO] Falha ao alterar senha de {nome}"
+                    corpo = (
+                        f"Ocorreu um erro ao tentar alterar a senha de {nome} ({email}) na data de hoje.\n"
+                        f"Status: {resp.status_code}\n"
+                        f"Resposta: {resp.text}\n"
+                    )
+                try:
+                    send_email_gmail_api(service, to=GMAIL_RECIPIENT, subject=assunto, body=corpo)
+                    print(f"Notificação enviada para {GMAIL_RECIPIENT}")
+                except Exception as e:
+                    print(f"Erro ao enviar e-mail para {GMAIL_RECIPIENT}: {e}")
             except Exception as e:
                 print(f"Erro de requisição para {email}: {e}")
+                # Notifica erro de requisição também
+                try:
+                    service = get_gmail_service(GMAIL_SENDER)
+                    assunto = f"[ERRO] Falha ao alterar senha de {nome}"
+                    corpo = (
+                        f"Ocorreu um erro de requisição ao tentar alterar a senha de {nome} ({email}) na data de hoje.\n"
+                        f"Erro: {e}\n"
+                    )
+                    send_email_gmail_api(service, to=GMAIL_RECIPIENT, subject=assunto, body=corpo)
+                    print(f"Notificação de erro enviada para {GMAIL_RECIPIENT}")
+                except Exception as e2:
+                    print(f"Erro ao enviar notificação de erro para {GMAIL_RECIPIENT}: {e2}")
 
 if __name__ == "__main__":
     main()
