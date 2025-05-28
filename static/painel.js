@@ -361,8 +361,13 @@ function toUTCtimestamp(dateStr, isEnd) {
     if (!dateStr) return 0;
     const [ano, mes, dia] = dateStr.split('-').map(Number);
     if (isEnd) {
-        return Date.UTC(ano, mes - 1, dia, 23, 59, 59);
+        // Para o último dia, retorna UTC do início do dia seguinte (00:00:00), garantindo cobertura total do último dia
+        const d = new Date(Date.UTC(ano, mes - 1, dia));
+        d.setUTCDate(d.getUTCDate() + 1);
+        d.setUTCHours(0, 0, 0, 0);
+        return d.getTime();
     } else {
+        // Para o primeiro dia, mantém às 03:00 UTC (como no seu original)
         return Date.UTC(ano, mes - 1, dia, 3, 0, 0);
     }
 }
