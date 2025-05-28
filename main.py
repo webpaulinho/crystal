@@ -227,7 +227,7 @@ def vacation_settings(email):
             return jsonify({"error": str(e)}), 400
     else:
         data = request.get_json()
-        vacation_settings = {
+       vacation_settings = {
             "enableAutoReply": data.get("enableAutoReply", True),
             "responseSubject": data.get("responseSubject", ""),
             "responseBodyHtml": data.get("responseBodyHtml", ""),      # <-- HTML
@@ -237,16 +237,15 @@ def vacation_settings(email):
             "startTime": int(data.get("startTime", 0)),
             "endTime": int(data.get("endTime", 0))
         }
-        import datetime
-# ...
 
-print("==== DEBUG - Dados recebidos para vacation ====")
-print("startTime (ms):", vacation_settings["startTime"], "->", datetime.datetime.utcfromtimestamp(vacation_settings["startTime"]/1000))
-print("endTime (ms):", vacation_settings["endTime"], "->", datetime.datetime.utcfromtimestamp(vacation_settings["endTime"]/1000))
-print("Dados completos:", vacation_settings)
+        import datetime
+        print("==== DEBUG - Dados recebidos para vacation ====")
+        print("startTime (ms):", vacation_settings["startTime"], "->", datetime.datetime.utcfromtimestamp(vacation_settings["startTime"]/1000))
+        print("endTime (ms):", vacation_settings["endTime"], "->", datetime.datetime.utcfromtimestamp(vacation_settings["endTime"]/1000))
+        print("Dados completos:", vacation_settings)
+
         try:
             print("Alterando vacation para:", email, vacation_settings)
-            # ALTERE userId=email PARA userId="me"
             gmail_service.users().settings().updateVacation(userId="me", body=vacation_settings).execute()
 
             return jsonify({"ok": True})
