@@ -408,7 +408,10 @@ document.getElementById('vacationForm').onsubmit = function(e) {
         alterarSenha = document.getElementById('alterar-senha').checked;
         tipoAlteracaoSenha = document.getElementById('assunto').value; // "ferias" ou "saida"
     }
-
+    console.log("Primeiro dia:", primeiroDia);
+    console.log("Último dia:", ultimoDia);
+    console.log("startTime:", startTime, new Date(startTime).toISOString());
+    console.log("endTime:", endTime, new Date(endTime).toISOString());
     fetch('/api/vacation/' + encodeURIComponent(email), {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
