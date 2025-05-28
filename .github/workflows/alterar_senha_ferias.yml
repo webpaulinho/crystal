@@ -1,0 +1,27 @@
+name: Alterar senha automática para início de férias
+
+on:
+  schedule:
+    - cron: '0 4 * * *' # Roda todo dia às 4h UTC
+  workflow_dispatch:
+
+jobs:
+  alterar_senha_ferias:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests
+
+      - name: Rodar script de alteração de senha
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}  # Se necessário
+        run: python scripts/alterar_senha_ferias.py
