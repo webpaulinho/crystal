@@ -208,8 +208,6 @@ def list_groups():
     print("Total de grupos:", len(groups))
     return jsonify(groups)
 
-# ... (código acima permanece igual)
-
 @app.route("/api/vacation/<email>", methods=["GET", "POST"])
 def vacation_settings(email):
     if "credentials" not in session:
@@ -244,33 +242,9 @@ def vacation_settings(email):
             # ALTERE userId=email PARA userId="me"
             gmail_service.users().settings().updateVacation(userId="me", body=vacation_settings).execute()
 
-            # Alteração de senha se necessário
-            if data.get("alterarSenha"):
-                admin_email = session.get("user_email")
-                directory_service = build('admin', 'directory_v1', credentials=get_service_account_creds(admin_email))
-                tipo = data.get("tipoAlteracaoSenha")
-                if tipo == "ferias":
-                    nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "mudar@123")
-                    change_at_next_login = True
-                elif tipo == "saida":
-                    nova_senha = os.environ.get("SAIDA_SENHA_PADRAO", "tftdem@2025")
-                    change_at_next_login = False
-                else:
-                    nova_senha = None
-                    change_at_next_login = False
-
-                if nova_senha:
-                    print(f"Alterando senha para {tipo}: {email}")
-                    directory_service.users().update(
-                        userKey=email,
-                        body={
-                            "password": nova_senha,
-                            "changePasswordAtNextLogin": change_at_next_login
-                        }
-                    ).execute()
             return jsonify({"ok": True})
         except Exception as e:
-            print("Erro ao alterar vacation/senha:", e)
+            print("Erro ao alterar vacation:", e)
             return jsonify({"error": str(e)}), 400
 
 # --- INÍCIO: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
