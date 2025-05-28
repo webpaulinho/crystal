@@ -421,7 +421,27 @@ document.getElementById('vacationForm').onsubmit = function(e) {
     .then(r => r.json())
     .then(data => {
         if (data.ok) {
-            document.getElementById('msg').textContent = "Alterações salvas com sucesso!";
+            // Salva férias também no backend para gerar JSON
+            fetch('/api/registrar-ferias', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    email: email,
+                    data_inicio: primeiroDia,
+                    data_fim: ultimoDia,
+                    nome: atualizarAssuntoNome()
+                })
+            }).then(r2 => r2.json())
+              .then(data2 => {
+                  if (data2.status === "Férias registradas") {
+                      document.getElementById('msg').textContent = "Alterações e registro de férias salvos com sucesso!";
+                  } else {
+                      document.getElementById('msg').textContent = (data2.erro || data2.error || "") + " (vacation salvo)";
+                  }
+              })
+              .catch(() => {
+                  document.getElementById('msg').textContent = "Férias salvas, mas erro ao gerar JSON no backend.";
+              });
         } else {
             document.getElementById('msg').textContent = data.error || "Erro ao salvar";
         }
