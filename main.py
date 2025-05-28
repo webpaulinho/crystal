@@ -237,6 +237,13 @@ def vacation_settings(email):
             "startTime": int(data.get("startTime", 0)),
             "endTime": int(data.get("endTime", 0))
         }
+        import datetime
+# ...
+
+print("==== DEBUG - Dados recebidos para vacation ====")
+print("startTime (ms):", vacation_settings["startTime"], "->", datetime.datetime.utcfromtimestamp(vacation_settings["startTime"]/1000))
+print("endTime (ms):", vacation_settings["endTime"], "->", datetime.datetime.utcfromtimestamp(vacation_settings["endTime"]/1000))
+print("Dados completos:", vacation_settings)
         try:
             print("Alterando vacation para:", email, vacation_settings)
             # ALTERE userId=email PARA userId="me"
