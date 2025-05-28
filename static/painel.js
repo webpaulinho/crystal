@@ -163,13 +163,13 @@ function mensagemSaidaDelta(nome, responsavelDetalhes, grupoDetalhes) {
     }
 
     return [
-        { insert: 'Olá,\n\n' },
+        { insert: 'Olá,\n' },
         { insert: 'Agradecemos seu contato. Informamos que ' },
         { insert: nome, attributes: { bold: true } },
-        { insert: ' não faz mais parte da equipe da Teca Frio.\n\n' },
+        { insert: ' não faz mais parte da equipe da Teca Frio.\n' },
         { insert: 'Para continuar seu atendimento ou tratar de assuntos relacionados, por favor, entre em contato com ' },
         { insert: responsavelTexto, attributes: { bold: true } },
-        { insert: '.\n\nContinuamos à disposição.\n\nAtenciosamente,\n' },
+        { insert: '.\n\nContinuamos à disposição.\nAtenciosamente,' },
         { insert: 'Teca Frio', attributes: { bold: true } }
     ];
 }
@@ -188,7 +188,7 @@ function mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil, responsa
         responsavelFone = grupoDetalhes.telefone || responsavelFone;
     }
     return [
-        { insert: 'Prezado(a),\n\n' },
+        { insert: 'Prezado(a),\n' },
         { insert: 'Agradecemos seu contato. Informamos que o(a) colaborador(a) ' },
         { insert: nome, attributes: { bold: true } },
         { insert: ' estará em período de férias entre ' },
@@ -197,16 +197,16 @@ function mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil, responsa
         { insert: ultimoDia, attributes: { bold: true } },
         { insert: ', retornando às atividades em ' },
         { insert: proximoUtil, attributes: { bold: true } },
-        { insert: '.\n\n' },
+        { insert: '.\n' },
         { insert: 'Durante esse período, para assuntos urgentes ou que demandem atenção imediata, por gentileza, entre em contato com ' },
         { insert: responsavelNome, attributes: { bold: true } },
         { insert: ', pelo e-mail ' },
         { insert: responsavelEmail, attributes: { bold: true } },
         { insert: ' ou telefone ' },
         { insert: responsavelFone, attributes: { bold: true } },
-        { insert: '.\n\n' },
-        { insert: 'Agradecemos pela compreensão.\n\n' },
-        { insert: 'Atenciosamente,\n' },
+        { insert: '.\n' },
+        { insert: 'Agradecemos pela compreensão.\n' },
+        { insert: 'Atenciosamente,' },
         { insert: 'Teca Frio', attributes: { bold: true } }
     ];
 }
