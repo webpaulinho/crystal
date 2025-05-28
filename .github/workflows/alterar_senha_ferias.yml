@@ -2,7 +2,7 @@ name: Alterar senha automática para início de férias
 
 on:
   schedule:
-    - cron: '0 10 * * *' # Roda todo dia às 07h da manhã de Brasília (10h UTC)C
+    - cron: '0 10 * * *' # Roda todo dia às 07h da manhã de Brasília (10h UTC)
   workflow_dispatch:
 
 jobs:
@@ -18,10 +18,16 @@ jobs:
           python-version: '3.11'
 
       - name: Instalar dependências
-        run: pip install requests
+        run: pip install requests google-auth google-api-python-client
+
+      - name: Criar arquivo da Service Account
+        run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}" > service-account.json
 
       - name: Rodar script de alteração de senha
         env:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
-          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}  # Se necessário
+          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+          FERIAS_SENHA_PADRAO: ${{ secrets.FERIAS_SENHA_PADRAO }}
+          SAIDA_SENHA_PADRAO: ${{ secrets.SAIDA_SENHA_PADRAO }}
+          GOOGLE_APPLICATION_CREDENTIALS: service-account.json
         run: python scripts/alterar_senha_ferias.py
