@@ -208,25 +208,21 @@ def list_groups():
     print("Total de grupos:", len(groups))
     return jsonify(groups)
 
+# ... (código acima permanece igual)
+
 @app.route("/api/vacation/<email>", methods=["GET", "POST"])
 def vacation_settings(email):
-    # --- INÍCIO: SUPORTE À AUTOMAÇÃO GITHUB ACTIONS ---
-    if is_automation_request():
-        # Permite execução pela automação sem sessão
-        admin_email = os.environ.get("ADMIN_AUTOMATION_EMAIL", "automacao@tecafrio.com.br")
-        creds = get_service_account_creds(admin_email)
-    else:
-        if "credentials" not in session:
-            return jsonify({"error": "Unauthorized"}), 401
-        admin_email = session.get("user_email")
-        creds = get_service_account_creds(admin_email)
-    # --- FIM: SUPORTE À AUTOMAÇÃO GITHUB ACTIONS ---
+    if "credentials" not in session:
+        return jsonify({"error": "Unauthorized"}), 401
 
+    # DEVE delegar como o usuário alvo
+    creds = get_service_account_creds(email)
     gmail_service = build('gmail', 'v1', credentials=creds)
     if request.method == "GET":
         try:
             print("Consultando vacation para:", email)
-            settings = gmail_service.users().settings().getVacation(userId=email).execute()
+            # ALTERE userId=email PARA userId="me"
+            settings = gmail_service.users().settings().getVacation(userId="me").execute()
             return jsonify(settings)
         except Exception as e:
             print("Erro ao consultar vacation:", e)
@@ -245,11 +241,13 @@ def vacation_settings(email):
         }
         try:
             print("Alterando vacation para:", email, vacation_settings)
-            gmail_service.users().settings().updateVacation(userId=email, body=vacation_settings).execute()
+            # ALTERE userId=email PARA userId="me"
+            gmail_service.users().settings().updateVacation(userId="me", body=vacation_settings).execute()
 
             # Alteração de senha se necessário
             if data.get("alterarSenha"):
-                directory_service = build('admin', 'directory_v1', credentials=creds)
+                admin_email = session.get("user_email")
+                directory_service = build('admin', 'directory_v1', credentials=get_service_account_creds(admin_email))
                 tipo = data.get("tipoAlteracaoSenha")
                 if tipo == "ferias":
                     nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "SenhaPadraoFerias123")
