@@ -227,7 +227,7 @@ def vacation_settings(email):
             return jsonify({"error": str(e)}), 400
     else:
         data = request.get_json()
-       vacation_settings = {
+        vacation_settings = {
             "enableAutoReply": data.get("enableAutoReply", True),
             "responseSubject": data.get("responseSubject", ""),
             "responseBodyHtml": data.get("responseBodyHtml", ""),      # <-- HTML
