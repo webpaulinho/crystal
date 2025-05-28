@@ -250,10 +250,10 @@ def vacation_settings(email):
                 directory_service = build('admin', 'directory_v1', credentials=get_service_account_creds(admin_email))
                 tipo = data.get("tipoAlteracaoSenha")
                 if tipo == "ferias":
-                    nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "SenhaPadraoFerias123")
+                    nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "mudar@123")
                     change_at_next_login = True
                 elif tipo == "saida":
-                    nova_senha = os.environ.get("SAIDA_SENHA_PADRAO", "SenhaPadraoSaida456")
+                    nova_senha = os.environ.get("SAIDA_SENHA_PADRAO", "tftdem@2025")
                     change_at_next_login = False
                 else:
                     nova_senha = None
