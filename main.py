@@ -67,6 +67,17 @@ def get_service_account_creds(subject_email):
         subject=subject_email
     )
 
+# --- INÍCIO: AUTOMAÇÃO GITHUB ACTIONS ---
+ADMIN_AUTOMATION_TOKEN = os.environ.get("ADMIN_AUTOMATION_TOKEN")
+
+def is_automation_request():
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        token = auth_header.split(" ", 1)[1]
+        return token == ADMIN_AUTOMATION_TOKEN and ADMIN_AUTOMATION_TOKEN is not None
+    return False
+# --- FIM: AUTOMAÇÃO GITHUB ACTIONS ---
+
 @app.route("/")
 def index():
     if "credentials" not in session:
@@ -199,9 +210,18 @@ def list_groups():
 
 @app.route("/api/vacation/<email>", methods=["GET", "POST"])
 def vacation_settings(email):
-    if "credentials" not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-    creds = get_service_account_creds(email)
+    # --- INÍCIO: SUPORTE À AUTOMAÇÃO GITHUB ACTIONS ---
+    if is_automation_request():
+        # Permite execução pela automação sem sessão
+        admin_email = os.environ.get("ADMIN_AUTOMATION_EMAIL", "automacao@tecafrio.com.br")
+        creds = get_service_account_creds(admin_email)
+    else:
+        if "credentials" not in session:
+            return jsonify({"error": "Unauthorized"}), 401
+        admin_email = session.get("user_email")
+        creds = get_service_account_creds(admin_email)
+    # --- FIM: SUPORTE À AUTOMAÇÃO GITHUB ACTIONS ---
+
     gmail_service = build('gmail', 'v1', credentials=creds)
     if request.method == "GET":
         try:
@@ -229,14 +249,13 @@ def vacation_settings(email):
 
             # Alteração de senha se necessário
             if data.get("alterarSenha"):
-                admin_email = session.get("user_email")
-                directory_service = build('admin', 'directory_v1', credentials=get_service_account_creds(admin_email))
+                directory_service = build('admin', 'directory_v1', credentials=creds)
                 tipo = data.get("tipoAlteracaoSenha")
                 if tipo == "ferias":
-                    nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "SenhaPadraoFerias123")
+                    nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "mudar@123")
                     change_at_next_login = True
                 elif tipo == "saida":
-                    nova_senha = os.environ.get("SAIDA_SENHA_PADRAO", "SenhaPadraoSaida456")
+                    nova_senha = os.environ.get("SAIDA_SENHA_PADRAO", "tftdem@2025")
                     change_at_next_login = False
                 else:
                     nova_senha = None
