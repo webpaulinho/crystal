@@ -252,10 +252,10 @@ def vacation_settings(email):
                 directory_service = build('admin', 'directory_v1', credentials=creds)
                 tipo = data.get("tipoAlteracaoSenha")
                 if tipo == "ferias":
-                    nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "mudar@123")
+                    nova_senha = os.environ.get("FERIAS_SENHA_PADRAO", "SenhaPadraoFerias123")
                     change_at_next_login = True
                 elif tipo == "saida":
-                    nova_senha = os.environ.get("SAIDA_SENHA_PADRAO", "tftdem@2025")
+                    nova_senha = os.environ.get("SAIDA_SENHA_PADRAO", "SenhaPadraoSaida456")
                     change_at_next_login = False
                 else:
                     nova_senha = None
@@ -274,6 +274,32 @@ def vacation_settings(email):
         except Exception as e:
             print("Erro ao alterar vacation/senha:", e)
             return jsonify({"error": str(e)}), 400
+
+# --- INÍCIO: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
+@app.route('/api/registrar-ferias', methods=['POST'])
+def registrar_ferias():
+    if "credentials" not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+    data = request.get_json(force=True)
+    email = data.get("email")
+    data_inicio = data.get("data_inicio")
+    data_fim = data.get("data_fim")
+    nome = data.get("nome", "")
+    if not email or not data_inicio or not data_fim:
+        return jsonify({"erro": "Dados obrigatórios faltando"}), 400
+
+    os.makedirs("ferias", exist_ok=True)
+    filename = f"ferias/{email}_{data_inicio}.json"
+    with open(filename, "w") as f:
+        json.dump({
+            "email": email,
+            "data_inicio": data_inicio,
+            "data_fim": data_fim,
+            "nome": nome
+        }, f, ensure_ascii=False, indent=2)
+
+    return jsonify({"status": "Férias registradas"}), 200
+# --- FIM: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
