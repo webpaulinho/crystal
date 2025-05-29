@@ -52,7 +52,7 @@ def main():
             print(f'Alterando senha para: {email}')
             tipo_alteracao = "ferias"
             if tipo_alteracao == "ferias":
-                nova_senha = FERIAs_SENHA_PADRAO
+                nova_senha = FERIAS_SENHA_PADRAO
                 change_at_next_login = True
             elif tipo_alteracao == "saida":
                 nova_senha = SAIDA_SENHA_PADRAO
