@@ -326,6 +326,16 @@ function preencherMensagemPadrao() {
 
 function atualizarMensagemSePadrao() {
     const assuntoSelect = document.getElementById('assunto');
+    // NOVO: se for saída, calcula automaticamente o último dia (+19 dias do primeiro)
+    if (assuntoSelect.value === "saida") {
+        const primeiroDiaStr = document.getElementById('primeiro-dia').value;
+        if (primeiroDiaStr) {
+            const primeiroDia = new Date(primeiroDiaStr);
+            const ultimoDia = new Date(primeiroDia);
+            ultimoDia.setDate(ultimoDia.getDate() + 19); // +19 dias para totalizar 20 dias de aviso
+            document.getElementById('ultimo-dia').value = ultimoDia.toISOString().split('T')[0];
+        }
+    }
     if ((assuntoSelect.value === "ferias" || assuntoSelect.value === "saida") && !vacationAtivado) {
         preencherMensagemPadrao();
     }
@@ -355,7 +365,7 @@ function atualizarCampoAlterarSenha() {
 // Listeners para campos do formulário
 document.getElementById('assunto').onchange = function() {
     atualizarCampoAlterarSenha();
-    preencherMensagemPadrao();
+    atualizarMensagemSePadrao();
 };
 document.getElementById('primeiro-dia').onchange = atualizarMensagemSePadrao;
 document.getElementById('ultimo-dia').onchange = atualizarMensagemSePadrao;
