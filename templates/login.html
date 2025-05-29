@@ -22,8 +22,10 @@
             width: 350px;
             text-align: center;
         }
-        .google-logo {
+        .teca-logo {
             width: 50px;
+            height: 50px;
+            object-fit: contain;
             margin-bottom: 20px;
         }
         .login-title {
@@ -70,7 +72,7 @@
 </head>
 <body>
     <div class="login-container">
-        <img src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" class="google-logo" alt="Google">
+        <img src="{{ url_for('static', filename='img/logo_teca_final.png') }}" class="teca-logo" alt="Teca Frio">
         <div class="login-title">Painel de Férias</div>
         <div class="login-desc">Faça login com sua conta Google corporativa<br>@tecafrio.com.br</div>
         <a class="google-btn" href="{{ url_for('login') }}">
