@@ -6,7 +6,6 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
-from github_commit import commit_json_to_github
 
 # ====== INÍCIO: Configuração dinâmica da conta de serviço ======
 if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in os.environ:
@@ -245,6 +244,23 @@ def vacation_settings(email):
         print("endTime (ms):", vacation_settings["endTime"], "->", datetime.datetime.utcfromtimestamp(vacation_settings["endTime"]/1000))
         print("Dados completos:", vacation_settings)
 
+        # --- INÍCIO: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
+        if data.get("agendarExclusao") and data.get("dataExclusao"):
+            os.makedirs("agendamentos", exist_ok=True)
+            agendamento_exclusao = {
+                "tipo": "exclusao",
+                "email": email,
+                "data_acao": data["dataExclusao"],  # yyyy-mm-dd
+                "registrado_em": datetime.datetime.utcnow().isoformat() + "Z",
+                "motivo": data.get("responseSubject", ""),
+                "ultimo_dia": data.get("endTime"),  # timestamp ms
+            }
+            nome_arquivo = f"agendamentos/exclusao_{email}_{data['dataExclusao']}.json"
+            with open(nome_arquivo, "w", encoding="utf-8") as f:
+                json.dump(agendamento_exclusao, f, ensure_ascii=False, indent=2)
+            print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
+        # --- FIM: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
+
         try:
             print("Alterando vacation para:", email, vacation_settings)
             gmail_service.users().settings().updateVacation(userId="me", body=vacation_settings).execute()
@@ -267,20 +283,15 @@ def registrar_ferias():
     if not email or not data_inicio or not data_fim:
         return jsonify({"erro": "Dados obrigatórios faltando"}), 400
 
-    repo = "webpaulinho/painel-ferias"
-    path = f"ferias/{email}_{data_inicio}.json"
-    content_dict = {
-        "email": email,
-        "data_inicio": data_inicio,
-        "data_fim": data_fim,
-        "nome": nome
-    }
-    commit_message = f"Registra férias de {nome or email} iniciando em {data_inicio}"
-    github_token = os.environ["GITHUB_TOKEN"]  # Defina GITHUB_TOKEN no Render!
-
-    ok = commit_json_to_github(repo, path, content_dict, commit_message, github_token)
-    if not ok:
-        return jsonify({"erro": "Falha ao salvar férias no GitHub"}), 500
+    os.makedirs("ferias", exist_ok=True)
+    filename = f"ferias/{email}_{data_inicio}.json"
+    with open(filename, "w") as f:
+        json.dump({
+            "email": email,
+            "data_inicio": data_inicio,
+            "data_fim": data_fim,
+            "nome": nome
+        }, f, ensure_ascii=False, indent=2)
 
     return jsonify({"status": "Férias registradas"}), 200
 # --- FIM: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
