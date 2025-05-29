@@ -19,6 +19,17 @@ function formatarDataBR(dataISO) {
     return `${dd}/${mm}/${yyyy}`;
 }
 
+// Função para exibir popup/toast
+function showPopupMessage(message, isSuccess = true) {
+    const popup = document.getElementById('popup-message');
+    popup.textContent = message;
+    popup.className = 'popup-message ' + (isSuccess ? 'success' : 'error');
+    popup.style.display = 'block';
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, 3500); // fecha depois de 3.5 segundos
+}
+
 // Corrigida: Retorna segunda-feira se último dia for sexta/sábado/domingo, senão retorna dia seguinte
 function proximoDiaUtil(dataISO) {
     if (!dataISO) return "";
@@ -169,7 +180,7 @@ function mensagemSaidaDelta(nome, responsavelDetalhes, grupoDetalhes) {
         { insert: ' não faz mais parte da equipe da Teca Frio.\n' },
         { insert: 'Para continuar seu atendimento ou tratar de assuntos relacionados, por favor, entre em contato com ' },
         { insert: responsavelTexto, attributes: { bold: true } },
-        { insert: '.\n\nContinuamos à disposição.\nAtenciosamente,\n' },
+        { insert: '.\n\nContinuamos à disposição.\nAtenciosamente,' },
         { insert: 'Teca Frio', attributes: { bold: true } }
     ];
 }
@@ -206,7 +217,7 @@ function mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil, responsa
         { insert: responsavelFone, attributes: { bold: true } },
         { insert: '.\n' },
         { insert: 'Agradecemos pela compreensão.\n' },
-        { insert: 'Atenciosamente,\n' },
+        { insert: 'Atenciosamente,' },
         { insert: 'Teca Frio', attributes: { bold: true } }
     ];
 }
@@ -380,13 +391,13 @@ document.getElementById('vacationForm').onsubmit = function(e) {
     const assuntoSelect = document.getElementById('assunto');
     let assunto = assuntoSelect.options[assuntoSelect.selectedIndex].textContent;
     if (assuntoSelect.value === "") {
-        document.getElementById('msg').textContent = "Selecione um assunto para continuar.";
+        showPopupMessage("Selecione um assunto para continuar.", false);
         return;
     }
     const responsavelDetalhes = getResponsavelSelecionado();
     const grupoDetalhes = getGrupoSelecionado();
     if (!responsavelDetalhes && !grupoDetalhes) {
-        document.getElementById('msg').textContent = "Selecione um Responsável ou Grupo Responsável.";
+        showPopupMessage("Selecione um Responsável ou Grupo Responsável.", false);
         return;
     }
 
@@ -442,16 +453,16 @@ document.getElementById('vacationForm').onsubmit = function(e) {
             }).then(r2 => r2.json())
               .then(data2 => {
                   if (data2.status === "Férias registradas") {
-                      document.getElementById('msg').textContent = "Alterações e registro de férias salvos com sucesso!";
+                      showPopupMessage("Alterações e registro de férias salvos com sucesso!", true);
                   } else {
-                      document.getElementById('msg').textContent = (data2.erro || data2.error || "") + " (vacation salvo)";
+                      showPopupMessage((data2.erro || data2.error || "") + " (vacation salvo)", false);
                   }
               })
               .catch(() => {
-                  document.getElementById('msg').textContent = "Férias salvas, mas erro ao gerar JSON no backend.";
+                  showPopupMessage("Férias salvas, mas erro ao gerar JSON no backend.", false);
               });
         } else {
-            document.getElementById('msg').textContent = data.error || "Erro ao salvar";
+            showPopupMessage(data.error || "Erro ao salvar", false);
         }
     });
 };
