@@ -5,11 +5,16 @@ import json
 
 def commit_json_to_github(repo, path, content_dict, commit_message, github_token):
     """
-    repo: str. Ex: 'webpaulinho/painel-ferias'
-    path: str. Caminho no repo. Ex: 'ferias/nome-arquivo.json'
-    content_dict: dict. Dado que será salvo como JSON.
-    commit_message: str.
-    github_token: str.
+    Salva (cria ou atualiza) um arquivo JSON em qualquer local do repositório via API do GitHub.
+
+    Pode ser usado para agendamento de férias, troca de senha, exclusão de contas, etc.
+
+    Parâmetros:
+        repo: str. Ex: 'webpaulinho/painel-ferias'
+        path: str. Caminho no repo. Ex: 'ferias/nome-arquivo.json' ou 'agendamentos/exclusao-nome.json'
+        content_dict: dict. Dados que serão salvos como JSON.
+        commit_message: str. Mensagem do commit.
+        github_token: str. Token de acesso do GitHub (com permissão de escrita).
     """
     api_url = f"https://api.github.com/repos/{repo}/contents/{path}"
     headers = {
@@ -19,7 +24,7 @@ def commit_json_to_github(repo, path, content_dict, commit_message, github_token
     content_str = json.dumps(content_dict, ensure_ascii=False, indent=2)
     content_b64 = base64.b64encode(content_str.encode()).decode()
 
-    # Verifica se o arquivo já existe para obter o SHA
+    # Verifica se o arquivo já existe para obter o SHA (necessário para atualizar)
     r = requests.get(api_url, headers=headers)
     if r.status_code == 200:
         sha = r.json().get("sha")
@@ -36,8 +41,8 @@ def commit_json_to_github(repo, path, content_dict, commit_message, github_token
 
     resp = requests.put(api_url, headers=headers, json=data)
     if resp.status_code in (200, 201):
-        print("Arquivo comitado com sucesso!")
+        print(f"Arquivo '{path}' comitado com sucesso!")
         return True
     else:
-        print("Erro ao commitar:", resp.status_code, resp.text)
+        print(f"Erro ao commitar '{path}':", resp.status_code, resp.text)
         return False
