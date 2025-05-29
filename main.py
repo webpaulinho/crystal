@@ -6,6 +6,7 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
+from github_commit import commit_json_to_github
 
 # ====== INÍCIO: Configuração dinâmica da conta de serviço ======
 if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in os.environ:
@@ -266,15 +267,20 @@ def registrar_ferias():
     if not email or not data_inicio or not data_fim:
         return jsonify({"erro": "Dados obrigatórios faltando"}), 400
 
-    os.makedirs("ferias", exist_ok=True)
-    filename = f"ferias/{email}_{data_inicio}.json"
-    with open(filename, "w") as f:
-        json.dump({
-            "email": email,
-            "data_inicio": data_inicio,
-            "data_fim": data_fim,
-            "nome": nome
-        }, f, ensure_ascii=False, indent=2)
+    repo = "webpaulinho/painel-ferias"
+    path = f"ferias/{email}_{data_inicio}.json"
+    content_dict = {
+        "email": email,
+        "data_inicio": data_inicio,
+        "data_fim": data_fim,
+        "nome": nome
+    }
+    commit_message = f"Registra férias de {nome or email} iniciando em {data_inicio}"
+    github_token = os.environ["GITHUB_TOKEN"]  # Defina GITHUB_TOKEN no Render!
+
+    ok = commit_json_to_github(repo, path, content_dict, commit_message, github_token)
+    if not ok:
+        return jsonify({"erro": "Falha ao salvar férias no GitHub"}), 500
 
     return jsonify({"status": "Férias registradas"}), 200
 # --- FIM: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
