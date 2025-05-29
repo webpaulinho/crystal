@@ -419,22 +419,34 @@ document.getElementById('vacationForm').onsubmit = function(e) {
         alterarSenha = document.getElementById('alterar-senha').checked;
         tipoAlteracaoSenha = document.getElementById('assunto').value; // "ferias" ou "saida"
     }
-    console.log("Primeiro dia:", primeiroDia);
-    console.log("Último dia:", ultimoDia);
-    console.log("startTime:", startTime, new Date(startTime).toISOString());
-    console.log("endTime:", endTime, new Date(endTime).toISOString());
+
+    // NOVO: Definir agendamento de exclusão se for saída
+    let agendarExclusao = false;
+    let dataExclusao = null;
+    if (assuntoSelect.value === "saida") {
+        agendarExclusao = true;
+        // Calcula próximo dia útil em formato yyyy-mm-dd
+        const proxUtil = proximoDiaUtil(ultimoDia); // retorna dd/mm/yyyy
+        if (proxUtil) {
+            const [dd, mm, yyyy] = proxUtil.split('/');
+            dataExclusao = `${yyyy}-${mm}-${dd}`;
+        }
+    }
+
     fetch('/api/vacation/' + encodeURIComponent(email), {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             responseSubject: assunto,
-            responseBodyHtml: mensagemHtml,  // <-- Aqui!
+            responseBodyHtml: mensagemHtml,
             startTime,
             endTime,
             restrictToContacts,
             restrictToDomain,
             alterarSenha: alterarSenha,
-            tipoAlteracaoSenha: tipoAlteracaoSenha
+            tipoAlteracaoSenha: tipoAlteracaoSenha,
+            agendarExclusao: agendarExclusao,
+            dataExclusao: dataExclusao
         })
     })
     .then(r => r.json())
