@@ -154,3 +154,21 @@ body {
         gap: 8px;
     }
 }
+.popup-message {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 250px;
+  background: #222;
+  color: #fff;
+  padding: 18px 32px;
+  border-radius: 8px;
+  z-index: 9999;
+  font-size: 1.1em;
+  opacity: 0.95;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+  text-align: center;
+}
+.popup-message.success { background: #28a745; }
+.popup-message.error   { background: #dc3545; }
