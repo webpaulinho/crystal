@@ -2,7 +2,7 @@ name: Exclusão automática de contas
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # Executa todo dia às 6h UTC
+    - cron: '0 10 * * 1-5'  # Seg a Sex, 07h da manhã (Brasília, UTC-3)
 
 jobs:
   excluir-contas:
