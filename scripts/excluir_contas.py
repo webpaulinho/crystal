@@ -28,10 +28,10 @@ def excluir_usuario(email, creds):
     service = build('admin', 'directory_v1', credentials=creds)
     try:
         service.users().delete(userKey=email).execute()
-        print(f"Conta {email} excluída com sucesso.")
+        print(f"[OK] Conta {email} excluída com sucesso.")
         return True
     except Exception as e:
-        print(f"Falha ao excluir {email}: {e}")
+        print(f"[ERRO] Falha ao excluir {email}: {e}")
         return False
 
 def processar_agendamentos():
@@ -51,25 +51,32 @@ def processar_agendamentos():
             dados = json.load(f)
         data_acao = dados.get("data_acao")
         email = dados.get("email")
+        processado = dados.get("processado", False)
         if not data_acao or not email:
-            print(f"Arquivo {filename} ignorado: dados incompletos.")
+            print(f"[IGNORADO] Arquivo {filename}: dados incompletos.")
             continue
-        # Executa somente na data programada
+        if processado:
+            print(f"[IGNORADO] {email}: já processado anteriormente.")
+            continue
+        # Executa somente na data programada ou anterior
         if data_acao > hoje:
-            print(f"Agendamento para {email} é futuro ({data_acao}), ignorando hoje.")
+            print(f"[FUTURO] Agendamento para {email} é futuro ({data_acao}), ignorando hoje.")
             continue
         if data_acao < hoje:
-            print(f"Agendamento para {email} era para {data_acao}, processando mesmo assim.")
+            print(f"[ATRASADO] Agendamento para {email} era para {data_acao}, processando mesmo assim.")
 
         sucesso = excluir_usuario(email, creds)
+        dados["processado"] = True
+        # Atualiza arquivo antes de mover para processados
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(dados, f, ensure_ascii=False, indent=2)
         # Move arquivo para processados
         destino = os.path.join(PROCESSED_DIR, filename)
         os.rename(filepath, destino)
-        # Opcional: salvar status/resultado
         if sucesso:
-            print(f"Agendamento processado: {email} ({data_acao}) OK.")
+            print(f"[OK] Agendamento processado: {email} ({data_acao})")
         else:
-            print(f"Agendamento processado: {email} ({data_acao}) FALHOU.")
+            print(f"[FALHOU] Agendamento processado: {email} ({data_acao})")
 
 if __name__ == "__main__":
     processar_agendamentos()
