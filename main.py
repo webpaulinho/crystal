@@ -6,7 +6,6 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
-from github_commit import commit_json_to_github  # Importa a função do github_commit.py
 
 # ====== INÍCIO: Configuração dinâmica da conta de serviço ======
 if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in os.environ:
@@ -45,11 +44,6 @@ SCOPES = [
 ]
 REDIRECT_URI = os.environ.get("REDIRECT_URI", "https://msgferias.onrender.com/callback")
 
-# Configuração do GitHub
-GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
-GITHUB_REPO = "webpaulinho/painel-ferias"  # Nome do repositório no formato owner/repo
-GITHUB_BRANCH = "main"  # Branch onde os arquivos serão salvos
-
 def is_domain_user(email):
     return email.endswith('@tecafrio.com.br')
 
@@ -72,6 +66,17 @@ def get_service_account_creds(subject_email):
         ],
         subject=subject_email
     )
+
+# --- INÍCIO: AUTOMAÇÃO GITHUB ACTIONS ---
+ADMIN_AUTOMATION_TOKEN = os.environ.get("ADMIN_AUTOMATION_TOKEN")
+
+def is_automation_request():
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        token = auth_header.split(" ", 1)[1]
+        return token == ADMIN_AUTOMATION_TOKEN and ADMIN_AUTOMATION_TOKEN is not None
+    return False
+# --- FIM: AUTOMAÇÃO GITHUB ACTIONS ---
 
 @app.route("/")
 def index():
@@ -145,41 +150,32 @@ def logout():
 
 @app.route("/api/users")
 def list_users():
-    print("Entrando na função list_users")
     if "credentials" not in session:
-        print("Erro: Credenciais não encontradas na sessão")
         return jsonify({"error": "Unauthorized"}), 401
     admin_email = session.get("user_email")
-    print("Email do administrador:", admin_email)
     creds = get_service_account_creds(admin_email)
-    print("Credenciais obtidas:", creds)
     service = build('admin', 'directory_v1', credentials=creds)
     users = []
     page_token = None
-    try:
-        while True:
-            print("Buscando usuários do domínio...")
-            results = service.users().list(
-                domain='tecafrio.com.br',
-                maxResults=200,
-                orderBy='email',
-                pageToken=page_token
-            ).execute()
-            batch = results.get('users', [])
-            print("Usuários encontrados:", batch)
-            for u in batch:
-                users.append({
-                    "email": u['primaryEmail'],
-                    "nome": u.get("name", {}).get("fullName", u['primaryEmail']),
-                    "telefone": u.get("phones", [{}])[0].get("value", "") if u.get("phones") else ""
-                })
-            page_token = results.get('nextPageToken')
-            if not page_token:
-                break
-        print("Total de usuários retornados:", len(users))
-    except Exception as e:
-        print("Erro ao listar usuários:", e)
-        return jsonify({"error": str(e)}), 500
+    while True:
+        results = service.users().list(
+            domain='tecafrio.com.br',
+            maxResults=200,
+            orderBy='email',
+            pageToken=page_token
+        ).execute()
+        batch = results.get('users', [])
+        for u in batch:
+            users.append({
+                "email": u['primaryEmail'],
+                "nome": u.get("name", {}).get("fullName", u['primaryEmail']),
+                "telefone": u.get("phones", [{}])[0].get("value", "") if u.get("phones") else ""
+            })
+        page_token = results.get('nextPageToken')
+        if not page_token:
+            break
+    print("Usuários retornados:", users)
+    print("Total de usuários:", len(users))
     return jsonify(users)
 
 @app.route("/api/groups")
@@ -250,8 +246,7 @@ def vacation_settings(email):
 
         # --- INÍCIO: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
         if data.get("agendarExclusao") and data.get("dataExclusao"):
-            # Substituído pelo commit no GitHub
-            path = f"agendamentos/exclusao_{email}_{data['dataExclusao']}.json"
+            os.makedirs("agendamentos", exist_ok=True)
             agendamento_exclusao = {
                 "tipo": "exclusao",
                 "email": email,
@@ -260,24 +255,20 @@ def vacation_settings(email):
                 "motivo": data.get("responseSubject", ""),
                 "ultimo_dia": data.get("endTime"),  # timestamp ms
             }
-            commit_message = f"Agendar exclusão de conta para {email} em {data['dataExclusao']}"
-            try:
-                success = commit_json_to_github(GITHUB_REPO, path, agendamento_exclusao, commit_message, GITHUB_TOKEN)
-                if success:
-                    print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
-                else:
-                    print(f"Falha ao agendar exclusão para {email}")
-            except Exception as e:
-                print("Erro ao agendar exclusão:", e)
+            nome_arquivo = f"agendamentos/exclusao_{email}_{data['dataExclusao']}.json"
+            with open(nome_arquivo, "w", encoding="utf-8") as f:
+                json.dump(agendamento_exclusao, f, ensure_ascii=False, indent=2)
+            print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
         # --- FIM: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
 
         try:
             print("Alterando vacation para:", email, vacation_settings)
             gmail_service.users().settings().updateVacation(userId="me", body=vacation_settings).execute()
-            return jsonify({"status": "Férias registradas", "message": "Alterações e registro de férias salvos com sucesso!"}), 200
+
+            return jsonify({"ok": True})
         except Exception as e:
             print("Erro ao alterar vacation:", e)
-            return jsonify({"status": "Erro", "error": "Falha ao salvar no GitHub"}), 500
+            return jsonify({"error": str(e)}), 400
 
 # --- INÍCIO: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
 @app.route('/api/registrar-ferias', methods=['POST'])
@@ -292,25 +283,17 @@ def registrar_ferias():
     if not email or not data_inicio or not data_fim:
         return jsonify({"erro": "Dados obrigatórios faltando"}), 400
 
-    # Substituído pelo commit no GitHub
-    path = f"ferias/{email}_{data_inicio}.json"
-    content_dict = {
-        "email": email,
-        "data_inicio": data_inicio,
-        "data_fim": data_fim,
-        "nome": nome
-    }
-    commit_message = f"Registrar férias para {email} de {data_inicio} a {data_fim}"
+    os.makedirs("ferias", exist_ok=True)
+    filename = f"ferias/{email}_{data_inicio}.json"
+    with open(filename, "w") as f:
+        json.dump({
+            "email": email,
+            "data_inicio": data_inicio,
+            "data_fim": data_fim,
+            "nome": nome
+        }, f, ensure_ascii=False, indent=2)
 
-    try:
-        success = commit_json_to_github(GITHUB_REPO, path, content_dict, commit_message, GITHUB_TOKEN)
-        if success:
-            return jsonify({"status": "Férias registradas no GitHub"}), 200
-        else:
-            return jsonify({"error": "Falha ao salvar no GitHub"}), 500
-    except Exception as e:
-        print("Erro ao registrar férias:", e)
-        return jsonify({"error": str(e)}), 500
+    return jsonify({"status": "Férias registradas"}), 200
 # --- FIM: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
 
 if __name__ == "__main__":
