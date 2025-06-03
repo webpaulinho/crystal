@@ -78,8 +78,7 @@ const quill = new Quill('#editor', {
 fetch('/api/users')
     .then(r => r.json())
     .then(usuarios => {
-        console.log("Usuários retornados:", usuarios);
-        usuariosCache = usuarios;;
+        usuariosCache = usuarios;
         const usuarioSelect = document.getElementById('usuario');
         usuarioSelect.innerHTML = "";
         document.getElementById('responsavel').innerHTML = '<option value="" selected>Selecione Responsável...</option>';
@@ -181,7 +180,7 @@ function mensagemSaidaDelta(nome, responsavelDetalhes, grupoDetalhes) {
         { insert: ' não faz mais parte da equipe da Teca Frio.\n' },
         { insert: 'Para continuar seu atendimento ou tratar de assuntos relacionados, por favor, entre em contato com ' },
         { insert: responsavelTexto, attributes: { bold: true } },
-        { insert: '.\n\nContinuamos à disposição.\nAtenciosamente,\n' },
+        { insert: '.\n\nContinuamos à disposição.\nAtenciosamente,' },
         { insert: 'Teca Frio', attributes: { bold: true } }
     ];
 }
@@ -218,7 +217,7 @@ function mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil, responsa
         { insert: responsavelFone, attributes: { bold: true } },
         { insert: '.\n' },
         { insert: 'Agradecemos pela compreensão.\n' },
-        { insert: 'Atenciosamente,\n' },
+        { insert: 'Atenciosamente,' },
         { insert: 'Teca Frio', attributes: { bold: true } }
     ];
 }
@@ -476,17 +475,19 @@ document.getElementById('vacationForm').onsubmit = function(e) {
             }).then(r2 => r2.json())
               .then(data2 => {
                   if (data2.status === "Férias registradas") {
-                      showPopupMessage(data2.message || "Alterações e registro de férias salvos com sucesso!", true);
-                  } else if (data2.status === "Erro") {
-                      showPopupMessage(data2.error || "Erro ao salvar férias.", false);
+                      showPopupMessage("Alterações e registro de férias salvos com sucesso!", true);
                   } else {
-                      showPopupMessage("Erro desconhecido. Consulte o administrador.", false);
-                    }
+                      showPopupMessage((data2.erro || data2.error || "") + " (vacation salvo)", false);
+                  }
               })
               .catch(() => {
                   showPopupMessage("Férias salvas, mas erro ao gerar JSON no backend.", false);
               });
-        };
+        } else {
+            showPopupMessage(data.error || "Erro ao salvar", false);
+        }
+    });
+};
 
 function limparFormulario() {
     if (!usuariosCache.length) return;
