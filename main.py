@@ -6,6 +6,11 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
+from github_commit import commit_json_to_github  # Importa a função do github_commit.py
+
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")  # Token de acesso ao GitHub
+GITHUB_REPO = "webpaulinho/painel-ferias"  # Nome do repositório no formato owner/repo
+GITHUB_BRANCH = "main"  # Branch onde os arquivos serão salvos
 
 # ====== INÍCIO: Configuração dinâmica da conta de serviço ======
 if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in os.environ:
@@ -246,7 +251,8 @@ def vacation_settings(email):
 
         # --- INÍCIO: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
         if data.get("agendarExclusao") and data.get("dataExclusao"):
-            os.makedirs("agendamentos", exist_ok=True)
+            # Nome do arquivo de agendamento no repositório GitHub
+            path = f"agendamentos/exclusao_{email}_{data['dataExclusao']}.json"
             agendamento_exclusao = {
                 "tipo": "exclusao",
                 "email": email,
@@ -255,10 +261,17 @@ def vacation_settings(email):
                 "motivo": data.get("responseSubject", ""),
                 "ultimo_dia": data.get("endTime"),  # timestamp ms
             }
-            nome_arquivo = f"agendamentos/exclusao_{email}_{data['dataExclusao']}.json"
-            with open(nome_arquivo, "w", encoding="utf-8") as f:
-                json.dump(agendamento_exclusao, f, ensure_ascii=False, indent=2)
-            print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
+            commit_message = f"Agendar exclusão de conta para {email} em {data['dataExclusao']}"
+
+            # Salva o arquivo no GitHub usando o github_commit.py
+            try:
+                success = commit_json_to_github(GITHUB_REPO, path, agendamento_exclusao, commit_message, GITHUB_TOKEN)
+            if success:
+                print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
+            else:
+                print(f"Falha ao agendar exclusão para {email}")
+            except Exception as e:
+                print("Erro ao agendar exclusão:", e)
         # --- FIM: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
 
         try:
