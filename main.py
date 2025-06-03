@@ -267,9 +267,9 @@ def vacation_settings(email):
             try:
                 success = commit_json_to_github(GITHUB_REPO, path, agendamento_exclusao, commit_message, GITHUB_TOKEN)
                 if success:
-                print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
-            else:
-                print(f"Falha ao agendar exclusão para {email}")
+                    print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
+                else:
+                    print(f"Falha ao agendar exclusão para {email}")
         except Exception as e:
             print("Erro ao agendar exclusão:", e)
         # --- FIM: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
