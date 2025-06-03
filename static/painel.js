@@ -78,7 +78,8 @@ const quill = new Quill('#editor', {
 fetch('/api/users')
     .then(r => r.json())
     .then(usuarios => {
-        usuariosCache = usuarios;
+        console.log("Usuários retornados:", usuarios);
+        usuariosCache = usuarios;;
         const usuarioSelect = document.getElementById('usuario');
         usuarioSelect.innerHTML = "";
         document.getElementById('responsavel').innerHTML = '<option value="" selected>Selecione Responsável...</option>';
