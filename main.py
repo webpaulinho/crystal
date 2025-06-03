@@ -266,7 +266,7 @@ def vacation_settings(email):
             # Salva o arquivo no GitHub usando o github_commit.py
             try:
                 success = commit_json_to_github(GITHUB_REPO, path, agendamento_exclusao, commit_message, GITHUB_TOKEN)
-            if success:
+                if success:
                 print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
             else:
                 print(f"Falha ao agendar exclusão para {email}")
