@@ -145,32 +145,41 @@ def logout():
 
 @app.route("/api/users")
 def list_users():
+    print("Entrando na função list_users")
     if "credentials" not in session:
+        print("Erro: Credenciais não encontradas na sessão")
         return jsonify({"error": "Unauthorized"}), 401
     admin_email = session.get("user_email")
+    print("Email do administrador:", admin_email)
     creds = get_service_account_creds(admin_email)
+    print("Credenciais obtidas:", creds)
     service = build('admin', 'directory_v1', credentials=creds)
     users = []
     page_token = None
-    while True:
-        results = service.users().list(
-            domain='tecafrio.com.br',
-            maxResults=200,
-            orderBy='email',
-            pageToken=page_token
-        ).execute()
-        batch = results.get('users', [])
-        for u in batch:
-            users.append({
-                "email": u['primaryEmail'],
-                "nome": u.get("name", {}).get("fullName", u['primaryEmail']),
-                "telefone": u.get("phones", [{}])[0].get("value", "") if u.get("phones") else ""
-            })
-        page_token = results.get('nextPageToken')
-        if not page_token:
-            break
-    print("Usuários retornados:", users)
-    print("Total de usuários:", len(users))
+    try:
+        while True:
+            print("Buscando usuários do domínio...")
+            results = service.users().list(
+                domain='tecafrio.com.br',
+                maxResults=200,
+                orderBy='email',
+                pageToken=page_token
+            ).execute()
+            batch = results.get('users', [])
+            print("Usuários encontrados:", batch)
+            for u in batch:
+                users.append({
+                    "email": u['primaryEmail'],
+                    "nome": u.get("name", {}).get("fullName", u['primaryEmail']),
+                    "telefone": u.get("phones", [{}])[0].get("value", "") if u.get("phones") else ""
+                })
+            page_token = results.get('nextPageToken')
+            if not page_token:
+                break
+        print("Total de usuários retornados:", len(users))
+    except Exception as e:
+        print("Erro ao listar usuários:", e)
+        return jsonify({"error": str(e)}), 500
     return jsonify(users)
 
 @app.route("/api/groups")
