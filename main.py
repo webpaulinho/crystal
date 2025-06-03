@@ -273,6 +273,7 @@ def vacation_settings(email):
 
 # --- INÍCIO: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
 @app.route('/api/registrar-ferias', methods=['POST'])
+@app.route('/api/registrar-ferias', methods=['POST'])
 def registrar_ferias():
     if "credentials" not in session:
         return jsonify({"error": "Unauthorized"}), 401
@@ -293,11 +294,11 @@ def registrar_ferias():
         "nome": nome
     }
 
-    # Caminho do arquivo no repositório GitHub
-    path = f"ferias/{email}_{data_inicio}.json"
+    # Caminho do arquivo no repositório GitHub (apenas com o email)
+    path = f"ferias/{email}.json"
 
     # Mensagem de commit
-    commit_message = f"Registrar férias para {email} ({data_inicio} a {data_fim})"
+    commit_message = f"Atualizar férias para {email}"
 
     # Salvar arquivo no GitHub
     try:
