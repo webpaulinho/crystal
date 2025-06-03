@@ -154,18 +154,27 @@ def list_users():
     if "credentials" not in session:
         return jsonify({"error": "Unauthorized"}), 401
     admin_email = session.get("user_email")
+    print("Admin Email:", admin_email)  # Log Admin Email
     creds = get_service_account_creds(admin_email)
+    if not creds:
+        return jsonify({"error": "Invalid credentials"}), 403
     service = build('admin', 'directory_v1', credentials=creds)
     users = []
     page_token = None
     while True:
-        results = service.users().list(
-            domain='tecafrio.com.br',
-            maxResults=200,
-            orderBy='email',
-            pageToken=page_token
-        ).execute()
+        try:
+            results = service.users().list(
+                domain='tecafrio.com.br',
+                maxResults=200,
+                orderBy='email',
+                pageToken=page_token
+            ).execute()
+        except Exception as e:
+            print("Error fetching users:", e)
+            return jsonify({"error": str(e)}), 500
+
         batch = results.get('users', [])
+        print("Batch of users:", batch)  # Log users batch
         for u in batch:
             users.append({
                 "email": u['primaryEmail'],
@@ -175,10 +184,9 @@ def list_users():
         page_token = results.get('nextPageToken')
         if not page_token:
             break
-    print("Usuários retornados:", users)
-    print("Total de usuários:", len(users))
+    print("Total Users:", len(users))  # Log total users
     return jsonify(users)
-
+    
 @app.route("/api/groups")
 def list_groups():
     if "credentials" not in session:
