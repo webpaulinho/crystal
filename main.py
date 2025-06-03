@@ -6,6 +6,7 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
+from github_commit import commit_json_to_github  # Importação da função de commit no GitHub
 
 # ====== INÍCIO: Configuração dinâmica da conta de serviço ======
 if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in os.environ:
@@ -280,20 +281,40 @@ def registrar_ferias():
     data_inicio = data.get("data_inicio")
     data_fim = data.get("data_fim")
     nome = data.get("nome", "")
+
     if not email or not data_inicio or not data_fim:
         return jsonify({"erro": "Dados obrigatórios faltando"}), 400
 
-    os.makedirs("ferias", exist_ok=True)
-    filename = f"ferias/{email}_{data_inicio}.json"
-    with open(filename, "w") as f:
-        json.dump({
-            "email": email,
-            "data_inicio": data_inicio,
-            "data_fim": data_fim,
-            "nome": nome
-        }, f, ensure_ascii=False, indent=2)
+    # Criação do conteúdo JSON
+    json_content = {
+        "email": email,
+        "data_inicio": data_inicio,
+        "data_fim": data_fim,
+        "nome": nome
+    }
 
-    return jsonify({"status": "Férias registradas"}), 200
+    # Caminho do arquivo no repositório GitHub
+    path = f"ferias/{email}_{data_inicio}.json"
+
+    # Mensagem de commit
+    commit_message = f"Registrar férias para {email} ({data_inicio} a {data_fim})"
+
+    # Salvar arquivo no GitHub
+    try:
+        commit_result = commit_json_to_github(
+            repo="webpaulinho/painel-ferias",
+            path=path,
+            content_dict=json_content,
+            commit_message=commit_message,
+            github_token=os.environ.get("GITHUB_TOKEN")
+        )
+        if commit_result:
+            return jsonify({"status": "Férias registradas e comitadas ao GitHub"}), 200
+        else:
+            return jsonify({"erro": "Falha ao commitar no GitHub"}), 500
+    except Exception as e:
+        print(f"Erro ao commitar no GitHub: {e}")
+        return jsonify({"erro": str(e)}), 500
 # --- FIM: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
 
 if __name__ == "__main__":
