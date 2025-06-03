@@ -180,7 +180,7 @@ function mensagemSaidaDelta(nome, responsavelDetalhes, grupoDetalhes) {
         { insert: ' não faz mais parte da equipe da Teca Frio.\n' },
         { insert: 'Para continuar seu atendimento ou tratar de assuntos relacionados, por favor, entre em contato com ' },
         { insert: responsavelTexto, attributes: { bold: true } },
-        { insert: '.\n\nContinuamos à disposição.\nAtenciosamente,' },
+        { insert: '.\n\nContinuamos à disposição.\nAtenciosamente,\n' },
         { insert: 'Teca Frio', attributes: { bold: true } }
     ];
 }
@@ -217,7 +217,7 @@ function mensagemFeriasDelta(nome, primeiroDia, ultimoDia, proximoUtil, responsa
         { insert: responsavelFone, attributes: { bold: true } },
         { insert: '.\n' },
         { insert: 'Agradecemos pela compreensão.\n' },
-        { insert: 'Atenciosamente,' },
+        { insert: 'Atenciosamente,\n' },
         { insert: 'Teca Frio', attributes: { bold: true } }
     ];
 }
