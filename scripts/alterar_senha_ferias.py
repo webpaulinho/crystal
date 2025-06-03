@@ -2,6 +2,7 @@ import os
 import json
 import requests
 from datetime import datetime
+import time
 import base64
 from email.mime.text import MIMEText
 from google.oauth2 import service_account
@@ -32,6 +33,22 @@ def send_email_gmail_api(service, to, subject, body):
     message['from'] = GMAIL_SENDER
     raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
     service.users().messages().send(userId="me", body={'raw': raw}).execute()
+
+def wait_for_service_ready(url, timeout=300):
+    """Espera até que o serviço backend esteja pronto."""
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                print("Serviço está pronto!")
+                return True
+        except requests.ConnectionError:
+            pass
+        print("Aguardando o serviço ficar pronto...")
+        time.sleep(5)
+    print("Timeout ao esperar o serviço.")
+    return False
 
 def main():
     hoje = datetime.utcnow().date().isoformat()
@@ -110,4 +127,8 @@ def main():
                     print(f"Erro ao enviar notificação de erro para {GMAIL_RECIPIENT}: {e2}")
 
 if __name__ == "__main__":
-    main()
+    backend_healthcheck_url = f"{BACKEND_URL}/healthcheck"  # Ajuste conforme necessário
+    if wait_for_service_ready(backend_healthcheck_url):
+        main()
+    else:
+        print("O serviço não iniciou a tempo. Saindo...")
