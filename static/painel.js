@@ -475,19 +475,17 @@ document.getElementById('vacationForm').onsubmit = function(e) {
             }).then(r2 => r2.json())
               .then(data2 => {
                   if (data2.status === "Férias registradas") {
-                      showPopupMessage("Alterações e registro de férias salvos com sucesso!", true);
+                      showPopupMessage(data2.message || "Alterações e registro de férias salvos com sucesso!", true);
+                  } else if (data2.status === "Erro") {
+                      showPopupMessage(data2.error || "Erro ao salvar férias.", false);
                   } else {
-                      showPopupMessage((data2.erro || data2.error || "") + " (vacation salvo)", false);
-                  }
+                      showPopupMessage("Erro desconhecido. Consulte o administrador.", false);
+                    }
               })
               .catch(() => {
                   showPopupMessage("Férias salvas, mas erro ao gerar JSON no backend.", false);
               });
-        } else {
-            showPopupMessage(data.error || "Erro ao salvar", false);
-        }
-    });
-};
+        };
 
 function limparFormulario() {
     if (!usuariosCache.length) return;
