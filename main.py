@@ -270,8 +270,8 @@ def vacation_settings(email):
                 print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
             else:
                 print(f"Falha ao agendar exclusão para {email}")
-            except Exception as e:
-                print("Erro ao agendar exclusão:", e)
+        except Exception as e:
+            print("Erro ao agendar exclusão:", e)
         # --- FIM: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
 
         try:
