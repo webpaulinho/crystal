@@ -265,11 +265,10 @@ def vacation_settings(email):
         try:
             print("Alterando vacation para:", email, vacation_settings)
             gmail_service.users().settings().updateVacation(userId="me", body=vacation_settings).execute()
-
-            return jsonify({"ok": True})
+            return jsonify({"message": "Configuração de resposta automática de férias salva com sucesso!", "status": "success"}), 200
         except Exception as e:
             print("Erro ao alterar vacation:", e)
-            return jsonify({"error": str(e)}), 400
+            return jsonify({"error": str(e), "status": "failure"}), 400
 
 # --- INÍCIO: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
 @app.route('/api/registrar-ferias', methods=['POST'])
