@@ -18,7 +18,7 @@ def commit_json_to_github(repo, path, content_dict, commit_message, github_token
     """
     api_url = f"https://api.github.com/repos/{repo}/contents/{path}"
     headers = {
-        "Authorization": f"Bearer {github_token}",
+        "Authorization": f"Bearer {GITHUB_TOKEN}",
         "Accept": "application/vnd.github+json"
     }
     content_str = json.dumps(content_dict, ensure_ascii=False, indent=2)
