@@ -2,7 +2,7 @@ name: Alterar senha automática para início de férias
 
 on:
   schedule:
-    - cron: '0 10 * * *' # Roda todo dia às 07h da manhã de Brasília (10h UTC)
+    - cron: '30 15 * * *' # Roda todo dia às 12h30 da tarde de Brasília (15h30 UTC)
   workflow_dispatch:
 
 jobs:
