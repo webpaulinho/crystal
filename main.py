@@ -273,7 +273,6 @@ def vacation_settings(email):
 
 # --- INÍCIO: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
 @app.route('/api/registrar-ferias', methods=['POST'])
-@app.route('/api/registrar-ferias', methods=['POST'])
 def registrar_ferias():
     if "credentials" not in session:
         return jsonify({"error": "Unauthorized"}), 401
