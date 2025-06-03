@@ -285,6 +285,11 @@ def registrar_ferias():
 
     os.makedirs("ferias", exist_ok=True)
     filename = f"ferias/{email}_{data_inicio}.json"
+    if os.path.exists(filename):
+        print(f"Arquivo existente será sobrescrito: {filename}")
+    else:
+        print(f"Criando novo arquivo: {filename}")
+
     with open(filename, "w") as f:
         json.dump({
             "email": email,
