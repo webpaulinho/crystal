@@ -8,10 +8,6 @@ from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
 from github_commit import commit_json_to_github  # Importa a função do github_commit.py
 
-GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")  # Token de acesso ao GitHub
-GITHUB_REPO = "webpaulinho/painel-ferias"  # Nome do repositório no formato owner/repo
-GITHUB_BRANCH = "main"  # Branch onde os arquivos serão salvos
-
 # ====== INÍCIO: Configuração dinâmica da conta de serviço ======
 if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in os.environ:
     creds_json = os.environ["GOOGLE_APPLICATION_CREDENTIALS_JSON"]
@@ -49,6 +45,11 @@ SCOPES = [
 ]
 REDIRECT_URI = os.environ.get("REDIRECT_URI", "https://msgferias.onrender.com/callback")
 
+# Configuração do GitHub
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
+GITHUB_REPO = "webpaulinho/painel-ferias"  # Nome do repositório no formato owner/repo
+GITHUB_BRANCH = "main"  # Branch onde os arquivos serão salvos
+
 def is_domain_user(email):
     return email.endswith('@tecafrio.com.br')
 
@@ -71,17 +72,6 @@ def get_service_account_creds(subject_email):
         ],
         subject=subject_email
     )
-
-# --- INÍCIO: AUTOMAÇÃO GITHUB ACTIONS ---
-ADMIN_AUTOMATION_TOKEN = os.environ.get("ADMIN_AUTOMATION_TOKEN")
-
-def is_automation_request():
-    auth_header = request.headers.get("Authorization", "")
-    if auth_header.startswith("Bearer "):
-        token = auth_header.split(" ", 1)[1]
-        return token == ADMIN_AUTOMATION_TOKEN and ADMIN_AUTOMATION_TOKEN is not None
-    return False
-# --- FIM: AUTOMAÇÃO GITHUB ACTIONS ---
 
 @app.route("/")
 def index():
@@ -251,7 +241,7 @@ def vacation_settings(email):
 
         # --- INÍCIO: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
         if data.get("agendarExclusao") and data.get("dataExclusao"):
-            # Nome do arquivo de agendamento no repositório GitHub
+            # Substituído pelo commit no GitHub
             path = f"agendamentos/exclusao_{email}_{data['dataExclusao']}.json"
             agendamento_exclusao = {
                 "tipo": "exclusao",
@@ -262,16 +252,14 @@ def vacation_settings(email):
                 "ultimo_dia": data.get("endTime"),  # timestamp ms
             }
             commit_message = f"Agendar exclusão de conta para {email} em {data['dataExclusao']}"
-
-            # Salva o arquivo no GitHub usando o github_commit.py
             try:
                 success = commit_json_to_github(GITHUB_REPO, path, agendamento_exclusao, commit_message, GITHUB_TOKEN)
                 if success:
                     print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
                 else:
                     print(f"Falha ao agendar exclusão para {email}")
-        except Exception as e:
-            print("Erro ao agendar exclusão:", e)
+            except Exception as e:
+                print("Erro ao agendar exclusão:", e)
         # --- FIM: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
 
         try:
@@ -296,22 +284,25 @@ def registrar_ferias():
     if not email or not data_inicio or not data_fim:
         return jsonify({"erro": "Dados obrigatórios faltando"}), 400
 
-    os.makedirs("ferias", exist_ok=True)
-    filename = f"ferias/{email}_{data_inicio}.json"
-    if os.path.exists(filename):
-        print(f"Arquivo existente será sobrescrito: {filename}")
-    else:
-        print(f"Criando novo arquivo: {filename}")
+    # Substituído pelo commit no GitHub
+    path = f"ferias/{email}_{data_inicio}.json"
+    content_dict = {
+        "email": email,
+        "data_inicio": data_inicio,
+        "data_fim": data_fim,
+        "nome": nome
+    }
+    commit_message = f"Registrar férias para {email} de {data_inicio} a {data_fim}"
 
-    with open(filename, "w") as f:
-        json.dump({
-            "email": email,
-            "data_inicio": data_inicio,
-            "data_fim": data_fim,
-            "nome": nome
-        }, f, ensure_ascii=False, indent=2)
-
-    return jsonify({"status": "Férias registradas"}), 200
+    try:
+        success = commit_json_to_github(GITHUB_REPO, path, content_dict, commit_message, GITHUB_TOKEN)
+        if success:
+            return jsonify({"status": "Férias registradas no GitHub"}), 200
+        else:
+            return jsonify({"error": "Falha ao salvar no GitHub"}), 500
+    except Exception as e:
+        print("Erro ao registrar férias:", e)
+        return jsonify({"error": str(e)}), 500
 # --- FIM: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
 
 if __name__ == "__main__":
