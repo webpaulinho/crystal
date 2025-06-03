@@ -443,7 +443,7 @@ document.getElementById('vacationForm').onsubmit = function(e) {
         }
     }
 
-    fetch('/api/vacation/' + encodeURIComponent(email), {
+    etch('/api/vacation/' + encodeURIComponent(email), {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -464,27 +464,30 @@ document.getElementById('vacationForm').onsubmit = function(e) {
         if (data.ok) {
             // Salva férias também no backend para gerar JSON
             fetch('/api/registrar-ferias', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-        email: email,
-        data_inicio: primeiroDia,
-        data_fim: ultimoDia,
-        nome: atualizarAssuntoNome()
-    })
-}).then(r2 => r2.json())
-  .then(data2 => {
-      if (data2.status === "Férias registradas" || data2.status === "Férias registradas e comitadas ao GitHub") {
-          showPopupMessage("Alterações e registro de férias salvos com sucesso!", true);
-      } else if (data2.erro || data2.error) {
-          showPopupMessage(`Erro ao salvar registro de férias: ${data2.erro || data2.error}`, false);
-      } else {
-          showPopupMessage("Erro desconhecido ao salvar registro de férias.", false);
-      }
-  })
-  .catch(() => {
-      showPopupMessage("Férias salvas, mas erro ao gerar JSON no backend.", false);
-  });
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    email: email,
+                    data_inicio: primeiroDia,
+                    data_fim: ultimoDia,
+                    nome: atualizarAssuntoNome()
+                })
+            }).then(r2 => r2.json())
+              .then(data2 => {
+                  if (data2.status === "Férias registradas") {
+                      showPopupMessage("Alterações e registro de férias salvos com sucesso!", true);
+                  } else {
+                      showPopupMessage((data2.erro || data2.error || "") + " (vacation salvo)", false);
+                  }
+              })
+              .catch(() => {
+                  showPopupMessage("Férias salvas, mas erro ao gerar JSON no backend.", false);
+              });
+        } else {
+            showPopupMessage(data.error || "Erro ao salvar", false);
+        }
+    });
+};
 
 function limparFormulario() {
     if (!usuariosCache.length) return;
