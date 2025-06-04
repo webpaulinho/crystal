@@ -443,7 +443,7 @@ document.getElementById('vacationForm').onsubmit = function(e) {
         }
     }
 
-    etch('/api/vacation/' + encodeURIComponent(email), {
+    fetch('/api/vacation/' + encodeURIComponent(email), {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
