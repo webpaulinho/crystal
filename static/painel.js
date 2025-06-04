@@ -474,7 +474,7 @@ document.getElementById('vacationForm').onsubmit = function(e) {
                 })
             }).then(r2 => r2.json())
               .then(data2 => {
-                  if (data2.status === "Férias registradas") {
+                  if (data2.status === "Férias registradas e comitadas ao GitHub") {
                       showPopupMessage("Alterações e registro de férias salvos com sucesso!", true);
                   } else {
                       showPopupMessage((data2.erro || data2.error || "") + " (vacation salvo)", false);
