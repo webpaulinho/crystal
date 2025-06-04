@@ -317,13 +317,19 @@ def registrar_ferias():
             github_token=os.environ.get("GITHUB_TOKEN")
         )
         if commit_result:
-            return jsonify({"status": "Férias registradas"}), 200
+            return jsonify({"status": "Férias registradas e comitadas ao GitHub"}), 200
         else:
             return jsonify({"erro": "Falha ao commitar no GitHub"}), 500
     except Exception as e:
         print(f"Erro ao commitar no GitHub: {e}")
         return jsonify({"erro": str(e)}), 500
 # --- FIM: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
+
+# --- INÍCIO: ENDPOINT DE HEALTHCHECK ---
+@app.route('/healthcheck')
+def healthcheck():
+    return "OK", 200
+# --- FIM: ENDPOINT DE HEALTHCHECK ---
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
