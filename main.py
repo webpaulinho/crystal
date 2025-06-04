@@ -317,7 +317,7 @@ def registrar_ferias():
             github_token=os.environ.get("GITHUB_TOKEN")
         )
         if commit_result:
-            return jsonify({"status": "Férias registradas e comitadas ao GitHub"}), 200
+            return jsonify({"status": "Férias registradas"}), 200
         else:
             return jsonify({"erro": "Falha ao commitar no GitHub"}), 500
     except Exception as e:
