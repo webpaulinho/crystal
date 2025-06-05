@@ -35,5 +35,5 @@ jobs:
           AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
           FERIAS_SENHA_PADRAO: ${{ secrets.FERIAS_SENHA_PADRAO }}
           SAIDA_SENHA_PADRAO: ${{ secrets.SAIDA_SENHA_PADRAO }}
-          GOOGLE_APPLICATION_CREDENTIALS: service-account.json
+          GOOGLE_APPLICATION_CREDENTIALS_JSON: service-account.json
         run: python scripts/alterar_senha_ferias.py
