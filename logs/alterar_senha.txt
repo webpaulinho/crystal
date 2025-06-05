@@ -1,0 +1,1001 @@
+21s
+Run python scripts/alterar_senha_ferias.py
+[DEBUG] Iniciando healthcheck: ***/healthcheck
+[DEBUG] Status: 502 - <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>502</title>
+    <style>@font-face {
+  font-family: "Roobert";
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMk9UVE8AAKewAAwAAAABa6QAAKdfAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAADYKmehqCHhuC4UocpRQGYACLBgE2AiQDkygEBgWFRwcgW8pqkQKZcr0u0nk2H+gc25rBL5CqkDOqYXNqo87dNmL1mgByHi4yIGwcgLFJz2f/////f/pSkaHKgl52HEgorIWX0m0/lzuLglQtUxbMiGh9qonlnolc+1JbmihzmbbylQ/Xs2Knu/rUH62ibhOWZkpgVpo4nLnvzMOZ87/06Lk2hMnbe1EpM1cUezJlZtqCZIKYIPYeoS6VhFPJXNa5j7Y8LmH67MF2qJYI49/FNzQbwX7cqeRUbzyDffdLybw5cxRTIbdy4y5BVskcP6vu3uo+6GtnQl/up3nkVnDZmKlEpYHB1w/usr46inVsWjdEIE2gBgoC36WYsC4qXJjwYb9YbH9vayYROp/tXkp72nOEOvigu6g0+gsN/z6hg7+Ga7wNb8j2p2kypxDmhZipdHuzSaKxAmIassxsPiDbztOUdESnEj+YhrsptpjfP0Hqxu9m0n7j/zGR6I7LbDy56KLRVoGx6yFqcqyz6j2en9u998cYY4wxBowxxhjRI2rAqBAp6RKUahWwULEQCwsLURAJI7GwEBUQEbERFaMoFbH8cO4rM0neNG3/64f8LjCoVbsH5AAVoJck1Am96tS5Ewp5/mF/fL/2uW8SlSAksKRJEJMRiTj+oOqP9PRt+r2XqlLltmKcWHH6TePrrCjDuW1E1+Rwc7uLp0Y7RKah1PglWKQC0fXMo55+7/+vZ+37yMGHaBE2ZfcLB44vHEqhQSjQOuQzQG775+BYcg6W4IKTebAdEwfgWicJolLiRrRt23qkaT71l61FtqRhYy5t+Bpr/6is9/jn+3t+a58//z6NEs6TBPNAm0QSSNOE0oAiPfrfsmXq3t38JLtDK7IIzUNV4QROoVAoFMbd/Jr66cnLNcf+5
+}
+@font-face {
+  font-family: "Neue Montreal";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMgABAAAAALnMABMAAAACO+gAALljAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoJYG4PYEByZfgZgALlyCIEkCZwMEQgKg7dAg4EfC4tOAAE2AiQDlxgEIAWKdAewUgyBVhckGI9QW7AZkqUq106/+jCQoNsQgLRyS9P88U+IOtZNOEbROTbpCcFxSPpthbJt10K3DeZCJ5/zW5P9//////+SZCGH/h/uP0kIoMyqbdd2m9DMyWCBMSQytx0yU0Vbn5ENkITsK4yIU5wXHQokGzPKDChElNWMygqt9eDBaU51CcFXxm2OEvYo5l8G5u44TL6zShXiZJKp/ApJSKLTrGoEnWpN9l279JCQM2R9ZeJCuQnVRHXuF7nLQ9nzUD5Iitrl7jKUldeY06HaGJ/wfu3Rz9egNqp5pfTaxNDL3iCvjowB2QjT57eo85SCu8qFLbIKhOzw84cUKsqf0Gah/5sKqpg8g1rGHPNbcmvKxIf+vonJ/XjEXaLuhusqFPa/hlif1duBV9vBaUKheWN/ewFvnEley5wkgkjJREc2EIo7SoRRPLoqajYJqSKLtPrZvBZ03TwG+SyP+EnwRmiEJCR2g+v/Jgswvg24oqamfksUw3t9/3Xnpjza6olNGascBGQFErABrHZDGzAha5jqiefZAXP7BuWZ0CWNjrwJ04RGNYMTLW6UDS3gttS2DCjj1oORrOS48vRHeIj9cO9t99FoJXE0CMVkpl6pNCIh0uT6zA044Ov2894693KsXWt3rcUerGsXIWfOJLm+8Mu5WSEhiXQIqXQ4WpLoS3R/Ibq419WhQzq503V++sVtTzr7qtdqiQ0CNMlqWWAa2zMje7gXGIJ4k+BvREFyQbbA0VEW3gXpHfzT8/flr73PfZjX5BCVdCaSB+zQ/X+kkdEh1CcCfGg/pd5MGAr0A4TlEDclRrluhTuhTrhz5ubLqf+/2C4e0i/jhdSugw5g0xs0xHYMK
+}
+@font-face {
+  font-family: "Neue Montreal Mono";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMgABAAAAAQvAABMAAAAEG4QAAQtWAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGohsG8VWHIGzVgZgAI8aCIEkCZwMEQgKip9IiP5mC8hEAAE2AiQDyCYEIAWPAweClzgMgVYXJBirEFuUpdMW1I83t7Mmrzk0CZLGTwtWLfUINR8KB1cVEbFatVidQ0wuQIGiOvf8ayZC5hheG+B/uCkqS1CdQ5xQKgiqc3nO3MCprBAcu16dYzPZQz0AZJPs////////////////////////////7yf5T6jT/9/d/RtaliwveWw8MMYMEwyE0bATmqYtCVlhzlkkXoIjK+LE8sg6ipPAvBdK0yylEJKY1RxZlFOBbVEvG7xpXgRb7ThmnnVChSwlupyy7fYiyoT6RVWncpBQxodc+IgLt1zGaRK4V+6TZ8KFMmGdCVVTT9GsFeWBpqVnczsrWRbyVsq9L1lEydx7GhzZlIZ4kU96g2VBA3MS2FuJB4O1QBGqROjYhTQA5zbIWihyorg9hbHULMtInLPI7qAIFAfFKnu+PaMecudTB50AESjThuOOLrx1JCTMy0Iu2X4jV8DS7FvOqsidWHjEPFtHPtQuuGU5rsPzBhhQ63oZ2IG6Tu0G7PgVvN2rbDRO4zMtd/r3q+8X9+xhMr8KtQHVH6EITLAVnClvMppXoyvqnjdm9bJbUgQFC46fsMWVjpvOX2pj9R8mPLc2ahNzvp+0e7xJL+m3qqLXNyg4Fmz1jeH2akzlXZrS0rzqXeSR5fPseNxsZNTUn+h7TZIkqbO5ga0meEjVp1nHlIxWLzbQulDuGSQVch+fbJ4vKOBEeXwJRUf9Jwmr/aJyt7zcUw0fcIKXONNhwdtXDXocGxUi5rIDtOrBgBUaJFFlwQ32BmUZsEvaowxH5vx9Sgn/vZtcIIf3WEwY1bnrN/9pjf6wCKf6REeaCusmlFyv1e4NGqK7A43piQ/xXl109kG0p
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --text-strong: #0d0d0d;  
+  --text-primary: #272727;  
+  --text-secondary: #6b6b6b;  
+  --page-primary: #fff;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --text-strong: #fff;
+  --text-primary: #f0f0f0;  
+  --text-secondary: #c7c7c7;  
+  --page-primary: #0d0d0d;  
+}
+body {
+  font-family: Roobert, sans-serif;
+  margin: 0;
+  padding: 0 1rem;
+  color: var(--text-strong);
+  background-color: var(--page-primary);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+.type-heading-05 {
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 114.286%;
+  letter-spacing: -0.28px;
+}
+.type-mono-01 {
+  font-family: "Neue Montreal Mono";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.65px;
+}
+.type-mono-01-caps {
+  font-family: "Neue Montreal Mono";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.65px;
+  text-transform: uppercase;
+}
+.type-body-01 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+}
+.type-interface-00 {
+  font-family: "Neue Montreal";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.13px;
+  --webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.type-heading-04 {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: -0.28px;
+}
+.text-primary {
+  color: var(--text-primary);
+}
+.text-secondary {
+  color: var(--text-secondary);
+}
+h1 {
+  margin: 0;
+}
+h2 {
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+a {
+  color: inherit;
+}
+body {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        min-height: 100vh;
+      }
+.site-content {
+        margin: auto;
+      }
+header {
+        margin: 1.5rem 0;
+      }
+main > * {
+        margin-bottom: 1rem;
+      }
+.request-id {
+        margin-bottom: 2rem;
+      }
+footer {
+        padding: 1.75rem 0;
+      }
+.logo-render {
+        margin-left: 0.25rem;
+      }
+    </style>
+    <link
+      id="favicon"
+      rel="shortcut icon"
+      href="data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_459_932)'%3E%3Cpath d='M11.4327 1.00388C9.64526 0.919753 8.14218 2.21231 7.88574 3.91533C7.87559 3.99436 7.86035 4.07085 7.84766 4.14733C7.44904 6.26845 5.59303 7.87459 3.3638 7.87459C2.5691 7.87459 1.82263 7.67064 1.17265 7.31372C1.09394 7.27038 1 7.32647 1 7.4157V7.87204V14.7479H7.84512V9.59291C7.84512 8.64452 8.61189 7.87459 9.5564 7.87459H11.2677C13.2049 7.87459 14.7639 6.2608 14.6877 4.29774C14.6191 2.53099 13.1922 1.08802 11.4327 1.00388Z' fill='black'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_459_932'%3E%3Crect width='14' height='14' fill='white' transform='translate(1 1)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A"
+    />
+    <script>
+      (function () {
+        try {
+          var prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches;
+          if (!prefersDark) return;
+          document.documentElement.setAttribute("data-theme", "dark");
+          var favicon = document.getElementById("favicon");
+          if (favicon)
+            favicon.setAttribute(
+              "href",
+              "data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_459_963)'%3E%3Cpath d='M11.4327 1.00388C9.64526 0.919753 8.14218 2.21231 7.88574 3.91533C7.87559 3.99436 7.86035 4.07085 7.84766 4.14733C7.44904 6.26845 5.59303 7.87459 3.3638 7.87459C2.5691 7.87459 1.82263 7.67064 1.17265 7.31372C1.09394 7.27038 1 7.32647 1 7.4157V7.87204V14.7479H7.84512V9.59291C7.84512 8.64452 8.61189 7.87459 9.5564 7.87459H11.2677C13.2049 7.87459 14.7639 6.2608 14.6877 4.29774C14.6191 2.53099 13.1922 1.08802 11.4327 1.00388Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_459_963'%3E%3Crect width='14' height='14' fill='white' transform='translate(1 1)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A"
+            );
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="site-content">
+      <header>
+        <svg
+          fill="currentColor"
+          width="212"
+          height="93"
+          viewBox="0 0 212 93"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>502</title>
+          <path
+            d="M30.0545 92.024C13.9265 92.024 2.0225 81.144 0.230499 66.168H8.6785C10.0865 77.688 18.2785 84.088 29.9265 84.088C44.3905 84.088 53.6065 75.768 53.6065 61.816C53.6065 47.864 44.3905 38.776 30.0545 38.776C19.4305 38.776 11.4945 43.128 8.8065 50.296H2.1505L8.9345 1.39999H56.0385V9.336H15.4625L11.2385 39.032C15.8465 34.552 24.0385 31.096 30.6945 31.096C49.7665 31.096 62.5665 43.512 62.5665 61.816C62.5665 80.12 49.5105 92.024 30.0545 92.024ZM104.704 92.024C83.1995 92.024 75.0075 77.432 75.0075 50.04V42.36C75.0075 14.968 83.1995 0.375999 104.704 0.375999H108.928C130.56 0.375999 138.624 14.968 138.624 42.36V50.04C138.624 77.432 130.56 92.024 108.928 92.024H104.704ZM83.5835 50.04C83.5835 72.696 89.3435 84.088 104.832 84.088H108.928C124.416 84.088 130.176 72.696 130.176 50.04V42.36C130.176 19.704 124.416 8.312 108.928 8.312H104.832C89.3435 8.312 83.5835 19.704 83.5835 42.36V50.04ZM153.719 29.688C152.823 11.896 164.343 0.375999 182.391 0.375999C198.647 0.375999 210.551 10.744 210.551 26.744C210.551 38.26
+          />
+        </svg>
+        <h1 class="type-heading-04">Bad Gateway</h1>
+      </header>
+      <main class="text-primary">
+        <div class="request-id">
+          Request ID: 94b069a3fad13023-SJC
+        </div>
+        <div>
+          This service is currently unavailable. Please try again in a few
+          minutes.
+        </div>
+        <div>
+          If you are the site owner, refer to
+          <a
+            href="https://render.com/docs/troubleshooting-deploys#502-bad-gateway"
+          >
+            Render’s documentation</a
+          >
+          for troubleshooting.
+        </div>
+      </main>
+    </div>
+    <footer>
+      <div class="type-body-01 text-secondary">
+        Powered by
+        <a href="https://render.com">
+          <svg
+            fill="currentColor"
+            class="logo-render"
+            aria-label="Render"
+            width="69"
+            height="13"
+            viewBox="0 0 69 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M23.7321 2.14129C25.9243 2.14129 27.3494 3.3794 27.3494 5.36795C27.3494 6.82386 26.5113 7.90573 25.1975 8.36736L27.7731 12.7658H25.8627L23.4599 8.59225H20.8062V12.7658H19.1609V2.14129H23.7321ZM20.8038 3.62087V7.12924H23.654C24.9608 7.12924 25.6354 6.40011 25.6354 5.36795C25.6354 4.31213 24.9631 3.62087 23.654 3.62087H20.8038Z"
+            />
+            <path
+              d="M31.9585 5.09334C34.1506 5.09334 35.5757 6.72206 35.5757 8.73429C35.5757 8.96866 35.5592 9.21249 35.5142 9.45396H29.6812C29.7522 10.5808 30.7157 11.4662 32.0153 11.4662C32.9551 11.4662 33.7056 11.0661 34.269 10.1831L35.4124 11.014C34.7164 12.2663 33.3457 12.9245 32.0153 12.9245C29.7451 12.9245 28.0761 11.2484 28.0761 9.01837C28.0761 6.77651 29.6812 5.09334 31.9585 5.09334ZM34.0015 8.29397C33.9068 7.23814 33.0238 6.49243 31.9419 6.49243C30.7914 6.49243 29.9132 7.23577 29.719 8.29397H34.0015Z"
+            />
+            <path
+              d="M37.015 12.7658V5.24959H38.5727V6.19652C38.8237 5.81301 39.5362 5.09334 40.8832 5.09334C42.9499 5.09334 44.0388 6.37643 44.0388 8.20164V12.7658H42.4882V8.5307C42.4882 7.28549 41.8065 6.56582 40.6394 6.56582C39.496 6.56582 38.5656 7.28549 38.5656 8.5307V12.7658H37.015Z"
+            />
+            <path
+              d="M49.0906 5.09334C50.3666 5.09334 51.2117 5.56207 51.768 6.27464V1.74121H53.3186V12.7658H51.768V11.7408C51.2117 12.4534 50.3666 12.9221 49.0906 12.9221C46.953 12.9221 45.3172 11.2768 45.3172 8.96866C45.3172 6.65815 46.953 5.09334 49.0906 5.09334ZM46.8654 8.96866C46.8654 10.3535 47.8289 11.5277 49.2776 11.5277C50.7264 11.5277 51.7586 10.3535 51.7586 8.96866C51.7586 7.58377 50.717 6.4877 49.2776 6.4877C47.8289 6.48533 46.8654 7.5814 46.8654 8.96866Z"
+            />
+            <path
+              d="M58.5148 5.09334C60.707 5.09334 62.1321 6.72206 62.1321 8.73429C62.1321 8.96866 62.1155 9.21249 62.0705 9.45396H56.2375C56.3085 10.5808 57.272 11.4662 58.5717 11.4662C59.5115 11.4662 60.2619 11.0661 60.8253 10.1831L61.9687 11.014C61.2727 12.2663 59.9021 12.9245 58.5717 12.9245C56.3014 12.9245 54.6325 11.2484 54.6325 9.01837C54.6301 6.77651 56.2351 5.09334 58.5148 5.09334ZM60.5578 8.29397C60.4631 7.23814 59.5801 6.49243 58.4983 6.49243C57.3478 6.49243 56.4695 7.23577 56.2754 8.29397H60.5578Z"
+            />
+            <path
+              d="M63.6306 12.7658V5.24959H65.1883V6.27464C65.612 5.45318 66.3246 5.09334 67.146 5.09334C67.7331 5.09334 68.1805 5.28036 68.1805 5.28036L68.0172 6.70549C67.9319 6.67472 67.5934 6.53268 67.101 6.53268C66.2701 6.53268 65.1906 6.97063 65.1906 8.67037V12.7658H63.6306Z"
+            />
+            <path
+              d="M9.72722 0.0036066C8.06065 -0.0745152 6.65921 1.12572 6.42011 2.70709C6.41064 2.78048 6.39644 2.8515 6.3846 2.92252C6.01293 4.89213 4.28244 6.38355 2.20395 6.38355C1.46299 6.38355 0.767004 6.19416 0.160976 5.86274C0.0875901 5.82249 0 5.87457 0 5.95743V6.38118V12.7659H6.38223V7.97913C6.38223 7.09848 7.09716 6.38355 7.97779 6.38355H9.57335C11.3796 6.38355 12.8331 4.88503 12.7621 3.06219C12.6982 1.42163 11.3678 0.0817284 9.72722 0.0036066Z"
+            />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
+Aguardando o serviço ficar pronto...
+[DEBUG] Status: 502 - <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>502</title>
+    <style>@font-face {
+  font-family: "Roobert";
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMk9UVE8AAKewAAwAAAABa6QAAKdfAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAADYKmehqCHhuC4UocpRQGYACLBgE2AiQDkygEBgWFRwcgW8pqkQKZcr0u0nk2H+gc25rBL5CqkDOqYXNqo87dNmL1mgByHi4yIGwcgLFJz2f/////f/pSkaHKgl52HEgorIWX0m0/lzuLglQtUxbMiGh9qonlnolc+1JbmihzmbbylQ/Xs2Knu/rUH62ibhOWZkpgVpo4nLnvzMOZ87/06Lk2hMnbe1EpM1cUezJlZtqCZIKYIPYeoS6VhFPJXNa5j7Y8LmH67MF2qJYI49/FNzQbwX7cqeRUbzyDffdLybw5cxRTIbdy4y5BVskcP6vu3uo+6GtnQl/up3nkVnDZmKlEpYHB1w/usr46inVsWjdEIE2gBgoC36WYsC4qXJjwYb9YbH9vayYROp/tXkp72nOEOvigu6g0+gsN/z6hg7+Ga7wNb8j2p2kypxDmhZipdHuzSaKxAmIassxsPiDbztOUdESnEj+YhrsptpjfP0Hqxu9m0n7j/zGR6I7LbDy56KLRVoGx6yFqcqyz6j2en9u998cYY4wxBowxxhjRI2rAqBAp6RKUahWwULEQCwsLURAJI7GwEBUQEbERFaMoFbH8cO4rM0neNG3/64f8LjCoVbsH5AAVoJck1Am96tS5Ewp5/mF/fL/2uW8SlSAksKRJEJMRiTj+oOqP9PRt+r2XqlLltmKcWHH6TePrrCjDuW1E1+Rwc7uLp0Y7RKah1PglWKQC0fXMo55+7/+vZ+37yMGHaBE2ZfcLB44vHEqhQSjQOuQzQG775+BYcg6W4IKTebAdEwfgWicJolLiRrRt23qkaT71l61FtqRhYy5t+Bpr/6is9/jn+3t+a58//z6NEs6TBPNAm0QSSNOE0oAiPfrfsmXq3t38JLtDK7IIzUNV4QROoVAoFMbd/Jr66cnLNcf+5
+}
+@font-face {
+  font-family: "Neue Montreal";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMgABAAAAALnMABMAAAACO+gAALljAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoJYG4PYEByZfgZgALlyCIEkCZwMEQgKg7dAg4EfC4tOAAE2AiQDlxgEIAWKdAewUgyBVhckGI9QW7AZkqUq106/+jCQoNsQgLRyS9P88U+IOtZNOEbROTbpCcFxSPpthbJt10K3DeZCJ5/zW5P9//////+SZCGH/h/uP0kIoMyqbdd2m9DMyWCBMSQytx0yU0Vbn5ENkITsK4yIU5wXHQokGzPKDChElNWMygqt9eDBaU51CcFXxm2OEvYo5l8G5u44TL6zShXiZJKp/ApJSKLTrGoEnWpN9l279JCQM2R9ZeJCuQnVRHXuF7nLQ9nzUD5Iitrl7jKUldeY06HaGJ/wfu3Rz9egNqp5pfTaxNDL3iCvjowB2QjT57eo85SCu8qFLbIKhOzw84cUKsqf0Gah/5sKqpg8g1rGHPNbcmvKxIf+vonJ/XjEXaLuhusqFPa/hlif1duBV9vBaUKheWN/ewFvnEley5wkgkjJREc2EIo7SoRRPLoqajYJqSKLtPrZvBZ03TwG+SyP+EnwRmiEJCR2g+v/Jgswvg24oqamfksUw3t9/3Xnpjza6olNGascBGQFErABrHZDGzAha5jqiefZAXP7BuWZ0CWNjrwJ04RGNYMTLW6UDS3gttS2DCjj1oORrOS48vRHeIj9cO9t99FoJXE0CMVkpl6pNCIh0uT6zA044Ov2894693KsXWt3rcUerGsXIWfOJLm+8Mu5WSEhiXQIqXQ4WpLoS3R/Ibq419WhQzq503V++sVtTzr7qtdqiQ0CNMlqWWAa2zMje7gXGIJ4k+BvREFyQbbA0VEW3gXpHfzT8/flr73PfZjX5BCVdCaSB+zQ/X+kkdEh1CcCfGg/pd5MGAr0A4TlEDclRrluhTuhTrhz5ubLqf+/2C4e0i/jhdSugw5g0xs0xHYMK
+}
+@font-face {
+  font-family: "Neue Montreal Mono";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMgABAAAAAQvAABMAAAAEG4QAAQtWAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGohsG8VWHIGzVgZgAI8aCIEkCZwMEQgKip9IiP5mC8hEAAE2AiQDyCYEIAWPAweClzgMgVYXJBirEFuUpdMW1I83t7Mmrzk0CZLGTwtWLfUINR8KB1cVEbFatVidQ0wuQIGiOvf8ayZC5hheG+B/uCkqS1CdQ5xQKgiqc3nO3MCprBAcu16dYzPZQz0AZJPs////////////////////////////7yf5T6jT/9/d/RtaliwveWw8MMYMEwyE0bATmqYtCVlhzlkkXoIjK+LE8sg6ipPAvBdK0yylEJKY1RxZlFOBbVEvG7xpXgRb7ThmnnVChSwlupyy7fYiyoT6RVWncpBQxodc+IgLt1zGaRK4V+6TZ8KFMmGdCVVTT9GsFeWBpqVnczsrWRbyVsq9L1lEydx7GhzZlIZ4kU96g2VBA3MS2FuJB4O1QBGqROjYhTQA5zbIWihyorg9hbHULMtInLPI7qAIFAfFKnu+PaMecudTB50AESjThuOOLrx1JCTMy0Iu2X4jV8DS7FvOqsidWHjEPFtHPtQuuGU5rsPzBhhQ63oZ2IG6Tu0G7PgVvN2rbDRO4zMtd/r3q+8X9+xhMr8KtQHVH6EITLAVnClvMppXoyvqnjdm9bJbUgQFC46fsMWVjpvOX2pj9R8mPLc2ahNzvp+0e7xJL+m3qqLXNyg4Fmz1jeH2akzlXZrS0rzqXeSR5fPseNxsZNTUn+h7TZIkqbO5ga0meEjVp1nHlIxWLzbQulDuGSQVch+fbJ4vKOBEeXwJRUf9Jwmr/aJyt7zcUw0fcIKXONNhwdtXDXocGxUi5rIDtOrBgBUaJFFlwQ32BmUZsEvaowxH5vx9Sgn/vZtcIIf3WEwY1bnrN/9pjf6wCKf6REeaCusmlFyv1e4NGqK7A43piQ/xXl109kG0p
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --text-strong: #0d0d0d;  
+  --text-primary: #272727;  
+  --text-secondary: #6b6b6b;  
+  --page-primary: #fff;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --text-strong: #fff;
+  --text-primary: #f0f0f0;  
+  --text-secondary: #c7c7c7;  
+  --page-primary: #0d0d0d;  
+}
+body {
+  font-family: Roobert, sans-serif;
+  margin: 0;
+  padding: 0 1rem;
+  color: var(--text-strong);
+  background-color: var(--page-primary);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+.type-heading-05 {
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 114.286%;
+  letter-spacing: -0.28px;
+}
+.type-mono-01 {
+  font-family: "Neue Montreal Mono";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.65px;
+}
+.type-mono-01-caps {
+  font-family: "Neue Montreal Mono";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.65px;
+  text-transform: uppercase;
+}
+.type-body-01 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+}
+.type-interface-00 {
+  font-family: "Neue Montreal";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.13px;
+  --webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.type-heading-04 {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: -0.28px;
+}
+.text-primary {
+  color: var(--text-primary);
+}
+.text-secondary {
+  color: var(--text-secondary);
+}
+h1 {
+  margin: 0;
+}
+h2 {
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+a {
+  color: inherit;
+}
+body {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        min-height: 100vh;
+      }
+.site-content {
+        margin: auto;
+      }
+header {
+        margin: 1.5rem 0;
+      }
+main > * {
+        margin-bottom: 1rem;
+      }
+.request-id {
+        margin-bottom: 2rem;
+      }
+footer {
+        padding: 1.75rem 0;
+      }
+.logo-render {
+        margin-left: 0.25rem;
+      }
+    </style>
+    <link
+      id="favicon"
+      rel="shortcut icon"
+      href="data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_459_932)'%3E%3Cpath d='M11.4327 1.00388C9.64526 0.919753 8.14218 2.21231 7.88574 3.91533C7.87559 3.99436 7.86035 4.07085 7.84766 4.14733C7.44904 6.26845 5.59303 7.87459 3.3638 7.87459C2.5691 7.87459 1.82263 7.67064 1.17265 7.31372C1.09394 7.27038 1 7.32647 1 7.4157V7.87204V14.7479H7.84512V9.59291C7.84512 8.64452 8.61189 7.87459 9.5564 7.87459H11.2677C13.2049 7.87459 14.7639 6.2608 14.6877 4.29774C14.6191 2.53099 13.1922 1.08802 11.4327 1.00388Z' fill='black'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_459_932'%3E%3Crect width='14' height='14' fill='white' transform='translate(1 1)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A"
+    />
+    <script>
+      (function () {
+        try {
+          var prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches;
+          if (!prefersDark) return;
+          document.documentElement.setAttribute("data-theme", "dark");
+          var favicon = document.getElementById("favicon");
+          if (favicon)
+            favicon.setAttribute(
+              "href",
+              "data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_459_963)'%3E%3Cpath d='M11.4327 1.00388C9.64526 0.919753 8.14218 2.21231 7.88574 3.91533C7.87559 3.99436 7.86035 4.07085 7.84766 4.14733C7.44904 6.26845 5.59303 7.87459 3.3638 7.87459C2.5691 7.87459 1.82263 7.67064 1.17265 7.31372C1.09394 7.27038 1 7.32647 1 7.4157V7.87204V14.7479H7.84512V9.59291C7.84512 8.64452 8.61189 7.87459 9.5564 7.87459H11.2677C13.2049 7.87459 14.7639 6.2608 14.6877 4.29774C14.6191 2.53099 13.1922 1.08802 11.4327 1.00388Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_459_963'%3E%3Crect width='14' height='14' fill='white' transform='translate(1 1)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A"
+            );
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="site-content">
+      <header>
+        <svg
+          fill="currentColor"
+          width="212"
+          height="93"
+          viewBox="0 0 212 93"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>502</title>
+          <path
+            d="M30.0545 92.024C13.9265 92.024 2.0225 81.144 0.230499 66.168H8.6785C10.0865 77.688 18.2785 84.088 29.9265 84.088C44.3905 84.088 53.6065 75.768 53.6065 61.816C53.6065 47.864 44.3905 38.776 30.0545 38.776C19.4305 38.776 11.4945 43.128 8.8065 50.296H2.1505L8.9345 1.39999H56.0385V9.336H15.4625L11.2385 39.032C15.8465 34.552 24.0385 31.096 30.6945 31.096C49.7665 31.096 62.5665 43.512 62.5665 61.816C62.5665 80.12 49.5105 92.024 30.0545 92.024ZM104.704 92.024C83.1995 92.024 75.0075 77.432 75.0075 50.04V42.36C75.0075 14.968 83.1995 0.375999 104.704 0.375999H108.928C130.56 0.375999 138.624 14.968 138.624 42.36V50.04C138.624 77.432 130.56 92.024 108.928 92.024H104.704ZM83.5835 50.04C83.5835 72.696 89.3435 84.088 104.832 84.088H108.928C124.416 84.088 130.176 72.696 130.176 50.04V42.36C130.176 19.704 124.416 8.312 108.928 8.312H104.832C89.3435 8.312 83.5835 19.704 83.5835 42.36V50.04ZM153.719 29.688C152.823 11.896 164.343 0.375999 182.391 0.375999C198.647 0.375999 210.551 10.744 210.551 26.744C210.551 38.26
+          />
+        </svg>
+        <h1 class="type-heading-04">Bad Gateway</h1>
+      </header>
+      <main class="text-primary">
+        <div class="request-id">
+          Request ID: 94b069c4082dce50-SJC
+        </div>
+        <div>
+          This service is currently unavailable. Please try again in a few
+          minutes.
+        </div>
+        <div>
+          If you are the site owner, refer to
+          <a
+            href="https://render.com/docs/troubleshooting-deploys#502-bad-gateway"
+          >
+            Render’s documentation</a
+          >
+          for troubleshooting.
+        </div>
+      </main>
+    </div>
+    <footer>
+      <div class="type-body-01 text-secondary">
+        Powered by
+        <a href="https://render.com">
+          <svg
+            fill="currentColor"
+            class="logo-render"
+            aria-label="Render"
+            width="69"
+            height="13"
+            viewBox="0 0 69 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M23.7321 2.14129C25.9243 2.14129 27.3494 3.3794 27.3494 5.36795C27.3494 6.82386 26.5113 7.90573 25.1975 8.36736L27.7731 12.7658H25.8627L23.4599 8.59225H20.8062V12.7658H19.1609V2.14129H23.7321ZM20.8038 3.62087V7.12924H23.654C24.9608 7.12924 25.6354 6.40011 25.6354 5.36795C25.6354 4.31213 24.9631 3.62087 23.654 3.62087H20.8038Z"
+            />
+            <path
+              d="M31.9585 5.09334C34.1506 5.09334 35.5757 6.72206 35.5757 8.73429C35.5757 8.96866 35.5592 9.21249 35.5142 9.45396H29.6812C29.7522 10.5808 30.7157 11.4662 32.0153 11.4662C32.9551 11.4662 33.7056 11.0661 34.269 10.1831L35.4124 11.014C34.7164 12.2663 33.3457 12.9245 32.0153 12.9245C29.7451 12.9245 28.0761 11.2484 28.0761 9.01837C28.0761 6.77651 29.6812 5.09334 31.9585 5.09334ZM34.0015 8.29397C33.9068 7.23814 33.0238 6.49243 31.9419 6.49243C30.7914 6.49243 29.9132 7.23577 29.719 8.29397H34.0015Z"
+            />
+            <path
+              d="M37.015 12.7658V5.24959H38.5727V6.19652C38.8237 5.81301 39.5362 5.09334 40.8832 5.09334C42.9499 5.09334 44.0388 6.37643 44.0388 8.20164V12.7658H42.4882V8.5307C42.4882 7.28549 41.8065 6.56582 40.6394 6.56582C39.496 6.56582 38.5656 7.28549 38.5656 8.5307V12.7658H37.015Z"
+            />
+            <path
+              d="M49.0906 5.09334C50.3666 5.09334 51.2117 5.56207 51.768 6.27464V1.74121H53.3186V12.7658H51.768V11.7408C51.2117 12.4534 50.3666 12.9221 49.0906 12.9221C46.953 12.9221 45.3172 11.2768 45.3172 8.96866C45.3172 6.65815 46.953 5.09334 49.0906 5.09334ZM46.8654 8.96866C46.8654 10.3535 47.8289 11.5277 49.2776 11.5277C50.7264 11.5277 51.7586 10.3535 51.7586 8.96866C51.7586 7.58377 50.717 6.4877 49.2776 6.4877C47.8289 6.48533 46.8654 7.5814 46.8654 8.96866Z"
+            />
+            <path
+              d="M58.5148 5.09334C60.707 5.09334 62.1321 6.72206 62.1321 8.73429C62.1321 8.96866 62.1155 9.21249 62.0705 9.45396H56.2375C56.3085 10.5808 57.272 11.4662 58.5717 11.4662C59.5115 11.4662 60.2619 11.0661 60.8253 10.1831L61.9687 11.014C61.2727 12.2663 59.9021 12.9245 58.5717 12.9245C56.3014 12.9245 54.6325 11.2484 54.6325 9.01837C54.6301 6.77651 56.2351 5.09334 58.5148 5.09334ZM60.5578 8.29397C60.4631 7.23814 59.5801 6.49243 58.4983 6.49243C57.3478 6.49243 56.4695 7.23577 56.2754 8.29397H60.5578Z"
+            />
+            <path
+              d="M63.6306 12.7658V5.24959H65.1883V6.27464C65.612 5.45318 66.3246 5.09334 67.146 5.09334C67.7331 5.09334 68.1805 5.28036 68.1805 5.28036L68.0172 6.70549C67.9319 6.67472 67.5934 6.53268 67.101 6.53268C66.2701 6.53268 65.1906 6.97063 65.1906 8.67037V12.7658H63.6306Z"
+            />
+            <path
+              d="M9.72722 0.0036066C8.06065 -0.0745152 6.65921 1.12572 6.42011 2.70709C6.41064 2.78048 6.39644 2.8515 6.3846 2.92252C6.01293 4.89213 4.28244 6.38355 2.20395 6.38355C1.46299 6.38355 0.767004 6.19416 0.160976 5.86274C0.0875901 5.82249 0 5.87457 0 5.95743V6.38118V12.7659H6.38223V7.97913C6.38223 7.09848 7.09716 6.38355 7.97779 6.38355H9.57335C11.3796 6.38355 12.8331 4.88503 12.7621 3.06219C12.6982 1.42163 11.3678 0.0817284 9.72722 0.0036066Z"
+            />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
+Aguardando o serviço ficar pronto...
+[DEBUG] Status: 502 - <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>502</title>
+    <style>@font-face {
+  font-family: "Roobert";
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMk9UVE8AAKewAAwAAAABa6QAAKdfAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAADYKmehqCHhuC4UocpRQGYACLBgE2AiQDkygEBgWFRwcgW8pqkQKZcr0u0nk2H+gc25rBL5CqkDOqYXNqo87dNmL1mgByHi4yIGwcgLFJz2f/////f/pSkaHKgl52HEgorIWX0m0/lzuLglQtUxbMiGh9qonlnolc+1JbmihzmbbylQ/Xs2Knu/rUH62ibhOWZkpgVpo4nLnvzMOZ87/06Lk2hMnbe1EpM1cUezJlZtqCZIKYIPYeoS6VhFPJXNa5j7Y8LmH67MF2qJYI49/FNzQbwX7cqeRUbzyDffdLybw5cxRTIbdy4y5BVskcP6vu3uo+6GtnQl/up3nkVnDZmKlEpYHB1w/usr46inVsWjdEIE2gBgoC36WYsC4qXJjwYb9YbH9vayYROp/tXkp72nOEOvigu6g0+gsN/z6hg7+Ga7wNb8j2p2kypxDmhZipdHuzSaKxAmIassxsPiDbztOUdESnEj+YhrsptpjfP0Hqxu9m0n7j/zGR6I7LbDy56KLRVoGx6yFqcqyz6j2en9u998cYY4wxBowxxhjRI2rAqBAp6RKUahWwULEQCwsLURAJI7GwEBUQEbERFaMoFbH8cO4rM0neNG3/64f8LjCoVbsH5AAVoJck1Am96tS5Ewp5/mF/fL/2uW8SlSAksKRJEJMRiTj+oOqP9PRt+r2XqlLltmKcWHH6TePrrCjDuW1E1+Rwc7uLp0Y7RKah1PglWKQC0fXMo55+7/+vZ+37yMGHaBE2ZfcLB44vHEqhQSjQOuQzQG775+BYcg6W4IKTebAdEwfgWicJolLiRrRt23qkaT71l61FtqRhYy5t+Bpr/6is9/jn+3t+a58//z6NEs6TBPNAm0QSSNOE0oAiPfrfsmXq3t38JLtDK7IIzUNV4QROoVAoFMbd/Jr66cnLNcf+5
+}
+@font-face {
+  font-family: "Neue Montreal";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMgABAAAAALnMABMAAAACO+gAALljAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoJYG4PYEByZfgZgALlyCIEkCZwMEQgKg7dAg4EfC4tOAAE2AiQDlxgEIAWKdAewUgyBVhckGI9QW7AZkqUq106/+jCQoNsQgLRyS9P88U+IOtZNOEbROTbpCcFxSPpthbJt10K3DeZCJ5/zW5P9//////+SZCGH/h/uP0kIoMyqbdd2m9DMyWCBMSQytx0yU0Vbn5ENkITsK4yIU5wXHQokGzPKDChElNWMygqt9eDBaU51CcFXxm2OEvYo5l8G5u44TL6zShXiZJKp/ApJSKLTrGoEnWpN9l279JCQM2R9ZeJCuQnVRHXuF7nLQ9nzUD5Iitrl7jKUldeY06HaGJ/wfu3Rz9egNqp5pfTaxNDL3iCvjowB2QjT57eo85SCu8qFLbIKhOzw84cUKsqf0Gah/5sKqpg8g1rGHPNbcmvKxIf+vonJ/XjEXaLuhusqFPa/hlif1duBV9vBaUKheWN/ewFvnEley5wkgkjJREc2EIo7SoRRPLoqajYJqSKLtPrZvBZ03TwG+SyP+EnwRmiEJCR2g+v/Jgswvg24oqamfksUw3t9/3Xnpjza6olNGascBGQFErABrHZDGzAha5jqiefZAXP7BuWZ0CWNjrwJ04RGNYMTLW6UDS3gttS2DCjj1oORrOS48vRHeIj9cO9t99FoJXE0CMVkpl6pNCIh0uT6zA044Ov2894693KsXWt3rcUerGsXIWfOJLm+8Mu5WSEhiXQIqXQ4WpLoS3R/Ibq419WhQzq503V++sVtTzr7qtdqiQ0CNMlqWWAa2zMje7gXGIJ4k+BvREFyQbbA0VEW3gXpHfzT8/flr73PfZjX5BCVdCaSB+zQ/X+kkdEh1CcCfGg/pd5MGAr0A4TlEDclRrluhTuhTrhz5ubLqf+/2C4e0i/jhdSugw5g0xs0xHYMK
+}
+@font-face {
+  font-family: "Neue Montreal Mono";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMgABAAAAAQvAABMAAAAEG4QAAQtWAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGohsG8VWHIGzVgZgAI8aCIEkCZwMEQgKip9IiP5mC8hEAAE2AiQDyCYEIAWPAweClzgMgVYXJBirEFuUpdMW1I83t7Mmrzk0CZLGTwtWLfUINR8KB1cVEbFatVidQ0wuQIGiOvf8ayZC5hheG+B/uCkqS1CdQ5xQKgiqc3nO3MCprBAcu16dYzPZQz0AZJPs////////////////////////////7yf5T6jT/9/d/RtaliwveWw8MMYMEwyE0bATmqYtCVlhzlkkXoIjK+LE8sg6ipPAvBdK0yylEJKY1RxZlFOBbVEvG7xpXgRb7ThmnnVChSwlupyy7fYiyoT6RVWncpBQxodc+IgLt1zGaRK4V+6TZ8KFMmGdCVVTT9GsFeWBpqVnczsrWRbyVsq9L1lEydx7GhzZlIZ4kU96g2VBA3MS2FuJB4O1QBGqROjYhTQA5zbIWihyorg9hbHULMtInLPI7qAIFAfFKnu+PaMecudTB50AESjThuOOLrx1JCTMy0Iu2X4jV8DS7FvOqsidWHjEPFtHPtQuuGU5rsPzBhhQ63oZ2IG6Tu0G7PgVvN2rbDRO4zMtd/r3q+8X9+xhMr8KtQHVH6EITLAVnClvMppXoyvqnjdm9bJbUgQFC46fsMWVjpvOX2pj9R8mPLc2ahNzvp+0e7xJL+m3qqLXNyg4Fmz1jeH2akzlXZrS0rzqXeSR5fPseNxsZNTUn+h7TZIkqbO5ga0meEjVp1nHlIxWLzbQulDuGSQVch+fbJ4vKOBEeXwJRUf9Jwmr/aJyt7zcUw0fcIKXONNhwdtXDXocGxUi5rIDtOrBgBUaJFFlwQ32BmUZsEvaowxH5vx9Sgn/vZtcIIf3WEwY1bnrN/9pjf6wCKf6REeaCusmlFyv1e4NGqK7A43piQ/xXl109kG0p
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --text-strong: #0d0d0d;  
+  --text-primary: #272727;  
+  --text-secondary: #6b6b6b;  
+  --page-primary: #fff;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --text-strong: #fff;
+  --text-primary: #f0f0f0;  
+  --text-secondary: #c7c7c7;  
+  --page-primary: #0d0d0d;  
+}
+body {
+  font-family: Roobert, sans-serif;
+  margin: 0;
+  padding: 0 1rem;
+  color: var(--text-strong);
+  background-color: var(--page-primary);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+.type-heading-05 {
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 114.286%;
+  letter-spacing: -0.28px;
+}
+.type-mono-01 {
+  font-family: "Neue Montreal Mono";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.65px;
+}
+.type-mono-01-caps {
+  font-family: "Neue Montreal Mono";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.65px;
+  text-transform: uppercase;
+}
+.type-body-01 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+}
+.type-interface-00 {
+  font-family: "Neue Montreal";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.13px;
+  --webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.type-heading-04 {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: -0.28px;
+}
+.text-primary {
+  color: var(--text-primary);
+}
+.text-secondary {
+  color: var(--text-secondary);
+}
+h1 {
+  margin: 0;
+}
+h2 {
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+a {
+  color: inherit;
+}
+body {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        min-height: 100vh;
+      }
+.site-content {
+        margin: auto;
+      }
+header {
+        margin: 1.5rem 0;
+      }
+main > * {
+        margin-bottom: 1rem;
+      }
+.request-id {
+        margin-bottom: 2rem;
+      }
+footer {
+        padding: 1.75rem 0;
+      }
+.logo-render {
+        margin-left: 0.25rem;
+      }
+    </style>
+    <link
+      id="favicon"
+      rel="shortcut icon"
+      href="data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_459_932)'%3E%3Cpath d='M11.4327 1.00388C9.64526 0.919753 8.14218 2.21231 7.88574 3.91533C7.87559 3.99436 7.86035 4.07085 7.84766 4.14733C7.44904 6.26845 5.59303 7.87459 3.3638 7.87459C2.5691 7.87459 1.82263 7.67064 1.17265 7.31372C1.09394 7.27038 1 7.32647 1 7.4157V7.87204V14.7479H7.84512V9.59291C7.84512 8.64452 8.61189 7.87459 9.5564 7.87459H11.2677C13.2049 7.87459 14.7639 6.2608 14.6877 4.29774C14.6191 2.53099 13.1922 1.08802 11.4327 1.00388Z' fill='black'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_459_932'%3E%3Crect width='14' height='14' fill='white' transform='translate(1 1)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A"
+    />
+    <script>
+      (function () {
+        try {
+          var prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches;
+          if (!prefersDark) return;
+          document.documentElement.setAttribute("data-theme", "dark");
+          var favicon = document.getElementById("favicon");
+          if (favicon)
+            favicon.setAttribute(
+              "href",
+              "data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_459_963)'%3E%3Cpath d='M11.4327 1.00388C9.64526 0.919753 8.14218 2.21231 7.88574 3.91533C7.87559 3.99436 7.86035 4.07085 7.84766 4.14733C7.44904 6.26845 5.59303 7.87459 3.3638 7.87459C2.5691 7.87459 1.82263 7.67064 1.17265 7.31372C1.09394 7.27038 1 7.32647 1 7.4157V7.87204V14.7479H7.84512V9.59291C7.84512 8.64452 8.61189 7.87459 9.5564 7.87459H11.2677C13.2049 7.87459 14.7639 6.2608 14.6877 4.29774C14.6191 2.53099 13.1922 1.08802 11.4327 1.00388Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_459_963'%3E%3Crect width='14' height='14' fill='white' transform='translate(1 1)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A"
+            );
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="site-content">
+      <header>
+        <svg
+          fill="currentColor"
+          width="212"
+          height="93"
+          viewBox="0 0 212 93"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>502</title>
+          <path
+            d="M30.0545 92.024C13.9265 92.024 2.0225 81.144 0.230499 66.168H8.6785C10.0865 77.688 18.2785 84.088 29.9265 84.088C44.3905 84.088 53.6065 75.768 53.6065 61.816C53.6065 47.864 44.3905 38.776 30.0545 38.776C19.4305 38.776 11.4945 43.128 8.8065 50.296H2.1505L8.9345 1.39999H56.0385V9.336H15.4625L11.2385 39.032C15.8465 34.552 24.0385 31.096 30.6945 31.096C49.7665 31.096 62.5665 43.512 62.5665 61.816C62.5665 80.12 49.5105 92.024 30.0545 92.024ZM104.704 92.024C83.1995 92.024 75.0075 77.432 75.0075 50.04V42.36C75.0075 14.968 83.1995 0.375999 104.704 0.375999H108.928C130.56 0.375999 138.624 14.968 138.624 42.36V50.04C138.624 77.432 130.56 92.024 108.928 92.024H104.704ZM83.5835 50.04C83.5835 72.696 89.3435 84.088 104.832 84.088H108.928C124.416 84.088 130.176 72.696 130.176 50.04V42.36C130.176 19.704 124.416 8.312 108.928 8.312H104.832C89.3435 8.312 83.5835 19.704 83.5835 42.36V50.04ZM153.719 29.688C152.823 11.896 164.343 0.375999 182.391 0.375999C198.647 0.375999 210.551 10.744 210.551 26.744C210.551 38.26
+          />
+        </svg>
+        <h1 class="type-heading-04">Bad Gateway</h1>
+      </header>
+      <main class="text-primary">
+        <div class="request-id">
+          Request ID: 94b069e40b9615ac-PDX
+        </div>
+        <div>
+          This service is currently unavailable. Please try again in a few
+          minutes.
+        </div>
+        <div>
+          If you are the site owner, refer to
+          <a
+            href="https://render.com/docs/troubleshooting-deploys#502-bad-gateway"
+          >
+            Render’s documentation</a
+          >
+          for troubleshooting.
+        </div>
+      </main>
+    </div>
+    <footer>
+      <div class="type-body-01 text-secondary">
+        Powered by
+        <a href="https://render.com">
+          <svg
+            fill="currentColor"
+            class="logo-render"
+            aria-label="Render"
+            width="69"
+            height="13"
+            viewBox="0 0 69 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M23.7321 2.14129C25.9243 2.14129 27.3494 3.3794 27.3494 5.36795C27.3494 6.82386 26.5113 7.90573 25.1975 8.36736L27.7731 12.7658H25.8627L23.4599 8.59225H20.8062V12.7658H19.1609V2.14129H23.7321ZM20.8038 3.62087V7.12924H23.654C24.9608 7.12924 25.6354 6.40011 25.6354 5.36795C25.6354 4.31213 24.9631 3.62087 23.654 3.62087H20.8038Z"
+            />
+            <path
+              d="M31.9585 5.09334C34.1506 5.09334 35.5757 6.72206 35.5757 8.73429C35.5757 8.96866 35.5592 9.21249 35.5142 9.45396H29.6812C29.7522 10.5808 30.7157 11.4662 32.0153 11.4662C32.9551 11.4662 33.7056 11.0661 34.269 10.1831L35.4124 11.014C34.7164 12.2663 33.3457 12.9245 32.0153 12.9245C29.7451 12.9245 28.0761 11.2484 28.0761 9.01837C28.0761 6.77651 29.6812 5.09334 31.9585 5.09334ZM34.0015 8.29397C33.9068 7.23814 33.0238 6.49243 31.9419 6.49243C30.7914 6.49243 29.9132 7.23577 29.719 8.29397H34.0015Z"
+            />
+            <path
+              d="M37.015 12.7658V5.24959H38.5727V6.19652C38.8237 5.81301 39.5362 5.09334 40.8832 5.09334C42.9499 5.09334 44.0388 6.37643 44.0388 8.20164V12.7658H42.4882V8.5307C42.4882 7.28549 41.8065 6.56582 40.6394 6.56582C39.496 6.56582 38.5656 7.28549 38.5656 8.5307V12.7658H37.015Z"
+            />
+            <path
+              d="M49.0906 5.09334C50.3666 5.09334 51.2117 5.56207 51.768 6.27464V1.74121H53.3186V12.7658H51.768V11.7408C51.2117 12.4534 50.3666 12.9221 49.0906 12.9221C46.953 12.9221 45.3172 11.2768 45.3172 8.96866C45.3172 6.65815 46.953 5.09334 49.0906 5.09334ZM46.8654 8.96866C46.8654 10.3535 47.8289 11.5277 49.2776 11.5277C50.7264 11.5277 51.7586 10.3535 51.7586 8.96866C51.7586 7.58377 50.717 6.4877 49.2776 6.4877C47.8289 6.48533 46.8654 7.5814 46.8654 8.96866Z"
+            />
+            <path
+              d="M58.5148 5.09334C60.707 5.09334 62.1321 6.72206 62.1321 8.73429C62.1321 8.96866 62.1155 9.21249 62.0705 9.45396H56.2375C56.3085 10.5808 57.272 11.4662 58.5717 11.4662C59.5115 11.4662 60.2619 11.0661 60.8253 10.1831L61.9687 11.014C61.2727 12.2663 59.9021 12.9245 58.5717 12.9245C56.3014 12.9245 54.6325 11.2484 54.6325 9.01837C54.6301 6.77651 56.2351 5.09334 58.5148 5.09334ZM60.5578 8.29397C60.4631 7.23814 59.5801 6.49243 58.4983 6.49243C57.3478 6.49243 56.4695 7.23577 56.2754 8.29397H60.5578Z"
+            />
+            <path
+              d="M63.6306 12.7658V5.24959H65.1883V6.27464C65.612 5.45318 66.3246 5.09334 67.146 5.09334C67.7331 5.09334 68.1805 5.28036 68.1805 5.28036L68.0172 6.70549C67.9319 6.67472 67.5934 6.53268 67.101 6.53268C66.2701 6.53268 65.1906 6.97063 65.1906 8.67037V12.7658H63.6306Z"
+            />
+            <path
+              d="M9.72722 0.0036066C8.06065 -0.0745152 6.65921 1.12572 6.42011 2.70709C6.41064 2.78048 6.39644 2.8515 6.3846 2.92252C6.01293 4.89213 4.28244 6.38355 2.20395 6.38355C1.46299 6.38355 0.767004 6.19416 0.160976 5.86274C0.0875901 5.82249 0 5.87457 0 5.95743V6.38118V12.7659H6.38223V7.97913C6.38223 7.09848 7.09716 6.38355 7.97779 6.38355H9.57335C11.3796 6.38355 12.8331 4.88503 12.7621 3.06219C12.6982 1.42163 11.3678 0.0817284 9.72722 0.0036066Z"
+            />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
+Aguardando o serviço ficar pronto...
+[DEBUG] Status: 502 - <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>502</title>
+    <style>@font-face {
+  font-family: "Roobert";
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMk9UVE8AAKewAAwAAAABa6QAAKdfAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAADYKmehqCHhuC4UocpRQGYACLBgE2AiQDkygEBgWFRwcgW8pqkQKZcr0u0nk2H+gc25rBL5CqkDOqYXNqo87dNmL1mgByHi4yIGwcgLFJz2f/////f/pSkaHKgl52HEgorIWX0m0/lzuLglQtUxbMiGh9qonlnolc+1JbmihzmbbylQ/Xs2Knu/rUH62ibhOWZkpgVpo4nLnvzMOZ87/06Lk2hMnbe1EpM1cUezJlZtqCZIKYIPYeoS6VhFPJXNa5j7Y8LmH67MF2qJYI49/FNzQbwX7cqeRUbzyDffdLybw5cxRTIbdy4y5BVskcP6vu3uo+6GtnQl/up3nkVnDZmKlEpYHB1w/usr46inVsWjdEIE2gBgoC36WYsC4qXJjwYb9YbH9vayYROp/tXkp72nOEOvigu6g0+gsN/z6hg7+Ga7wNb8j2p2kypxDmhZipdHuzSaKxAmIassxsPiDbztOUdESnEj+YhrsptpjfP0Hqxu9m0n7j/zGR6I7LbDy56KLRVoGx6yFqcqyz6j2en9u998cYY4wxBowxxhjRI2rAqBAp6RKUahWwULEQCwsLURAJI7GwEBUQEbERFaMoFbH8cO4rM0neNG3/64f8LjCoVbsH5AAVoJck1Am96tS5Ewp5/mF/fL/2uW8SlSAksKRJEJMRiTj+oOqP9PRt+r2XqlLltmKcWHH6TePrrCjDuW1E1+Rwc7uLp0Y7RKah1PglWKQC0fXMo55+7/+vZ+37yMGHaBE2ZfcLB44vHEqhQSjQOuQzQG775+BYcg6W4IKTebAdEwfgWicJolLiRrRt23qkaT71l61FtqRhYy5t+Bpr/6is9/jn+3t+a58//z6NEs6TBPNAm0QSSNOE0oAiPfrfsmXq3t38JLtDK7IIzUNV4QROoVAoFMbd/Jr66cnLNcf+5
+}
+@font-face {
+  font-family: "Neue Montreal";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMgABAAAAALnMABMAAAACO+gAALljAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoJYG4PYEByZfgZgALlyCIEkCZwMEQgKg7dAg4EfC4tOAAE2AiQDlxgEIAWKdAewUgyBVhckGI9QW7AZkqUq106/+jCQoNsQgLRyS9P88U+IOtZNOEbROTbpCcFxSPpthbJt10K3DeZCJ5/zW5P9//////+SZCGH/h/uP0kIoMyqbdd2m9DMyWCBMSQytx0yU0Vbn5ENkITsK4yIU5wXHQokGzPKDChElNWMygqt9eDBaU51CcFXxm2OEvYo5l8G5u44TL6zShXiZJKp/ApJSKLTrGoEnWpN9l279JCQM2R9ZeJCuQnVRHXuF7nLQ9nzUD5Iitrl7jKUldeY06HaGJ/wfu3Rz9egNqp5pfTaxNDL3iCvjowB2QjT57eo85SCu8qFLbIKhOzw84cUKsqf0Gah/5sKqpg8g1rGHPNbcmvKxIf+vonJ/XjEXaLuhusqFPa/hlif1duBV9vBaUKheWN/ewFvnEley5wkgkjJREc2EIo7SoRRPLoqajYJqSKLtPrZvBZ03TwG+SyP+EnwRmiEJCR2g+v/Jgswvg24oqamfksUw3t9/3Xnpjza6olNGascBGQFErABrHZDGzAha5jqiefZAXP7BuWZ0CWNjrwJ04RGNYMTLW6UDS3gttS2DCjj1oORrOS48vRHeIj9cO9t99FoJXE0CMVkpl6pNCIh0uT6zA044Ov2894693KsXWt3rcUerGsXIWfOJLm+8Mu5WSEhiXQIqXQ4WpLoS3R/Ibq419WhQzq503V++sVtTzr7qtdqiQ0CNMlqWWAa2zMje7gXGIJ4k+BvREFyQbbA0VEW3gXpHfzT8/flr73PfZjX5BCVdCaSB+zQ/X+kkdEh1CcCfGg/pd5MGAr0A4TlEDclRrluhTuhTrhz5ubLqf+/2C4e0i/jhdSugw5g0xs0xHYMK
+}
+@font-face {
+  font-family: "Neue Montreal Mono";
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  src: url("data:font/woff2;base64,d09GMgABAAAAAQvAABMAAAAEG4QAAQtWAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGohsG8VWHIGzVgZgAI8aCIEkCZwMEQgKip9IiP5mC8hEAAE2AiQDyCYEIAWPAweClzgMgVYXJBirEFuUpdMW1I83t7Mmrzk0CZLGTwtWLfUINR8KB1cVEbFatVidQ0wuQIGiOvf8ayZC5hheG+B/uCkqS1CdQ5xQKgiqc3nO3MCprBAcu16dYzPZQz0AZJPs////////////////////////////7yf5T6jT/9/d/RtaliwveWw8MMYMEwyE0bATmqYtCVlhzlkkXoIjK+LE8sg6ipPAvBdK0yylEJKY1RxZlFOBbVEvG7xpXgRb7ThmnnVChSwlupyy7fYiyoT6RVWncpBQxodc+IgLt1zGaRK4V+6TZ8KFMmGdCVVTT9GsFeWBpqVnczsrWRbyVsq9L1lEydx7GhzZlIZ4kU96g2VBA3MS2FuJB4O1QBGqROjYhTQA5zbIWihyorg9hbHULMtInLPI7qAIFAfFKnu+PaMecudTB50AESjThuOOLrx1JCTMy0Iu2X4jV8DS7FvOqsidWHjEPFtHPtQuuGU5rsPzBhhQ63oZ2IG6Tu0G7PgVvN2rbDRO4zMtd/r3q+8X9+xhMr8KtQHVH6EITLAVnClvMppXoyvqnjdm9bJbUgQFC46fsMWVjpvOX2pj9R8mPLc2ahNzvp+0e7xJL+m3qqLXNyg4Fmz1jeH2akzlXZrS0rzqXeSR5fPseNxsZNTUn+h7TZIkqbO5ga0meEjVp1nHlIxWLzbQulDuGSQVch+fbJ4vKOBEeXwJRUf9Jwmr/aJyt7zcUw0fcIKXONNhwdtXDXocGxUi5rIDtOrBgBUaJFFlwQ32BmUZsEvaowxH5vx9Sgn/vZtcIIf3WEwY1bnrN/9pjf6wCKf6REeaCusmlFyv1e4NGqK7A43piQ/xXl109kG0p
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --text-strong: #0d0d0d;  
+  --text-primary: #272727;  
+  --text-secondary: #6b6b6b;  
+  --page-primary: #fff;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --text-strong: #fff;
+  --text-primary: #f0f0f0;  
+  --text-secondary: #c7c7c7;  
+  --page-primary: #0d0d0d;  
+}
+body {
+  font-family: Roobert, sans-serif;
+  margin: 0;
+  padding: 0 1rem;
+  color: var(--text-strong);
+  background-color: var(--page-primary);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+.type-heading-05 {
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 114.286%;
+  letter-spacing: -0.28px;
+}
+.type-mono-01 {
+  font-family: "Neue Montreal Mono";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.65px;
+}
+.type-mono-01-caps {
+  font-family: "Neue Montreal Mono";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.65px;
+  text-transform: uppercase;
+}
+.type-body-01 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+}
+.type-interface-00 {
+  font-family: "Neue Montreal";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.13px;
+  --webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.type-heading-04 {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: -0.28px;
+}
+.text-primary {
+  color: var(--text-primary);
+}
+.text-secondary {
+  color: var(--text-secondary);
+}
+h1 {
+  margin: 0;
+}
+h2 {
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+a {
+  color: inherit;
+}
+body {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        min-height: 100vh;
+      }
+.site-content {
+        margin: auto;
+      }
+header {
+        margin: 1.5rem 0;
+      }
+main > * {
+        margin-bottom: 1rem;
+      }
+.request-id {
+        margin-bottom: 2rem;
+      }
+footer {
+        padding: 1.75rem 0;
+      }
+.logo-render {
+        margin-left: 0.25rem;
+      }
+    </style>
+    <link
+      id="favicon"
+      rel="shortcut icon"
+      href="data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_459_932)'%3E%3Cpath d='M11.4327 1.00388C9.64526 0.919753 8.14218 2.21231 7.88574 3.91533C7.87559 3.99436 7.86035 4.07085 7.84766 4.14733C7.44904 6.26845 5.59303 7.87459 3.3638 7.87459C2.5691 7.87459 1.82263 7.67064 1.17265 7.31372C1.09394 7.27038 1 7.32647 1 7.4157V7.87204V14.7479H7.84512V9.59291C7.84512 8.64452 8.61189 7.87459 9.5564 7.87459H11.2677C13.2049 7.87459 14.7639 6.2608 14.6877 4.29774C14.6191 2.53099 13.1922 1.08802 11.4327 1.00388Z' fill='black'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_459_932'%3E%3Crect width='14' height='14' fill='white' transform='translate(1 1)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A"
+    />
+    <script>
+      (function () {
+        try {
+          var prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches;
+          if (!prefersDark) return;
+          document.documentElement.setAttribute("data-theme", "dark");
+          var favicon = document.getElementById("favicon");
+          if (favicon)
+            favicon.setAttribute(
+              "href",
+              "data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_459_963)'%3E%3Cpath d='M11.4327 1.00388C9.64526 0.919753 8.14218 2.21231 7.88574 3.91533C7.87559 3.99436 7.86035 4.07085 7.84766 4.14733C7.44904 6.26845 5.59303 7.87459 3.3638 7.87459C2.5691 7.87459 1.82263 7.67064 1.17265 7.31372C1.09394 7.27038 1 7.32647 1 7.4157V7.87204V14.7479H7.84512V9.59291C7.84512 8.64452 8.61189 7.87459 9.5564 7.87459H11.2677C13.2049 7.87459 14.7639 6.2608 14.6877 4.29774C14.6191 2.53099 13.1922 1.08802 11.4327 1.00388Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_459_963'%3E%3Crect width='14' height='14' fill='white' transform='translate(1 1)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A"
+            );
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="site-content">
+      <header>
+        <svg
+          fill="currentColor"
+          width="212"
+          height="93"
+          viewBox="0 0 212 93"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>502</title>
+          <path
+            d="M30.0545 92.024C13.9265 92.024 2.0225 81.144 0.230499 66.168H8.6785C10.0865 77.688 18.2785 84.088 29.9265 84.088C44.3905 84.088 53.6065 75.768 53.6065 61.816C53.6065 47.864 44.3905 38.776 30.0545 38.776C19.4305 38.776 11.4945 43.128 8.8065 50.296H2.1505L8.9345 1.39999H56.0385V9.336H15.4625L11.2385 39.032C15.8465 34.552 24.0385 31.096 30.6945 31.096C49.7665 31.096 62.5665 43.512 62.5665 61.816C62.5665 80.12 49.5105 92.024 30.0545 92.024ZM104.704 92.024C83.1995 92.024 75.0075 77.432 75.0075 50.04V42.36C75.0075 14.968 83.1995 0.375999 104.704 0.375999H108.928C130.56 0.375999 138.624 14.968 138.624 42.36V50.04C138.624 77.432 130.56 92.024 108.928 92.024H104.704ZM83.5835 50.04C83.5835 72.696 89.3435 84.088 104.832 84.088H108.928C124.416 84.088 130.176 72.696 130.176 50.04V42.36C130.176 19.704 124.416 8.312 108.928 8.312H104.832C89.3435 8.312 83.5835 19.704 83.5835 42.36V50.04ZM153.719 29.688C152.823 11.896 164.343 0.375999 182.391 0.375999C198.647 0.375999 210.551 10.744 210.551 26.744C210.551 38.26
+          />
+        </svg>
+        <h1 class="type-heading-04">Bad Gateway</h1>
+      </header>
+      <main class="text-primary">
+        <div class="request-id">
+          Request ID: 94b06a042bc63023-PDX
+        </div>
+        <div>
+          This service is currently unavailable. Please try again in a few
+          minutes.
+        </div>
+        <div>
+          If you are the site owner, refer to
+          <a
+            href="https://render.com/docs/troubleshooting-deploys#502-bad-gateway"
+          >
+            Render’s documentation</a
+          >
+          for troubleshooting.
+        </div>
+      </main>
+    </div>
+    <footer>
+      <div class="type-body-01 text-secondary">
+        Powered by
+        <a href="https://render.com">
+          <svg
+            fill="currentColor"
+            class="logo-render"
+            aria-label="Render"
+            width="69"
+            height="13"
+            viewBox="0 0 69 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M23.7321 2.14129C25.9243 2.14129 27.3494 3.3794 27.3494 5.36795C27.3494 6.82386 26.5113 7.90573 25.1975 8.36736L27.7731 12.7658H25.8627L23.4599 8.59225H20.8062V12.7658H19.1609V2.14129H23.7321ZM20.8038 3.62087V7.12924H23.654C24.9608 7.12924 25.6354 6.40011 25.6354 5.36795C25.6354 4.31213 24.9631 3.62087 23.654 3.62087H20.8038Z"
+            />
+            <path
+              d="M31.9585 5.09334C34.1506 5.09334 35.5757 6.72206 35.5757 8.73429C35.5757 8.96866 35.5592 9.21249 35.5142 9.45396H29.6812C29.7522 10.5808 30.7157 11.4662 32.0153 11.4662C32.9551 11.4662 33.7056 11.0661 34.269 10.1831L35.4124 11.014C34.7164 12.2663 33.3457 12.9245 32.0153 12.9245C29.7451 12.9245 28.0761 11.2484 28.0761 9.01837C28.0761 6.77651 29.6812 5.09334 31.9585 5.09334ZM34.0015 8.29397C33.9068 7.23814 33.0238 6.49243 31.9419 6.49243C30.7914 6.49243 29.9132 7.23577 29.719 8.29397H34.0015Z"
+            />
+            <path
+              d="M37.015 12.7658V5.24959H38.5727V6.19652C38.8237 5.81301 39.5362 5.09334 40.8832 5.09334C42.9499 5.09334 44.0388 6.37643 44.0388 8.20164V12.7658H42.4882V8.5307C42.4882 7.28549 41.8065 6.56582 40.6394 6.56582C39.496 6.56582 38.5656 7.28549 38.5656 8.5307V12.7658H37.015Z"
+            />
+            <path
+              d="M49.0906 5.09334C50.3666 5.09334 51.2117 5.56207 51.768 6.27464V1.74121H53.3186V12.7658H51.768V11.7408C51.2117 12.4534 50.3666 12.9221 49.0906 12.9221C46.953 12.9221 45.3172 11.2768 45.3172 8.96866C45.3172 6.65815 46.953 5.09334 49.0906 5.09334ZM46.8654 8.96866C46.8654 10.3535 47.8289 11.5277 49.2776 11.5277C50.7264 11.5277 51.7586 10.3535 51.7586 8.96866C51.7586 7.58377 50.717 6.4877 49.2776 6.4877C47.8289 6.48533 46.8654 7.5814 46.8654 8.96866Z"
+            />
+            <path
+              d="M58.5148 5.09334C60.707 5.09334 62.1321 6.72206 62.1321 8.73429C62.1321 8.96866 62.1155 9.21249 62.0705 9.45396H56.2375C56.3085 10.5808 57.272 11.4662 58.5717 11.4662C59.5115 11.4662 60.2619 11.0661 60.8253 10.1831L61.9687 11.014C61.2727 12.2663 59.9021 12.9245 58.5717 12.9245C56.3014 12.9245 54.6325 11.2484 54.6325 9.01837C54.6301 6.77651 56.2351 5.09334 58.5148 5.09334ZM60.5578 8.29397C60.4631 7.23814 59.5801 6.49243 58.4983 6.49243C57.3478 6.49243 56.4695 7.23577 56.2754 8.29397H60.5578Z"
+            />
+            <path
+              d="M63.6306 12.7658V5.24959H65.1883V6.27464C65.612 5.45318 66.3246 5.09334 67.146 5.09334C67.7331 5.09334 68.1805 5.28036 68.1805 5.28036L68.0172 6.70549C67.9319 6.67472 67.5934 6.53268 67.101 6.53268C66.2701 6.53268 65.1906 6.97063 65.1906 8.67037V12.7658H63.6306Z"
+            />
+            <path
+              d="M9.72722 0.0036066C8.06065 -0.0745152 6.65921 1.12572 6.42011 2.70709C6.41064 2.78048 6.39644 2.8515 6.3846 2.92252C6.01293 4.89213 4.28244 6.38355 2.20395 6.38355C1.46299 6.38355 0.767004 6.19416 0.160976 5.86274C0.0875901 5.82249 0 5.87457 0 5.95743V6.38118V12.7659H6.38223V7.97913C6.38223 7.09848 7.09716 6.38355 7.97779 6.38355H9.57335C11.3796 6.38355 12.8331 4.88503 12.7621 3.06219C12.6982 1.42163 11.3678 0.0817284 9.72722 0.0036066Z"
+            />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
+Aguardando o serviço ficar pronto...
+[DEBUG] Status: 200 - OK
+Serviço está pronto!
+Alterando senha para: teste@tecafrio.com.br
+Resposta para teste@tecafrio.com.br: 404 <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+Erro de requisição para teste@tecafrio.com.br: Expecting value: line 2 column 1 (char 1)
+Erro ao enviar notificação de erro para paulo.quintino@tecafrio.com.br: Expecting value: line 2 column 1 (char 1)
