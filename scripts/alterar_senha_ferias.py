@@ -10,6 +10,7 @@ from googleapiclient.discovery import build
 
 FERIAS_DIR = 'ferias'
 BACKEND_URL = os.environ['BACKEND_URL']
+print(f"BACKEND_URL: {BACKEND_URL}")
 AUTH_TOKEN = os.environ.get('AUTH_TOKEN', '')
 
 FERIAS_SENHA_PADRAO = os.environ["FERIAS_SENHA_PADRAO"]
