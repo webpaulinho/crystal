@@ -282,6 +282,7 @@ def vacation_settings(email):
 # --- INÍCIO: ENDPOINT PARA ALTERAÇÃO DE SENHA ---
 @app.route("/api/alterar-senha/<email>", methods=["POST"])
 def alterar_senha(email):
+    print(f"[DEBUG] Endpoint alterar_senha chamado para {email}")
     if not is_automation_request():
         return jsonify({"error": "Unauthorized"}), 401
 
