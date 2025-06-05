@@ -23,6 +23,12 @@ jobs:
       - name: Criar arquivo da Service Account
         run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}" > service-account.json
 
+      - name: Acordar backend no Render
+        run: |
+          curl -s https://msgferias.onrender.com || true
+          echo "Aguardando 60 segundos para garantir que o serviço acordou..."
+          sleep 60
+
       - name: Rodar script de alteração de senha
         env:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
