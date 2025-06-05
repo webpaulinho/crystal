@@ -34,21 +34,19 @@ def send_email_gmail_api(service, to, subject, body):
     raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
     service.users().messages().send(userId="me", body={'raw': raw}).execute()
 
-def wait_for_service_ready(url, timeout=600):
+def wait_for_service_ready(url, timeout=300):
     """Espera até que o serviço backend esteja pronto."""
-    print(f"[DEBUG] Iniciando healthcheck: {url}")
     start_time = time.time()
     while time.time() - start_time < timeout:
         try:
             response = requests.get(url)
-            print(f"[DEBUG] Status: {response.status_code} - {response.text.strip()}")
             if response.status_code == 200:
                 print("Serviço está pronto!")
                 return True
-        except requests.ConnectionError as e:
-            print(f"[DEBUG] Erro de conexão: {e}")
-        time.sleep(5)
+        except requests.ConnectionError:
+            pass
         print("Aguardando o serviço ficar pronto...")
+        time.sleep(5)
     print("Timeout ao esperar o serviço.")
     return False
 
@@ -90,7 +88,8 @@ def main():
             if AUTH_TOKEN:
                 headers['Authorization'] = f'Bearer {AUTH_TOKEN}'
             try:
-                resp = requests.post(f"{BACKEND_URL.rstrip('/')}/{email}", json=payload, headers=headers)
+                # URL corrigida para o endpoint de alteração de senha
+                resp = requests.post(f"{BACKEND_URL}/api/alterar-senha/{email}", json=payload, headers=headers)
                 print(f"Resposta para {email}: {resp.status_code} {resp.text}")
                 service = get_gmail_service(GMAIL_SENDER)
                 if resp.status_code == 200:
@@ -129,9 +128,8 @@ def main():
                     print(f"Erro ao enviar notificação de erro para {GMAIL_RECIPIENT}: {e2}")
 
 if __name__ == "__main__":
-    # Garante que não haverá barra dupla
-    backend_healthcheck_url = f"{BACKEND_URL.rstrip('/')}/healthcheck"
-    if wait_for_service_ready(backend_healthcheck_url, timeout=600):
+    backend_healthcheck_url = f"{BACKEND_URL}/healthcheck"  # Ajuste conforme necessário
+    if wait_for_service_ready(backend_healthcheck_url):
         main()
     else:
         print("O serviço não iniciou a tempo. Saindo...")
