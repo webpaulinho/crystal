@@ -279,6 +279,37 @@ def vacation_settings(email):
             print("Erro ao alterar vacation:", e)
             return jsonify({"error": str(e)}), 400
 
+# --- INÍCIO: ENDPOINT PARA ALTERAÇÃO DE SENHA ---
+@app.route("/api/alterar-senha/<email>", methods=["POST"])
+def alterar_senha(email):
+    if not is_automation_request():
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json(force=True)
+    nova_senha = data.get("novaSenha")
+    change_at_next_login = data.get("changeAtNextLogin", True)
+
+    if not nova_senha:
+        return jsonify({"error": "Senha não informada"}), 400
+
+    try:
+        # Use a conta de serviço delegada como admin
+        admin_email = "administrador@tecafrio.com.br"  # Use o admin real do seu domínio!
+        creds = get_service_account_creds(admin_email)
+        service = build('admin', 'directory_v1', credentials=creds)
+        service.users().update(
+            userKey=email,
+            body={
+                "password": nova_senha,
+                "changePasswordAtNextLogin": change_at_next_login
+            }
+        ).execute()
+        return jsonify({"ok": True, "email": email}), 200
+    except Exception as e:
+        print("Erro ao alterar senha:", e)
+        return jsonify({"error": str(e)}), 500
+# --- FIM: ENDPOINT PARA ALTERAÇÃO DE SENHA ---
+
 # --- INÍCIO: REGISTRO AUTOMÁTICO DE FÉRIAS EM JSON ---
 @app.route('/api/registrar-ferias', methods=['POST'])
 def registrar_ferias():
