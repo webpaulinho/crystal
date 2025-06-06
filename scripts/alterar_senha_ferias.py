@@ -98,9 +98,13 @@ def main():
                 resp = requests.post(f"{BACKEND_URL}/api/alterar-senha/{email}", json=payload, headers=headers)
                 print(f"Resposta para {email}: {resp.status_code} {resp.text}")
                 try:
-                    resposta_json = resp.json()
+                    if resp.headers.get("Content-Type", "").startswith("application/json"):
+                        resposta_json = resp.json()
+                    else:
+                        print(f"⚠️ Resposta não é JSON. Conteúdo bruto: {resp.text}")
+                        resposta_json = {}
                 except ValueError:
-                    print(f"⚠️ Resposta inválida (não é JSON). Conteúdo bruto: {resp.text}")
+                    print(f"⚠️ Falha ao decodificar JSON. Conteúdo bruto: {resp.text}")
                     resposta_json = {}
 
                 service = get_gmail_service(GMAIL_SENDER)
