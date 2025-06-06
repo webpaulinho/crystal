@@ -105,7 +105,7 @@ def main():
 
                 service = get_gmail_service(GMAIL_SENDER)
                 
-               if resp.status_code == 200 and resposta_json.get("ok") is True:
+                if resp.status_code == 200 and resposta_json.get("ok") is True:
                     print("✅ Senha alterada com sucesso, marcando como processado.")
                     dados['processado'] = True
                     with open(filepath, "w") as f:
@@ -127,9 +127,9 @@ def main():
                     print(f"Notificação enviada para {GMAIL_RECIPIENT}")
                 except Exception as e:
                     print(f"Erro ao enviar e-mail para {GMAIL_RECIPIENT}: {e}")
-                except Exception as e:
-                    print(f"Erro de requisição para {email}: {e}")
-                    # Notifica erro de requisição também
+            except Exception as e:
+                print(f"Erro de requisição para {email}: {e}")
+                # Notifica erro de requisição também
                 try:
                     service = get_gmail_service(GMAIL_SENDER)
                     assunto = f"[ERRO] Falha ao alterar senha de {nome}"
