@@ -93,8 +93,14 @@ def main():
                 print(f"Enviando POST para: {BACKEND_URL}/api/alterar-senha/{email}")
                 resp = requests.post(f"{BACKEND_URL}/api/alterar-senha/{email}", json=payload, headers=headers)
                 print(f"Resposta para {email}: {resp.status_code} {resp.text}")
+                try:
+                    resposta_json = resp.json()
+                except ValueError:
+                    print(f"⚠️ Resposta inválida (não é JSON). Conteúdo bruto: {resp.text}")
+                    resposta_json = {}
+
                 service = get_gmail_service(GMAIL_SENDER)
-                if resp.status_code == 200:
+                if resp.status_code == 200 and resposta_json.get("ok") is not False:
                     dados['processado'] = True
                     with open(filepath, "w") as f:
                         json.dump(dados, f, ensure_ascii=False, indent=2)
