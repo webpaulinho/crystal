@@ -34,10 +34,10 @@ def send_email_gmail_api(service, to, subject, body):
     message['from'] = GMAIL_SENDER
     raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
     try:
-    result = service.users().messages().send(userId="me", body={'raw': raw}).execute()
-    print("📨 E-mail enviado com sucesso.")
-except Exception as e:
-    print(f"⚠️ Erro ao enviar e-mail com Gmail API: {e}")
+        result = service.users().messages().send(userId="me", body={'raw': raw}).execute()
+        print("📨 E-mail enviado com sucesso.")
+    except Exception as e:
+        print(f"⚠️ Erro ao enviar e-mail com Gmail API: {e}")
 
 def wait_for_service_ready(url, timeout=300):
     """Espera até que o serviço backend esteja pronto."""
@@ -104,12 +104,8 @@ def main():
                     resposta_json = {}
 
                 service = get_gmail_service(GMAIL_SENDER)
-                try:
-                    resposta_json = resp.json()
-                except ValueError:
-                    resposta_json = {}
-
-                if resp.status_code == 200 and resposta_json.get("ok") is True:
+                
+               if resp.status_code == 200 and resposta_json.get("ok") is True:
                     print("✅ Senha alterada com sucesso, marcando como processado.")
                     dados['processado'] = True
                     with open(filepath, "w") as f:
@@ -131,9 +127,9 @@ def main():
                     print(f"Notificação enviada para {GMAIL_RECIPIENT}")
                 except Exception as e:
                     print(f"Erro ao enviar e-mail para {GMAIL_RECIPIENT}: {e}")
-            except Exception as e:
-                print(f"Erro de requisição para {email}: {e}")
-                # Notifica erro de requisição também
+                except Exception as e:
+                    print(f"Erro de requisição para {email}: {e}")
+                    # Notifica erro de requisição também
                 try:
                     service = get_gmail_service(GMAIL_SENDER)
                     assunto = f"[ERRO] Falha ao alterar senha de {nome}"
