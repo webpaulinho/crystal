@@ -104,10 +104,17 @@ def main():
                     resposta_json = {}
 
                 service = get_gmail_service(GMAIL_SENDER)
-                if resp.status_code == 200 and resposta_json.get("ok") is not False:
+                try:
+                    resposta_json = resp.json()
+                except ValueError:
+                    resposta_json = {}
+
+                if resp.status_code == 200 and resposta_json.get("ok") is True:
+                    print("✅ Senha alterada com sucesso, marcando como processado.")
                     dados['processado'] = True
                     with open(filepath, "w") as f:
                         json.dump(dados, f, ensure_ascii=False, indent=2)
+                    print(f"📝 Arquivo atualizado: {filepath}")
                     assunto = f"Senha de {nome} alterada com sucesso"
                     corpo = (
                         f"Olá, a senha de {nome} foi alterada com sucesso conforme agendamento na data de hoje."
