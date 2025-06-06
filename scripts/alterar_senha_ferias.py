@@ -33,7 +33,11 @@ def send_email_gmail_api(service, to, subject, body):
     message['subject'] = subject
     message['from'] = GMAIL_SENDER
     raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
-    service.users().messages().send(userId="me", body={'raw': raw}).execute()
+    try:
+    result = service.users().messages().send(userId="me", body={'raw': raw}).execute()
+    print("📨 E-mail enviado com sucesso.")
+except Exception as e:
+    print(f"⚠️ Erro ao enviar e-mail com Gmail API: {e}")
 
 def wait_for_service_ready(url, timeout=300):
     """Espera até que o serviço backend esteja pronto."""
