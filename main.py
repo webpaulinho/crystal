@@ -331,6 +331,7 @@ def registrar_ferias():
         "data_inicio": data_inicio,
         "data_fim": data_fim,
         "nome": nome
+        "processado": False
     }
 
     # Caminho do arquivo no repositório GitHub (apenas com o email)
