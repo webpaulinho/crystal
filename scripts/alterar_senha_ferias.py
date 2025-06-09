@@ -79,6 +79,7 @@ def main():
         nome = dados.get('nome', email)
         processado = dados.get('processado', False)
 
+        print(f"DEBUG → Arquivo: {filename}, data_inicio={data_inicio}, hoje={hoje}, processado={processado}")
         if data_inicio == hoje and not processado:
             print(f'Alterando senha para: {email}')
             tipo_alteracao = "ferias"
