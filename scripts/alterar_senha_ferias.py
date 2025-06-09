@@ -37,8 +37,10 @@ def get_gmail_service(user_email):
     return build('gmail', 'v1', credentials=creds)
 
 def send_email_gmail_api(service, to, subject, body):
-    from pprint import pprint
+    import base64
     import traceback
+    from pprint import pprint
+    from email.mime.text import MIMEText
 
     try:
         message = MIMEText(body, 'plain')
@@ -49,15 +51,14 @@ def send_email_gmail_api(service, to, subject, body):
         payload = {'raw': raw}
 
         print("📤 Enviando e-mail com o seguinte payload:")
-        pprint(payload)  # debug
+        pprint(payload)  # Mostra conteúdo codificado
 
         result = service.users().messages().send(userId="me", body=payload).execute()
-        print("📨 E-mail enviado com sucesso.")
+        print("✅ E-mail enviado com sucesso.")
         pprint(result)
     except Exception as e:
         print("❌ Erro completo no envio de e-mail:")
         traceback.print_exc()
-
 
 def wait_for_service_ready(url, timeout=300):
     """Espera até que o serviço backend esteja pronto."""
