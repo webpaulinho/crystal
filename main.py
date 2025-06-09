@@ -330,7 +330,7 @@ def registrar_ferias():
         "email": email,
         "data_inicio": data_inicio,
         "data_fim": data_fim,
-        "nome": nome
+        "nome": nome,
         "processado": False
     }
 
