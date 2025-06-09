@@ -7,6 +7,16 @@ import base64
 from email.mime.text import MIMEText
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+import tempfile
+
+# Cria arquivo temporário com o conteúdo da variável de ambiente (caso esteja em string)
+if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON") and not os.path.exists("service-account.json"):
+    with tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".json") as f:
+        f.write(os.environ["GOOGLE_APPLICATION_CREDENTIALS_JSON"])
+        SERVICE_ACCOUNT_FILE = f.name
+else:
+    SERVICE_ACCOUNT_FILE = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON", "service-account.json")
+
 
 FERIAS_DIR = 'ferias'
 BACKEND_URL = os.environ['BACKEND_URL']
@@ -16,7 +26,6 @@ AUTH_TOKEN = os.environ.get('AUTH_TOKEN', '')
 FERIAS_SENHA_PADRAO = os.environ["FERIAS_SENHA_PADRAO"]
 SAIDA_SENHA_PADRAO = os.environ["SAIDA_SENHA_PADRAO"]
 
-SERVICE_ACCOUNT_FILE = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS_JSON', 'service-account.json')
 GMAIL_SENDER = "administrador@tecafrio.com.br"
 GMAIL_RECIPIENT = "paulo.quintino@tecafrio.com.br"
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
