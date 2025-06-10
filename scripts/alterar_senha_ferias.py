@@ -8,6 +8,7 @@ import base64
 from email.mime.text import MIMEText
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from github_commit import commit_json_to_github
 import tempfile
 
 # Cria arquivo temporário com o conteúdo da variável de ambiente (caso esteja em string)
@@ -133,8 +134,6 @@ def main():
                     dados['processado'] = True
 
                     # Salva direto no GitHub:
-                    from github_commit import commit_json_to_github
-                    import os
                     repo = "webpaulinho/painel-ferias"
                     path = f"{FERIAS_DIR}/{filename}"
                     content_dict = dados
