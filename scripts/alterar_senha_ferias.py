@@ -145,7 +145,7 @@ def main():
                     content_dict = dados
                     commit_message = f"Marca processado para {email} via sistema automático"
                     github_token = os.environ["GITHUB_TOKEN"]
-
+                    print("🔎 DEBUG → GITHUB_TOKEN está definido:", bool(os.environ.get("GITHUB_TOKEN")))
                     sucesso = commit_json_to_github(repo, path, content_dict, commit_message, github_token)
                     if sucesso:
                         print(f"📝 Arquivo atualizado no GitHub: {path}")
