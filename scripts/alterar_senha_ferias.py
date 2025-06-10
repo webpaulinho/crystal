@@ -65,7 +65,7 @@ def send_email_gmail_api(service, to, subject, body):
         except Exception as e:
             print("❌ Erro completo no envio de e-mail:")
             import traceback
-            traceback.print_exc())
+            traceback.print_exc()
 
 def wait_for_service_ready(url, timeout=300):
     start_time = time.time()
