@@ -8,8 +8,9 @@ import base64
 from email.mime.text import MIMEText
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from github_commit import commit_json_to_github
-import tempfile
+import sys
+sys.path.append('..')  # Adiciona o diretório pai ao path
+from github_commit import commit_json_to_githubimport tempfile
 
 # Cria arquivo temporário com o conteúdo da variável de ambiente (caso esteja em string)
 if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON") and not os.path.exists("service-account.json"):
