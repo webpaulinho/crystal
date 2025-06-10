@@ -151,6 +151,7 @@ def main():
                         print(f"📝 Arquivo atualizado no GitHub: {path}")
                     else:
                         print(f"❌ Erro ao atualizar o arquivo no GitHub: {path}")
+                        print("‼️ Falha ao tentar salvar o arquivo no GitHub. Verifique o token, permissões e o nome do branch.")
 
                     assunto = f"Senha de {nome} alterada com sucesso"
                     corpo = (
