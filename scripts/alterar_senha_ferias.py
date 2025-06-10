@@ -1,5 +1,5 @@
-
 import os
+import sys
 import json
 import requests
 from datetime import datetime
@@ -8,9 +8,11 @@ import base64
 from email.mime.text import MIMEText
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-import sys
-sys.path.append('..')  # Adiciona o diretório pai ao path
-from github_commit import commit_json_to_githubimport tempfile
+import tempfile
+
+# Adiciona o diretório raiz ao sys.path para importar github_commit.py
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from github_commit import commit_json_to_github
 
 # Cria arquivo temporário com o conteúdo da variável de ambiente (caso esteja em string)
 if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON") and not os.path.exists("service-account.json"):
@@ -19,7 +21,6 @@ if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON") and not os.path.exists(
         SERVICE_ACCOUNT_FILE = f.name
 else:
     SERVICE_ACCOUNT_FILE = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON", "service-account.json")
-
 
 FERIAS_DIR = 'ferias'
 BACKEND_URL = os.environ['BACKEND_URL']
@@ -123,18 +124,22 @@ def main():
                 resp = requests.post(f"{BACKEND_URL}/api/alterar-senha/{email}", json=payload, headers=headers)
                 print(f"Resposta para {email}: {resp.status_code} {resp.text}")
                 try:
-                    resposta_json = resp.json()
-                except Exception:
-                     print(f"⚠️ Falha ao decodificar JSON. Conteúdo bruto: {resp.text}")
-                     resposta_json = {}
-                   
+                    if resp.headers.get("Content-Type", "").startswith("application/json"):
+                        resposta_json = resp.json()
+                    else:
+                        print(f"⚠️ Resposta não é JSON. Conteúdo bruto: {resp.text}")
+                        resposta_json = {}
+                except ValueError:
+                    print(f"⚠️ Falha ao decodificar JSON. Conteúdo bruto: {resp.text}")
+                    resposta_json = {}
+
                 service = get_gmail_service(GMAIL_SENDER)
                 
                 if resp.status_code == 200 and resposta_json.get("ok") is True:
                     print("✅ Senha alterada com sucesso, marcando como processado.")
                     dados['processado'] = True
 
-                    # Salva direto no GitHub:
+                    # Salva alteração diretamente no GitHub
                     repo = "webpaulinho/painel-ferias"
                     path = f"{FERIAS_DIR}/{filename}"
                     content_dict = dados
