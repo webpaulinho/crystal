@@ -1,3 +1,4 @@
+
 import os
 import json
 import requests
@@ -130,9 +131,22 @@ def main():
                 if resp.status_code == 200 and resposta_json.get("ok") is True:
                     print("✅ Senha alterada com sucesso, marcando como processado.")
                     dados['processado'] = True
-                    with open(filepath, "w") as f:
-                        json.dump(dados, f, ensure_ascii=False, indent=2)
-                    print(f"📝 Arquivo atualizado: {filepath}")
+
+                    # Salva direto no GitHub:
+                    from github_commit import commit_json_to_github
+                    import os
+                    repo = "webpaulinho/painel-ferias"
+                    path = f"{FERIAS_DIR}/{filename}"
+                    content_dict = dados
+                    commit_message = f"Marca processado para {email} via sistema automático"
+                    github_token = os.environ["GITHUB_TOKEN"]
+
+                    sucesso = commit_json_to_github(repo, path, content_dict, commit_message, github_token)
+                    if sucesso:
+                        print(f"📝 Arquivo atualizado no GitHub: {path}")
+                    else:
+                        print(f"❌ Erro ao atualizar o arquivo no GitHub: {path}")
+
                     assunto = f"Senha de {nome} alterada com sucesso"
                     corpo = (
                         f"Olá, a senha de {nome} foi alterada com sucesso conforme agendamento na data de hoje."
