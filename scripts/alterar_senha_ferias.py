@@ -9,6 +9,8 @@ from email.mime.text import MIMEText
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 import tempfile
+from pprint import pprint
+import traceback
 
 # Adiciona o diretório raiz ao sys.path para importar github_commit.py
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -41,11 +43,6 @@ def get_gmail_service(user_email):
     return build('gmail', 'v1', credentials=creds)
 
 def send_email_gmail_api(service, to, subject, body):
-    import base64
-    import traceback
-    from pprint import pprint
-    from email.mime.text import MIMEText
-
     try:
         message = MIMEText(body, 'plain')
         message['to'] = to
@@ -55,17 +52,17 @@ def send_email_gmail_api(service, to, subject, body):
         payload = {'raw': raw}
 
         print("📤 Enviando e-mail com o seguinte payload:")
-        pprint(payload)  # Mostra conteúdo codificado
+        pprint(payload)
 
         result = service.users().messages().send(userId="me", body=payload).execute()
         print("✅ E-mail enviado com sucesso.")
+        print("📬 RESPOSTA DA API GMAIL:")
         pprint(result)
     except Exception as e:
         print("❌ Erro completo no envio de e-mail:")
         traceback.print_exc()
 
 def wait_for_service_ready(url, timeout=300):
-    """Espera até que o serviço backend esteja pronto."""
     start_time = time.time()
     while time.time() - start_time < timeout:
         try:
@@ -99,15 +96,8 @@ def main():
         if data_inicio == hoje and not processado:
             print(f'Alterando senha para: {email}')
             tipo_alteracao = "ferias"
-            if tipo_alteracao == "ferias":
-                nova_senha = FERIAS_SENHA_PADRAO
-                change_at_next_login = True
-            elif tipo_alteracao == "saida":
-                nova_senha = SAIDA_SENHA_PADRAO
-                change_at_next_login = False
-            else:
-                nova_senha = ""
-                change_at_next_login = False
+            nova_senha = FERIAS_SENHA_PADRAO
+            change_at_next_login = True
 
             payload = {
                 "alterarSenha": True,
@@ -119,7 +109,6 @@ def main():
             if AUTH_TOKEN:
                 headers['Authorization'] = f'Bearer {AUTH_TOKEN}'
             try:
-                # URL corrigida para o endpoint de alteração de senha
                 print(f"Enviando POST para: {BACKEND_URL}/api/alterar-senha/{email}")
                 resp = requests.post(f"{BACKEND_URL}/api/alterar-senha/{email}", json=payload, headers=headers)
                 print(f"Resposta para {email}: {resp.status_code} {resp.text}")
@@ -139,14 +128,15 @@ def main():
                     print("✅ Senha alterada com sucesso, marcando como processado.")
                     dados['processado'] = True
 
-                    # Salva alteração diretamente no GitHub
                     repo = "webpaulinho/painel-ferias"
                     path = f"{FERIAS_DIR}/{filename}"
                     content_dict = dados
                     commit_message = f"Marca processado para {email} via sistema automático"
-                    github_token = os.environ["GITHUB_TOKEN"]
-                    print("🔎 DEBUG → GITHUB_TOKEN está definido:", bool(os.environ.get("GITHUB_TOKEN")))
+                    github_token = os.environ.get("GITHUB_TOKEN")
+                    print("🔐 Primeiros caracteres do GITHUB_TOKEN:", github_token[:6] + "..." if github_token else "❌ Token não definido")
+
                     sucesso = commit_json_to_github(repo, path, content_dict, commit_message, github_token)
+                    print("📌 commit_json_to_github retornou:", sucesso)
                     if sucesso:
                         print(f"📝 Arquivo atualizado no GitHub: {path}")
                     else:
@@ -154,9 +144,7 @@ def main():
                         print("‼️ Falha ao tentar salvar o arquivo no GitHub. Verifique o token, permissões e o nome do branch.")
 
                     assunto = f"Senha de {nome} alterada com sucesso"
-                    corpo = (
-                        f"Olá, a senha de {nome} foi alterada com sucesso conforme agendamento na data de hoje."
-                    )
+                    corpo = f"Olá, a senha de {nome} foi alterada com sucesso conforme agendamento na data de hoje."
                 else:
                     assunto = f"[ERRO] Falha ao alterar senha de {nome}"
                     corpo = (
@@ -171,7 +159,6 @@ def main():
                     print(f"Erro ao enviar e-mail para {GMAIL_RECIPIENT}: {e}")
             except Exception as e:
                 print(f"Erro de requisição para {email}: {e}")
-                # Notifica erro de requisição também
                 try:
                     service = get_gmail_service(GMAIL_SENDER)
                     assunto = f"[ERRO] Falha ao alterar senha de {nome}"
@@ -185,7 +172,7 @@ def main():
                     print(f"Erro ao enviar notificação de erro para {GMAIL_RECIPIENT}: {e2}")
 
 if __name__ == "__main__":
-    backend_healthcheck_url = f"{BACKEND_URL}/healthcheck"  # Ajuste conforme necessário
+    backend_healthcheck_url = f"{BACKEND_URL}/healthcheck"
     if wait_for_service_ready(backend_healthcheck_url):
         main()
     else:
