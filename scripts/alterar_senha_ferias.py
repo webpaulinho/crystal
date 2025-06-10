@@ -118,12 +118,12 @@ def main():
                 # URL corrigida para o endpoint de alteração de senha
                 print(f"Enviando POST para: {BACKEND_URL}/api/alterar-senha/{email}")
                 resp = requests.post(f"{BACKEND_URL}/api/alterar-senha/{email}", json=payload, headers=headers)
-               print(f"Resposta para {email}: {resp.status_code} {resp.text}")
-               try:
-                   resposta_json = resp.json()
-               except Exception:
-                    print(f"⚠️ Falha ao decodificar JSON. Conteúdo bruto: {resp.text}")
-                    resposta_json = {}
+                print(f"Resposta para {email}: {resp.status_code} {resp.text}")
+                try:
+                    resposta_json = resp.json()
+                except Exception:
+                     print(f"⚠️ Falha ao decodificar JSON. Conteúdo bruto: {resp.text}")
+                     resposta_json = {}
                    
                 service = get_gmail_service(GMAIL_SENDER)
                 
