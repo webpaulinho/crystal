@@ -36,8 +36,15 @@ def commit_json_to_github(repo, path, content_dict, commit_message, github_token
     print(f"Enviando requisição para salvar arquivo: {path}")
     resp = requests.put(api_url, headers=headers, json=data)
     if resp.status_code in (200, 201):
-        print(f"Arquivo '{path}' salvo com sucesso! Status code: {resp.status_code}")
+        print(f"✅ Arquivo '{path}' salvo com sucesso! Status code: {resp.status_code}")
         return True
     else:
-        print(f"Erro ao salvar arquivo '{path}': Status code: {resp.status_code}, Resposta: {resp.text}")
+        print("❌ Falha ao salvar no GitHub:")
+        print(f"🔁 URL chamada: {api_url}")
+        print("📦 Payload enviado:")
+        print(json.dumps(data, indent=2))
+        print(f"🔑 Token presente? {'Sim' if github_token else 'Não'}")
+        print(f"📄 Status code: {resp.status_code}")
+        print("🧾 Resposta completa da API:")
+        print(resp.text)
         return False
