@@ -54,13 +54,18 @@ def send_email_gmail_api(service, to, subject, body):
         print("📤 Enviando e-mail com o seguinte payload:")
         pprint(payload)
 
-        result = service.users().messages().send(userId="me", body=payload).execute()
-        print("✅ E-mail enviado com sucesso.")
-        print("📬 RESPOSTA DA API GMAIL:")
-        pprint(result)
-    except Exception as e:
-        print("❌ Erro completo no envio de e-mail:")
-        traceback.print_exc()
+        try:
+            result = service.users().messages().send(userId="me", body=payload).execute()
+            print("✅ E-mail enviado com sucesso.")
+            if result:
+                from pprint import pprint
+                pprint(result)
+            else:
+                print("⚠️ E-mail enviado, mas resposta vazia (possivelmente status 204).")
+        except Exception as e:
+            print("❌ Erro completo no envio de e-mail:")
+            import traceback
+            traceback.print_exc())
 
 def wait_for_service_ready(url, timeout=300):
     start_time = time.time()
