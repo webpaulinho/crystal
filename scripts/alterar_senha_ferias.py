@@ -16,6 +16,9 @@ import traceback
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from github_commit import commit_json_to_github
 
+# DEBUG: Verificando se o JSON da conta foi carregado corretamente
+print("DEBUG: Primeiro caractere do JSON da conta:", os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON", "")[:1])
+
 # Cria arquivo temporário com o conteúdo da variável de ambiente (caso esteja em string)
 if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON") and not os.path.exists("service-account.json"):
     with tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".json") as f:
