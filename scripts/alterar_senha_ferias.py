@@ -54,9 +54,17 @@ def send_email_gmail_api(service, to, subject, body):
         print("📤 Enviando e-mail com o seguinte payload:")
         pprint(payload)
 
-        result = service.users().messages().send(userId="me", body=payload).execute()
-        print("✅ E-mail enviado com sucesso.")
-        pprint(result)
+        print("📨 Enviando e-mail...")
+        try:
+            result = service.users().messages().send(userId="me", body=payload).execute()
+            print("✅ E-mail enviado com sucesso.")
+            pprint(result)
+        except Exception as err:
+            print("❌ Erro ao enviar o e-mail:")
+            traceback.print_exc()
+            print("💥 Payload que causou erro:")
+            print(payload)
+
 
     except Exception as e:
         print("❌ Erro completo no envio de e-mail:")
