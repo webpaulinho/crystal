@@ -19,13 +19,14 @@ from github_commit import commit_json_to_github
 # DEBUG: Verificando se o JSON da conta foi carregado corretamente
 print("DEBUG: Primeiro caractere do JSON da conta:", os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON_SCRIPT", "")[:1])
 
-# Usa variável exclusiva para o script
-if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON_SCRIPT") and not os.path.exists("service-account-script.json"):
+# Corrigido: Sempre cria o arquivo temporário com o conteúdo da variável de ambiente
+if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON_SCRIPT"):
     with tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".json") as f:
         f.write(os.environ["GOOGLE_APPLICATION_CREDENTIALS_JSON_SCRIPT"])
         SERVICE_ACCOUNT_FILE = f.name
 else:
-    SERVICE_ACCOUNT_FILE = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON_SCRIPT", "service-account-script.json")
+    print("❌ Variável de ambiente GOOGLE_APPLICATION_CREDENTIALS_JSON_SCRIPT não encontrada.")
+    exit(1)
 
 FERIAS_DIR = 'ferias'
 BACKEND_URL = os.environ['BACKEND_URL']
