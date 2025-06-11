@@ -5,6 +5,9 @@ on:
     - cron: '00 10 * * *' # Roda todo dia às 07h da tarde de Brasília (10h00 UTC)
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   alterar_senha_ferias:
     runs-on: ubuntu-latest
