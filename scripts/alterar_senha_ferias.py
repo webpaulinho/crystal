@@ -126,7 +126,10 @@ def main():
                 
                 if resp.status_code == 200 and resposta_json.get("ok") is True:
                     print("✅ Senha alterada com sucesso, marcando como processado.")
+                    print("🛠️ Atualizando campo 'processado' para True...")
                     dados['processado'] = True
+                    print("🆕 Conteúdo final a ser salvo no GitHub:")
+                    print(json.dumps(dados, indent=2, ensure_ascii=False))
 
                     repo = "webpaulinho/painel-ferias"
                     path = f"{FERIAS_DIR}/{filename}"
