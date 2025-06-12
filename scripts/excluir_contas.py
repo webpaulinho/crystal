@@ -67,8 +67,8 @@ def processar_agendamentos():
     admin_service = build('admin', 'directory_v1', credentials=creds_delegated)
 
     for filename in arquivos:
-    filepath = os.path.join(AGENDAMENTOS_DIR, filename)
-    print(f"🔍 Processando arquivo: {filename}")
+        filepath = os.path.join(AGENDAMENTOS_DIR, filename)
+        print(f"🔍 Processando arquivo: {filename}")
 
     try:
         with open(filepath, "r", encoding="utf-8") as f:
