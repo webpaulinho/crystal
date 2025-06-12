@@ -262,7 +262,7 @@ def vacation_settings(email):
                 "data_acao": data["dataExclusao"],  # yyyy-mm-dd
                 "registrado_em": datetime.datetime.utcnow().isoformat() + "Z",
                 "motivo": data.get("responseSubject", ""),
-                "ultimo_dia": data.get("endTime"),  # timestamp ms
+                "ultimo_dia": int(data.get("endTime", 0)),  # garante que é inteiro
                 "processado": False
             }
             import base64
