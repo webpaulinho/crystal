@@ -19,7 +19,7 @@ GMAIL_SENDER = os.environ.get("GMAIL_SENDER", "administrador@tecafrio.com.br")
 GMAIL_RECIPIENT = os.environ.get("GMAIL_RECIPIENT", "paulo.quintino@tecafrio.com.br")
 
 def get_service_account():
-    creds_json = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON")
+    creds_json = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON_EXCLUSAO")
     if not creds_json:
         raise Exception("GOOGLE_APPLICATION_CREDENTIALS_JSON não definido.")
     with tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".json") as f:
