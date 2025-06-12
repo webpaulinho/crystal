@@ -59,7 +59,12 @@ def processar_agendamentos():
     arquivos = [f for f in os.listdir(AGENDAMENTOS_DIR) if f.endswith(".json")]
 
     creds = get_service_account()
-    gmail_service = build('gmail', 'v1', credentials=creds.with_subject(GMAIL_SENDER))
+    admin_email = GMAIL_SENDER  # ou defina direto, ex: "administrador@tecafrio.com.br"
+    creds_delegated = creds.with_subject(admin_email)
+
+    # Inicializa os serviços com delegação
+    gmail_service = build('gmail', 'v1', credentials=creds_delegated)
+    admin_service = build('admin', 'directory_v1', credentials=creds_delegated)
 
     for filename in arquivos:
         filepath = os.path.join(AGENDAMENTOS_DIR, filename)
