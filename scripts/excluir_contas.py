@@ -60,7 +60,7 @@ def processar_agendamentos():
 
     creds = get_service_account()
     admin_email = GMAIL_SENDER  # ou defina direto, ex: "administrador@tecafrio.com.br"
-    creds_delegated = creds.with_subject(admin_email)
+    sucesso = excluir_usuario(email, creds_delegated)
 
     # Inicializa os serviços com delegação
     gmail_service = build('gmail', 'v1', credentials=creds_delegated)
