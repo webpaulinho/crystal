@@ -19,5 +19,7 @@ jobs:
         run: pip install google-api-python-client google-auth
       - name: Executar exclusão de contas agendadas
         run: python scripts/excluir_contas.py
+      - name: Executar exclusão de contas agendadas
+        run: python scripts/excluir_contas.py
         env:
-          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+          GOOGLE_APPLICATION_CREDENTIALS_JSON_EXCLUSAO: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON_EXCLUSAO }}
