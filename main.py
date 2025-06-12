@@ -265,18 +265,16 @@ def vacation_settings(email):
                 "ultimo_dia": data.get("endTime"),  # timestamp ms
                 "processado": False
             }
-            nome_arquivo = f"agendamentos/exclusao_{email}_{data['dataExclusao']}.json"
-            with open(nome_arquivo, "w", encoding="utf-8") as f:
-                json.dump(agendamento_exclusao, f, ensure_ascii=False, indent=2)
-            print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
+            import base64
+            nome_arquivo = f"agendamentos/{email}.json"
+            commit_message = f"Agendamento de exclusão para {email}"
 
-            # Commit no GitHub
             try:
                 commit_result = commit_json_to_github(
                     repo="webpaulinho/painel-ferias",
-                    path=nome_arquivo.replace("\\", "/"),  # Compatibilidade Windows/Linux
+                    path=nome_arquivo,
                     content_dict=agendamento_exclusao,
-                    commit_message=f"Agendar exclusão de conta para {email}",
+                    commit_message=commit_message,
                     github_token=os.environ.get("GITHUB_TOKEN")
                 )
                 if not commit_result:
