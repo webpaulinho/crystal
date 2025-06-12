@@ -1,8 +1,9 @@
 name: Exclusão automática de contas
 
 on:
+  workflow_dispatch:  # ✅ permite execução manual
   schedule:
-    - cron: '0 10 * * 1-5'  # Seg a Sex, 07h da manhã (Brasília, UTC-3)
+    - cron: '0 10 * * 1-5'  # Seg a Sex, 07h (Brasília)
 
 jobs:
   excluir-contas:
