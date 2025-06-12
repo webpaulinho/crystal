@@ -55,7 +55,7 @@ def processar_agendamentos():
         return
 
     os.makedirs(PROCESSED_DIR, exist_ok=True)
-    hoje = datetime.date.today().isoformat()  # yyyy-mm-dd
+    hoje = datetime.datetime.now().astimezone().date().isoformat()  # yyyy-mm-dd
     arquivos = [f for f in os.listdir(AGENDAMENTOS_DIR) if f.startswith("exclusao_") and f.endswith(".json")]
 
     creds = get_service_account()
