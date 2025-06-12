@@ -56,7 +56,7 @@ def processar_agendamentos():
 
     os.makedirs(PROCESSED_DIR, exist_ok=True)
     hoje = datetime.datetime.now().astimezone().date().isoformat()  # yyyy-mm-dd
-    arquivos = [f for f in os.listdir(AGENDAMENTOS_DIR) if f.startswith("exclusao_") and f.endswith(".json")]
+    arquivos = [f for f in os.listdir(AGENDAMENTOS_DIR) if f.endswith(".json")]
 
     creds = get_service_account()
     gmail_service = build('gmail', 'v1', credentials=creds.with_subject(GMAIL_SENDER))
