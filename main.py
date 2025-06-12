@@ -263,12 +263,28 @@ def vacation_settings(email):
                 "registrado_em": datetime.datetime.utcnow().isoformat() + "Z",
                 "motivo": data.get("responseSubject", ""),
                 "ultimo_dia": data.get("endTime"),  # timestamp ms
+                "processado": False
             }
             nome_arquivo = f"agendamentos/exclusao_{email}_{data['dataExclusao']}.json"
             with open(nome_arquivo, "w", encoding="utf-8") as f:
                 json.dump(agendamento_exclusao, f, ensure_ascii=False, indent=2)
             print(f"Exclusão agendada para {email} em {data['dataExclusao']}")
+
+            # Commit no GitHub
+            try:
+                commit_result = commit_json_to_github(
+                    repo="webpaulinho/painel-ferias",
+                    path=nome_arquivo.replace("\\", "/"),  # Compatibilidade Windows/Linux
+                    content_dict=agendamento_exclusao,
+                    commit_message=f"Agendar exclusão de conta para {email}",
+                    github_token=os.environ.get("GITHUB_TOKEN")
+                )
+                if not commit_result:
+                    print(f"⚠️ Falha ao comitar agendamento de exclusão no GitHub para {email}")
+            except Exception as e:
+                print(f"❌ Erro ao commitar agendamento de exclusão no GitHub: {e}")
         # --- FIM: AGENDAMENTO DE EXCLUSÃO DE CONTA ---
+
 
         try:
             print("Alterando vacation para:", email, vacation_settings)
