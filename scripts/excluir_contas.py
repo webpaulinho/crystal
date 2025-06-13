@@ -136,7 +136,7 @@ def processar_agendamentos():
                 f"Painel Automação"
             )
         else:
-            assunto = f"❌ Falha ao excluir conta Google de {nome}"
+            assunto = f"[ERRO] Falha ao excluir conta Google de {nome}"
             corpo = (
                 f"Olá,\n\n"
                 f"Falha ao excluir a conta Google do usuário {nome} ({email}) agendada para {data_acao}.\n"
