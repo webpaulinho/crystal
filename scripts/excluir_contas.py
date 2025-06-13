@@ -7,6 +7,8 @@ from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from email.mime.text import MIMEText
 from github_commit import commit_json_to_github  # Requerido para salvar no GitHub
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))
 
 AGENDAMENTOS_DIR = "agendamentos"
 PROCESSED_DIR = "agendamentos_processados"
