@@ -66,33 +66,33 @@ def processar_agendamentos():
     gmail_service = build('gmail', 'v1', credentials=creds_delegated)
     admin_service = build('admin', 'directory_v1', credentials=creds_delegated)
 
-for filename in arquivos:
-    filepath = os.path.join(AGENDAMENTOS_DIR, filename)
-    print(f"🔍 Processando arquivo: {filename}")
+    for filename in arquivos:
+        filepath = os.path.join(AGENDAMENTOS_DIR, filename)
+        print(f"🔍 Processando arquivo: {filename}")
 
-    try:
-        with open(filepath, "r", encoding="utf-8") as f:
-            dados = json.load(f)
-    except Exception as e:
-        print(f"[ERRO] Falha ao ler JSON {filename}: {e}")
-        continue
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                dados = json.load(f)
+        except Exception as e:
+            print(f"[ERRO] Falha ao ler JSON {filename}: {e}")
+            continue
 
-    email = dados.get("email")
-    data_acao = dados.get("data_acao")
-    nome = dados.get("nome", email)
-    processado = dados.get("processado", False)
+        email = dados.get("email")
+        data_acao = dados.get("data_acao")
+        nome = dados.get("nome", email)
+        processado = dados.get("processado", False)
 
-    if not email or not data_acao:
-        print(f"[IGNORADO] {filename}: dados incompletos.")
-        continue
-    if processado:
-        print(f"[IGNORADO] {email}: já processado anteriormente.")
-        continue
-    if data_acao > hoje:
-        print(f"[FUTURO] Agendamento para {email} é futuro ({data_acao}), ignorando hoje.")
-        continue
-    if data_acao < hoje:
-        print(f"[ATRASADO] Agendamento para {email} era para {data_acao}, processando mesmo assim.")
+        if not email or not data_acao:
+            print(f"[IGNORADO] {filename}: dados incompletos.")
+            continue
+        if processado:
+            print(f"[IGNORADO] {email}: já processado anteriormente.")
+            continue
+        if data_acao > hoje:
+            print(f"[FUTURO] Agendamento para {email} é futuro ({data_acao}), ignorando hoje.")
+            continue
+        if data_acao < hoje:
+            print(f"[ATRASADO] Agendamento para {email} era para {data_acao}, processando mesmo assim.")
 
     sucesso = excluir_usuario(email, creds_delegated)
     dados["processado"] = True
