@@ -32,8 +32,8 @@ jobs:
       - name: Acordar backend no Render
         run: |
           curl -s https://msgferias.onrender.com || true
-          echo "Aguardando 30 segundos para garantir que o serviço acordou..."
-          sleep 30
+          echo "Aguardando 15 segundos para garantir que o serviço acordou..."
+          sleep 15
 
       - name: Rodar script de alteração de senha
         env:
