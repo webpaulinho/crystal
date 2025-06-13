@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import datetime
 import base64
@@ -6,9 +7,10 @@ import tempfile
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from email.mime.text import MIMEText
-from github_commit import commit_json_to_github  # Requerido para salvar no GitHub
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))
+
+# Adiciona o diretório raiz ao sys.path para importar github_commit.py
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from github_commit import commit_json_to_github
 
 AGENDAMENTOS_DIR = "agendamentos"
 PROCESSED_DIR = "agendamentos_processados"
