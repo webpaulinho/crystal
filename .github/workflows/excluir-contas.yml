@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: '0 10 * * 1-5'  # Seg a Sex, 07h (Brasília)
 
+permissions:
+  contents: write
+
 jobs:
   excluir-contas:
     runs-on: ubuntu-latest
