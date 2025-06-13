@@ -59,12 +59,9 @@ def processar_agendamentos():
     arquivos = [f for f in os.listdir(AGENDAMENTOS_DIR) if f.endswith(".json")]
 
     creds = get_service_account()
-    admin_email = GMAIL_SENDER  # ou defina direto, ex: "administrador@tecafrio.com.br"
-    sucesso = excluir_usuario(email, creds_delegated)
+    creds_delegated = creds.with_subject(GMAIL_SENDER)
 
-    # Inicializa os serviços com delegação
     gmail_service = build('gmail', 'v1', credentials=creds_delegated)
-    admin_service = build('admin', 'directory_v1', credentials=creds_delegated)
 
     for filename in arquivos:
         filepath = os.path.join(AGENDAMENTOS_DIR, filename)
@@ -97,41 +94,45 @@ def processar_agendamentos():
         sucesso = excluir_usuario(email, creds_delegated)
         dados["processado"] = True
 
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(dados, f, ensure_ascii=False, indent=2)
+        try:
+            with open(filepath, "w", encoding="utf-8") as f:
+                json.dump(dados, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"[ERRO] Falha ao salvar JSON atualizado: {e}")
 
-    # Notificação por e-mail
-    if sucesso:
-        assunto = f"Conta Google {nome} ({email}) excluída com sucesso"
-        corpo = (
-            f"Olá,\n\n"
-            f"A conta Google do usuário {nome} ({email}) foi excluída conforme agendamento para a data {data_acao}.\n\n"
-            f"Atenciosamente,\n"
-            f"Painel RH/Automação"
-        )
-    else:
-        assunto = f"[ERRO] Falha ao excluir conta Google de {nome}"
-        corpo = (
-            f"Olá,\n\n"
-            f"Falha ao excluir a conta Google do usuário {nome} ({email}) agendada para {data_acao}.\n"
-            f"Verifique o log da automação para detalhes.\n\n"
-            f"Atenciosamente,\n"
-            f"Painel RH/Automação"
-        )
+        if sucesso:
+            assunto = f"Conta Google {nome} ({email}) excluída com sucesso"
+            corpo = (
+                f"Olá,\n\n"
+                f"A conta Google do usuário {nome} ({email}) foi excluída conforme agendamento para a data {data_acao}.\n\n"
+                f"Atenciosamente,\n"
+                f"Painel RH/Automação"
+            )
+        else:
+            assunto = f"[ERRO] Falha ao excluir conta Google de {nome}"
+            corpo = (
+                f"Olá,\n\n"
+                f"Falha ao excluir a conta Google do usuário {nome} ({email}) agendada para {data_acao}.\n"
+                f"Verifique o log da automação para detalhes.\n\n"
+                f"Atenciosamente,\n"
+                f"Painel RH/Automação"
+            )
 
-    try:
-        send_email_gmail_api(gmail_service, GMAIL_RECIPIENT, assunto, corpo)
-        print(f"[EMAIL] Notificação enviada para {GMAIL_RECIPIENT}")
-    except Exception as e:
-        print(f"[ERRO] Falha ao enviar e-mail de notificação: {e}")
+        try:
+            send_email_gmail_api(gmail_service, GMAIL_RECIPIENT, assunto, corpo)
+            print(f"[EMAIL] Notificação enviada para {GMAIL_RECIPIENT}")
+        except Exception as e:
+            print(f"[ERRO] Falha ao enviar e-mail de notificação: {e}")
 
-    destino = os.path.join(PROCESSED_DIR, filename)
-    os.rename(filepath, destino)
-    if sucesso:
-        print(f"[OK] Agendamento processado: {email} ({data_acao})")
-    else:
-        print(f"[FALHOU] Agendamento processado: {email} ({data_acao})")
-
+        try:
+            destino = os.path.join(PROCESSED_DIR, filename)
+            os.rename(filepath, destino)
+            if sucesso:
+                print(f"[OK] Agendamento processado: {email} ({data_acao})")
+            else:
+                print(f"[FALHOU] Agendamento processado: {email} ({data_acao})")
+        except Exception as e:
+            print(f"[ERRO] Falha ao mover {filename} para processados: {e}")
 
 if __name__ == "__main__":
     processar_agendamentos()
