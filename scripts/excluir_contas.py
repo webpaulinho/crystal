@@ -94,8 +94,8 @@ def processar_agendamentos():
         if data_acao < hoje:
             print(f"[ATRASADO] Agendamento para {email} era para {data_acao}, processando mesmo assim.")
 
-    sucesso = excluir_usuario(email, creds_delegated)
-    dados["processado"] = True
+        sucesso = excluir_usuario(email, creds_delegated)
+        dados["processado"] = True
 
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=2)
