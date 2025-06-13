@@ -31,3 +31,4 @@ jobs:
         run: python scripts/excluir_contas.py
         env:
           GOOGLE_APPLICATION_CREDENTIALS_JSON_EXCLUSAO: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON_EXCLUSAO }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
