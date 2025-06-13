@@ -6,6 +6,7 @@ import tempfile
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from email.mime.text import MIMEText
+from github_commit import commit_json_to_github  # Requerido para salvar no GitHub
 
 AGENDAMENTOS_DIR = "agendamentos"
 PROCESSED_DIR = "agendamentos_processados"
@@ -43,10 +44,10 @@ def excluir_usuario(email, creds):
     service = build('admin', 'directory_v1', credentials=creds)
     try:
         service.users().delete(userKey=email).execute()
-        print(f"[OK] Conta {email} excluída com sucesso.")
+        print(f"✅ Conta {email} excluída com sucesso.")
         return True
     except Exception as e:
-        print(f"[ERRO] Falha ao excluir {email}: {e}")
+        print(f"❌ Falha ao excluir {email}: {e}")
         return False
 
 def processar_agendamentos():
@@ -71,7 +72,7 @@ def processar_agendamentos():
             with open(filepath, "r", encoding="utf-8") as f:
                 dados = json.load(f)
         except Exception as e:
-            print(f"[ERRO] Falha ao ler JSON {filename}: {e}")
+            print(f"❌ Falha ao ler JSON {filename}: {e}")
             continue
 
         email = dados.get("email")
@@ -80,36 +81,58 @@ def processar_agendamentos():
         processado = dados.get("processado", False)
 
         if not email or not data_acao:
-            print(f"[IGNORADO] {filename}: dados incompletos.")
+            print(f"⚠️ {filename}: dados incompletos.")
             continue
         if processado:
-            print(f"[IGNORADO] {email}: já processado anteriormente.")
+            print(f"⚠️ {email}: já processado anteriormente.")
             continue
         if data_acao > hoje:
-            print(f"[FUTURO] Agendamento para {email} é futuro ({data_acao}), ignorando hoje.")
+            print(f"📅 Agendamento para {email} é futuro ({data_acao}), ignorando hoje.")
             continue
         if data_acao < hoje:
-            print(f"[ATRASADO] Agendamento para {email} era para {data_acao}, processando mesmo assim.")
+            print(f"📅 Agendamento para {email} era para {data_acao}, processando mesmo assim.")
 
         sucesso = excluir_usuario(email, creds_delegated)
         dados["processado"] = True
 
-        try:
-            with open(filepath, "w", encoding="utf-8") as f:
-                json.dump(dados, f, ensure_ascii=False, indent=2)
-        except Exception as e:
-            print(f"[ERRO] Falha ao salvar JSON atualizado: {e}")
+        # Atualiza local
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(dados, f, ensure_ascii=False, indent=2)
 
+        # --- Commit no GitHub ---
+        try:
+            path_github = f"agendamentos/{filename}"
+            commit_msg = f"Marcar processado para {email} via exclusão automatizada"
+            token_github = os.environ.get("GITHUB_TOKEN")
+
+            if not token_github:
+                raise Exception("GITHUB_TOKEN não definido.")
+
+            commit_result = commit_json_to_github(
+                repo="webpaulinho/painel-ferias",
+                path=path_github,
+                content_dict=dados,
+                commit_message=commit_msg,
+                github_token=token_github
+            )
+            if commit_result:
+                print(f"📌 JSON atualizado no GitHub: {path_github}")
+            else:
+                print(f"‼️ Falha ao atualizar JSON no GitHub: {path_github}")
+        except Exception as e:
+            print(f"❌ Falha ao salvar no GitHub: {e}")
+
+        # Notificação por e-mail
         if sucesso:
             assunto = f"Conta Google {nome} ({email}) excluída com sucesso"
             corpo = (
                 f"Olá,\n\n"
                 f"A conta Google do usuário {nome} ({email}) foi excluída conforme agendamento para a data {data_acao}.\n\n"
                 f"Atenciosamente,\n"
-                f"Painel RH/Automação"
+                f"Painel Automação"
             )
         else:
-            assunto = f"[ERRO] Falha ao excluir conta Google de {nome}"
+            assunto = f"❌ Falha ao excluir conta Google de {nome}"
             corpo = (
                 f"Olá,\n\n"
                 f"Falha ao excluir a conta Google do usuário {nome} ({email}) agendada para {data_acao}.\n"
@@ -120,19 +143,17 @@ def processar_agendamentos():
 
         try:
             send_email_gmail_api(gmail_service, GMAIL_RECIPIENT, assunto, corpo)
-            print(f"[EMAIL] Notificação enviada para {GMAIL_RECIPIENT}")
+            print(f"✅ Notificação enviada para {GMAIL_RECIPIENT}")
         except Exception as e:
-            print(f"[ERRO] Falha ao enviar e-mail de notificação: {e}")
+            print(f"❌ Falha ao enviar e-mail de notificação: {e}")
 
-        try:
-            destino = os.path.join(PROCESSED_DIR, filename)
-            os.rename(filepath, destino)
-            if sucesso:
-                print(f"[OK] Agendamento processado: {email} ({data_acao})")
-            else:
-                print(f"[FALHOU] Agendamento processado: {email} ({data_acao})")
-        except Exception as e:
-            print(f"[ERRO] Falha ao mover {filename} para processados: {e}")
+        destino = os.path.join(PROCESSED_DIR, filename)
+        os.rename(filepath, destino)
+
+        if sucesso:
+            print(f"✅ Agendamento processado: {email} ({data_acao})")
+        else:
+            print(f"❌ Agendamento processado: {email} ({data_acao})")
 
 if __name__ == "__main__":
     processar_agendamentos()
